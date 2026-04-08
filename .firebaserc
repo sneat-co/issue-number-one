@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "sneat-work"
+  },
+  "targets": {
+    "sneat-work": {
+      "hosting": {
+        "issue-number-one": ["issue-number-one"]
+      }
+    }
   }
 }

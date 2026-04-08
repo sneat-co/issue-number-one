@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "issue-number-one",
     "public": "website",
     "ignore": [
       "firebase.json",
