@@ -1,0 +1,7 @@
+title: IssueNumber.one
+description: A communication tool for identifying and addressing top priority issues — a continuous focused feedback and improvements process for teams.
+repos:
+  - https://github.com/sneat-co/issue-number-one
+project_dirs:
+  specifications: spec
+  documents: docs
