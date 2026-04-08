@@ -1,0 +1,184 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.6.4",
+  "pathMappings": {},
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
+    },
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
+  "fileMap": {
+    "projectFileMap": {
+      "e2e": [
+        {
+          "file": "e2e/eslint.config.mjs",
+          "hash": "3980065308462174374",
+          "deps": [
+            "npm:eslint-plugin-playwright"
+          ]
+        },
+        {
+          "file": "e2e/playwright.config.ts",
+          "hash": "10279561604815402241",
+          "deps": [
+            "npm:@playwright/test",
+            "npm:@nx/playwright",
+            "npm:@nx/devkit"
+          ]
+        },
+        {
+          "file": "e2e/project.json",
+          "hash": "16011909698502266635"
+        },
+        {
+          "file": "e2e/src/example.spec.ts",
+          "hash": "16019101014373124625",
+          "deps": [
+            "npm:@playwright/test"
+          ]
+        },
+        {
+          "file": "e2e/tsconfig.json",
+          "hash": "13093629721955912869"
+        }
+      ],
+      "in1app": [
+        {
+          "file": ".gitignore",
+          "hash": "11502482774063263864"
+        },
+        {
+          "file": ".prettierignore",
+          "hash": "5407418692668764289"
+        },
+        {
+          "file": ".prettierrc",
+          "hash": "16267754514737964994"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "13417776046909105611"
+        },
+        {
+          "file": "README.md",
+          "hash": "10558805930714665184"
+        },
+        {
+          "file": "eslint.config.mjs",
+          "hash": "1601366380137495041",
+          "deps": [
+            "npm:@nx/eslint-plugin"
+          ]
+        },
+        {
+          "file": "nx.json",
+          "hash": "3285929835966125249"
+        },
+        {
+          "file": "package.json",
+          "hash": "547356740924827498"
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "hash": "9255620647033191190"
+        },
+        {
+          "file": "pnpm-workspace.yaml",
+          "hash": "6682635867443504162"
+        },
+        {
+          "file": "project.json",
+          "hash": "9859451880117965807"
+        },
+        {
+          "file": "public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "src/app/app.config.ts",
+          "hash": "4436923392211261843",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.html",
+          "hash": "11987652264972370457"
+        },
+        {
+          "file": "src/app/app.routes.ts",
+          "hash": "6185150965714414910",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/app.spec.ts",
+          "hash": "350871269728789396",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/app.ts",
+          "hash": "13018478134114044347",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/nx-welcome.ts",
+          "hash": "7406975865110756995",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/index.html",
+          "hash": "4722799773270241306"
+        },
+        {
+          "file": "src/main.ts",
+          "hash": "3314327030169821486",
+          "deps": [
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "src/styles.scss",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "tsconfig.app.json",
+          "hash": "13640449330379080432"
+        },
+        {
+          "file": "tsconfig.json",
+          "hash": "14218232323855665655"
+        },
+        {
+          "file": "tsconfig.spec.json",
+          "hash": "10509006015807709834"
+        }
+      ]
+    },
+    "nonProjectFiles": []
+  },
+  "externalNodesHash": "11013318016253953696"
+}
