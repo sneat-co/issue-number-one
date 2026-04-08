@@ -1,0 +1,58 @@
+/* Custom styles layered over Tailwind CDN.
+   Keep this file intentionally small — most styling lives in utility classes. */
+
+:root {
+  --brand-600: #2347ef;
+}
+
+html {
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://rsms.me/inter/font-files/InterVariable.woff2?v=4.0') format('woff2');
+}
+
+/* Smooth anchor focus for keyboard users */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Subtle grain on the hero gradient for a less "AI template" look */
+section:first-of-type::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(35, 71, 239, 0.08) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+@media (prefers-color-scheme: dark) {
+  section:first-of-type::before {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(147, 180, 255, 0.12) 1px,
+      transparent 0
+    );
+  }
+}
+
+/* Slight upgrade to the default focus ring on the CTA card */
+.cta-card:focus-within {
+  box-shadow: 0 0 0 3px rgba(96, 139, 255, 0.4);
+}

@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IssueNumber.one — What's your #1 issue?</title>
+  <meta name="description" content="A communication tool for identifying and addressing top priority issues. Scarce votes. One active issue per person. Continuous focused feedback and improvements." />
+  <meta name="color-scheme" content="light dark" />
+
+  <meta property="og:title" content="IssueNumber.one" />
+  <meta property="og:description" content="A communication tool for identifying and addressing top priority issues." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://issuenumber.one" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef4ff',
+              100: '#dbe7ff',
+              200: '#bfd3ff',
+              300: '#93b4ff',
+              400: '#608bff',
+              500: '#3a67ff',
+              600: '#2347ef',
+              700: '#1c37c8',
+              800: '#1c31a1',
+              900: '#1d2f7e',
+            },
+          },
+          fontFamily: {
+            sans: ['InterVariable', 'Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
+
+<header class="sticky top-0 z-40 backdrop-blur bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/60 dark:border-slate-800/60">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 font-semibold">
+      <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white font-bold">#1</span>
+      <span>IssueNumber.one</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm text-slate-600 dark:text-slate-300">
+      <a class="hover:text-brand-600 dark:hover:text-brand-400" href="#how-it-works">How it works</a>
+      <a class="hover:text-brand-600 dark:hover:text-brand-400" href="#features">Features</a>
+      <a class="hover:text-brand-600 dark:hover:text-brand-400" href="#storage">Storage</a>
+      <a class="hover:text-brand-600 dark:hover:text-brand-400" href="#ai">AI</a>
+      <a class="hover:text-brand-600 dark:hover:text-brand-400" href="https://github.com/sneat-co/issue-number-one">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 to-white dark:from-brand-900/20 dark:to-slate-950"></div>
+  <div class="max-w-6xl mx-auto px-6 py-20 md:py-28">
+    <p class="inline-flex items-center gap-2 rounded-full border border-brand-200 dark:border-brand-800 bg-brand-50 dark:bg-brand-900/30 px-3 py-1 text-xs font-medium text-brand-700 dark:text-brand-300">
+      Continuous Focused Feedback &amp; Improvements
+    </p>
+    <h1 class="mt-6 text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+      What&rsquo;s your team&rsquo;s<br />
+      <span class="text-brand-600 dark:text-brand-400">#1 issue</span> today?
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg md:text-xl text-slate-600 dark:text-slate-300">
+      IssueNumber.one is a communication tool for identifying and addressing top priority issues.
+      Not another tracker. Scarce votes, one active issue per person &mdash; so the list that surfaces
+      is the list that actually matters.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="#how-it-works" class="inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition">
+        See how it works
+      </a>
+      <a href="https://github.com/sneat-co/issue-number-one" class="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 px-5 py-3 font-semibold hover:bg-slate-100 dark:hover:bg-slate-900 transition">
+        Read the specs
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Problem -->
+<section class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+  <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Everything is important.<br />Nothing gets done.</h2>
+  <p class="mt-6 max-w-3xl text-lg text-slate-600 dark:text-slate-300">
+    Traditional issue trackers encourage backlog growth. Hundreds of tickets accumulate, all nominally important,
+    and the critical work disappears beneath the daily noise. Managers can&rsquo;t reliably answer
+    &ldquo;what is the one thing we should do next?&rdquo;
+  </p>
+  <div class="mt-10 grid gap-6 md:grid-cols-3">
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+      <p class="text-sm font-semibold text-brand-600 dark:text-brand-400">Backlog bloat</p>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">Hundreds of open issues, no shared answer to &ldquo;what matters most?&rdquo;</p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+      <p class="text-sm font-semibold text-brand-600 dark:text-brand-400">Unclear priorities</p>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">Every stakeholder has their &ldquo;#1&rdquo; &mdash; and none of them agree.</p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+      <p class="text-sm font-semibold text-brand-600 dark:text-brand-400">Commitment gaps</p>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">Teams agree in meetings, then quietly drift back to urgent-not-important.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section id="how-it-works" class="bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+  <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Scarcity surfaces priority</h2>
+    <p class="mt-6 max-w-3xl text-lg text-slate-600 dark:text-slate-300">
+      IssueNumber.one flips the tracker model: instead of unlimited issues and unlimited votes,
+      every team member gets a very small budget. If you want to back something new, you have to
+      let go of something old. That trade&#8209;off is the product.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <article class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold">1</div>
+        <h3 class="mt-4 font-semibold">One active issue per person</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          By default every member has exactly one active issue per team. Teams may relax up to a maximum of three &mdash; never more.
+        </p>
+      </article>
+      <article class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold">2</div>
+        <h3 class="mt-4 font-semibold">Votes are scarce</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Each team member has a tiny per-team vote budget. No self-votes. Withdraw a vote to cast it somewhere else.
+        </p>
+      </article>
+      <article class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold">3</div>
+        <h3 class="mt-4 font-semibold">Top issue bubbles up</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Only a team&rsquo;s current #1 is visible externally. Sufficiently upvoted issues escalate to the organization level.
+        </p>
+      </article>
+      <article class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold">4</div>
+        <h3 class="mt-4 font-semibold">Closed &rArr; refunded</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          When an issue is resolved, withdrawn, archived, or banned, every vote cast on it returns to its voter&rsquo;s budget.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+  <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Built for honest prioritization</h2>
+  <p class="mt-6 max-w-3xl text-lg text-slate-600 dark:text-slate-300">
+    Every feature is designed to keep the discussion grounded in what actually matters &mdash; not in who shouts loudest.
+  </p>
+
+  <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Issue lifecycle</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Raised &rarr; withdrawn, resolved, archived, or banned. Creator-only withdrawal. Archive by any team member. Supporters always notified.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Anonymity, with guard rails</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Teams can enable anonymous issues with optional per&#8209;issue fees to deter boosting. Authors stay hidden but can still update or withdraw their own posts.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Visibility bubbles up</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Team &rarr; org &rarr; public. Top team issues bubble up as support grows. External users only see each team&rsquo;s current #1.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Up&thinsp;/&thinsp;downvotes, your call</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Upvotes public by default, downvotes anonymous by default. Teams can disable downvotes entirely and configure attribution.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Flexible hierarchy</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Orgs are just root teams. Sub-teams, peer teams, peer colleagues &mdash; nested to arbitrary depth. Public topics live in their own namespace.
+      </p>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 hover:border-brand-300 dark:hover:border-brand-700 transition">
+      <h3 class="font-semibold">Moderation you can see</h3>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        Archive and ban both notify every supporter and the creator. Public topic issues can&rsquo;t be archived &mdash; only withdrawn by the creator.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Storage -->
+<section id="storage" class="bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+  <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Your data, your call</h2>
+    <p class="mt-6 max-w-3xl text-lg text-slate-600 dark:text-slate-300">
+      Every organization chooses where its data lives. Pick the convenient turn&#8209;key option, or keep everything
+      in a GitHub repo you already control.
+    </p>
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <div class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <h3 class="text-xl font-semibold">IssueNumber.one cloud</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Zero setup. Zero ops. Managed Firestore&#8209;backed hosting. The default path for teams that just want to start prioritizing.
+        </p>
+      </div>
+      <div class="rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-6">
+        <h3 class="text-xl font-semibold">GitHub + inGitDB</h3>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          Own your data. Public or private GitHub repo, strongly-structured human-readable files via
+          <a class="underline hover:text-brand-600" href="https://inGitDB.com">inGitDB</a>. Git history becomes your audit log.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI -->
+<section id="ai" class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+  <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Optional AI summaries</h2>
+  <p class="mt-6 max-w-3xl text-lg text-slate-600 dark:text-slate-300">
+    Enable AI integration to get an executive summary of your team&rsquo;s current issues &mdash; what&rsquo;s trending,
+    where focus is converging, where risks are emerging. Bring your own prompt, or use the hosted SaaS path with a
+    curated prompt and privacy guarantees that preserve anonymity.
+  </p>
+</section>
+
+<!-- CTA -->
+<section class="max-w-6xl mx-auto px-6 pb-24">
+  <div class="rounded-2xl bg-brand-600 text-white p-10 md:p-14 shadow-lg">
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">What&rsquo;s your #1 issue today?</h2>
+    <p class="mt-4 max-w-2xl text-brand-100">
+      IssueNumber.one is still being built. Read the specs, follow along, or raise an issue to help shape it.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a href="https://github.com/sneat-co/issue-number-one" class="inline-flex items-center justify-center rounded-lg bg-white text-brand-700 px-5 py-3 font-semibold hover:bg-brand-50 transition">
+        View on GitHub
+      </a>
+      <a href="https://github.com/sneat-co/issue-number-one/tree/main/spec/features" class="inline-flex items-center justify-center rounded-lg border border-brand-300 px-5 py-3 font-semibold hover:bg-brand-700 transition">
+        Read the feature specs
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-200 dark:border-slate-800">
+  <div class="max-w-6xl mx-auto px-6 py-10 text-sm text-slate-500 dark:text-slate-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <p>&copy; <span id="y"></span> IssueNumber.one &middot; <a class="hover:text-brand-600" href="https://github.com/sneat-co/issue-number-one">sneat-co/issue-number-one</a></p>
+    <p>Built with scarcity in mind.</p>
+  </div>
+</footer>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
