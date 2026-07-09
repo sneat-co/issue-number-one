@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://issuenumber.one/sitemap-index.xml

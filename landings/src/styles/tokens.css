@@ -1,0 +1,40 @@
+/*
+ * IssueNumber.one design tokens — "your org already knows its #1 issue".
+ * A serious crimson primary (priority, the red-flag issue, decisive focus) over
+ * a warm slate ink, with a restrained amber highlight. Deliberately distinct
+ * from the rest of the Sneat suite: violet=Moodometer, sky-blue=AnyMeter,
+ * indigo=Assetus/sneat.work, blue=sneat.team.
+ *
+ * NOTE: the --as-* variable NAMES are load-bearing (global.css maps the
+ * --color-* aliases onto them); only their values change per product.
+ */
+:root {
+  /* Brand — crimson primary, with an amber highlight accent */
+  --as-indigo: #be123c;         /* primary — CTAs, accents (rose-700) */
+  --as-indigo-strong: #9f1239;  /* hover / shade (rose-800) */
+  --as-violet: #fda4af;         /* light accent (rose-300) */
+  --as-gold: #f59e0b;           /* highlight, used sparingly (amber-500) */
+  --as-ink: #1c1517;            /* primary text + footer (warm near-black) */
+  --as-muted: #6b5f61;          /* muted text */
+
+  /* Chrome */
+  --as-bg: #fdfbfb;             /* page background */
+  --as-surface: #ffffff;        /* cards */
+  --as-soft: #fbf1f2;           /* alt section (soft rose tint) */
+  --as-hero-1: #fdeef0;         /* hero gradient top */
+  --as-hero-2: #f7d7dc;         /* hero gradient bottom */
+  --as-border: #f0e0e2;
+  --as-danger: #d64545;
+
+  /* Status pills */
+  --as-live-bg: #fecdd3;
+  --as-live-ink: #9f1239;
+  --as-soon-bg: #f2eef0;
+  --as-soon-ink: #6b5f61;
+
+  /* Type & shape */
+  --as-font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --as-radius: 16px;
+  --as-radius-pill: 999px;
+  --as-shadow: 0 10px 26px rgba(28, 21, 23, 0.12);
+}

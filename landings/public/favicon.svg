@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IssueNumber.one">
+  <rect width="64" height="64" rx="14" fill="#be123c"/>
+  <!-- the #1 mark: a bold numeral one -->
+  <path d="M28 47 V27 L22.5 29.5 L20 23.5 L31 18 H36 V47 H43 V53 H21 V47 Z" fill="#ffffff"/>
+</svg>

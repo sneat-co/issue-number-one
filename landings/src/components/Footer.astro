@@ -1,0 +1,125 @@
+---
+const year = 2026;
+---
+
+<footer class="site-footer">
+  <div class="container cols">
+    <div class="brand-col">
+      <a href="/" class="brand" aria-label="IssueNumber.one home">
+        <span class="mark" aria-hidden="true">1</span>
+        IssueNumber<span class="tld">.one</span></a
+      >
+      <p>Surface the one issue your team would fix first — and let it rise.</p>
+    </div>
+
+    <nav class="col" aria-label="Product">
+      <h3>Product</h3>
+      <ul>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#features">Why IssueNumber.one</a></li>
+        <li><a href="#waitlist">Join the waitlist</a></li>
+      </ul>
+    </nav>
+
+    <nav class="col" aria-label="More">
+      <h3>More</h3>
+      <ul>
+        <li>
+          <a href="https://ingitdb.com" target="_blank" rel="noopener"
+            >Your data in Git via inGitDB</a
+          >
+        </li>
+        <li>
+          <a href="https://sneat.co" target="_blank" rel="noopener"
+            >Sneat platform</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container legal">
+    <p>
+      &copy; {year} IssueNumber.one · A Sneat product —
+      <a href="https://sneat.co" target="_blank" rel="noopener">sneat.co</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-soft);
+    padding-block: var(--space-4) var(--space-2);
+    margin-top: var(--space-5);
+  }
+  .cols {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--color-text);
+  }
+  .brand:hover {
+    text-decoration: none;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 7px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .tld {
+    color: var(--color-accent);
+  }
+  .col h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .col a {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .col a:hover {
+    color: var(--color-text);
+  }
+  .legal {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+  .legal p {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  @media (min-width: 720px) {
+    .cols {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+</style>

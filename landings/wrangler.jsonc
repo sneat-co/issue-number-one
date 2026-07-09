@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "issuenumberone",
+  "compatibility_date": "2026-06-23",
+  "workers_dev": true,
+  // Landing-only worker: static Astro site + a tiny POST /waitlist API.
+  // run_worker_first keeps the Worker authoritative so /waitlist is handled
+  // in code before the asset layer (see worker.js).
+  "main": "worker.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "none"
+  },
+  // Waitlist signups: {email, ts, source} keyed by waitlist:<email>.
+  // Created 2026-07-09 as `issue_number_one_waitlist`.
+  "kv_namespaces": [
+    {
+      "binding": "WAITLIST",
+      "id": "1e76de23d7e8402f9a3c86611f7121a8"
+    }
+  ]
+  // NOTE: the custom domain issuenumber.one is attached by the main session on
+  // the issuenumber.one zone (AAAA + worker route). No DNS/route config here.
+}

@@ -1,0 +1,104 @@
+---
+const links = [
+  { href: "#problem", label: "The problem" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#features", label: "Why IssueNumber.one" },
+];
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand" aria-label="IssueNumber.one home">
+      <span class="mark" aria-hidden="true">1</span>
+      IssueNumber<span class="tld">.one</span></a
+    >
+
+    <nav aria-label="Primary">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href="#waitlist" class="btn cta">Join the waitlist</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 64px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--color-text);
+  }
+  .brand:hover {
+    text-decoration: none;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .tld {
+    color: var(--color-accent);
+  }
+  nav {
+    margin-left: auto;
+  }
+  nav ul {
+    display: flex;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  nav a:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .cta {
+    background: var(--color-text);
+    color: #fff;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.9rem;
+  }
+  .cta:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 960px) {
+    nav {
+      display: none;
+    }
+  }
+</style>
