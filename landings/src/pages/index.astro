@@ -40,6 +40,80 @@ const steps = [
   },
 ];
 
+// Launch pricing — founder-approved 2026-07-10 (backstage:
+// spec/ideas/seeds/sneat-team-vs-sportius.md § Pricing — APPROVED).
+// IssueNumber.one is part of the sneat.team suite: one subscription covers
+// Sprints & Retros, standups, Moodometer and IssueNumber.One. No checkout
+// yet — every CTA joins the waitlist with a `plan` field. Keep the numbers
+// in sync with the sneat.team landing (sneat.team-website).
+const plans = [
+  {
+    id: "free",
+    name: "Free",
+    price: "$0",
+    priceNote: "free forever",
+    points: [
+      "1 team, up to 5 members",
+      "30-day history",
+      "Public boards — free forever",
+      "The whole sneat.team suite included",
+    ],
+    cta: "Join the waitlist",
+  },
+  {
+    id: "team",
+    name: "Team",
+    price: "$9/mo",
+    priceNote: "or $90/yr — 2 months free",
+    points: [
+      "1 team, no member cap",
+      "Full history",
+      "IssueNumber.One + Sprints & Retros, standups, Moodometer",
+    ],
+    cta: "Join the waitlist — launch pricing locked in",
+  },
+  {
+    id: "lifetime",
+    name: "Team Lifetime",
+    badge: "Launch offer — first 100 teams",
+    price: "$299",
+    priceNote: "one-time · then $499",
+    points: [
+      "Everything in Team, forever",
+      "One payment, no subscription",
+      "Only the first 100 teams pay $299",
+    ],
+    cta: "Reserve your lifetime spot",
+    featured: true,
+  },
+  {
+    id: "company",
+    name: "Company",
+    price: "$99/mo",
+    priceNote: "or $999/yr",
+    points: [
+      "Up to 15 teams",
+      "3-level hierarchy: organization → departments → teams",
+      "Everything in Team, for every team",
+    ],
+    cta: "Join the waitlist",
+  },
+  {
+    id: "corporate",
+    name: "Corporate",
+    price: "from $10K/yr",
+    priceNote: "contact us",
+    points: [
+      "Unlimited teams, unlimited nested hierarchy",
+      "SSO",
+      "Bring-your-own GitHub storage with audit",
+      "AI executive summaries",
+      "Priority support",
+    ],
+    cta: "Contact us",
+  },
+];
+
 const features = [
   {
     icon: "🗳️",
@@ -208,8 +282,56 @@ const features = [
     </div>
   </section>
 
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="text-center section-head">
+        <p class="eyebrow">Launch pricing</p>
+        <h2>One subscription, the whole sneat.team suite</h2>
+        <p>
+          IssueNumber.one is part of the
+          <a href="https://sneat.team" target="_blank" rel="noopener"
+            >sneat.team</a
+          > rituals suite — buying it includes Sprints &amp; Retros, daily
+          standups and Moodometer too. The suite is rolling out now; checkout
+          isn't open yet, so joining the waitlist locks in launch pricing for
+          early access.
+        </p>
+      </div>
+
+      <div class="plans">
+        {plans.map((p) => (
+          <article class={p.featured ? "plan featured" : "plan"}>
+            {p.badge && <p class="plan-badge">{p.badge}</p>}
+            <h3>{p.name}</h3>
+            <p class="plan-price">{p.price}</p>
+            <p class="plan-price-note">{p.priceNote}</p>
+            <ul class="plan-points">
+              {p.points.map((pt) => (
+                <li>{pt}</li>
+              ))}
+            </ul>
+            <a
+              class={p.featured ? "btn btn-primary plan-cta" : "btn btn-secondary plan-cta"}
+              href="#waitlist"
+              data-plan={p.id}
+              data-plan-name={p.name}
+            >
+              {p.cta}
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <p class="pricing-soul text-center">
+        Scarce votes and anonymity are in every plan — including Free. They're
+        the product, not an upsell.
+      </p>
+    </div>
+  </section>
+
   <!-- Waitlist -->
-  <section id="waitlist" class="section">
+  <section id="waitlist" class="section soft">
     <div class="container text-center waitlist">
       <p class="eyebrow">Early access</p>
       <h2>Ask your org what its #1 issue is</h2>
@@ -218,13 +340,18 @@ const features = [
         we'll invite you as we bring organizations on board.
       </p>
       <p class="pricing-note">
-        Free for small teams &mdash; organization plans at launch.
+        <a href="#pricing">See launch pricing</a> &mdash; one subscription
+        covers the whole sneat.team suite, and there's a Free plan.
       </p>
       <p class="pricing-note">
         Coming later: public boards &mdash; <em>Dublin&nbsp;&middot; Issue&nbsp;#1</em>, <em>AI&nbsp;agents&nbsp;&middot; Issue&nbsp;#1</em> &mdash; the top issue of any community, out in the open.
       </p>
+      <p class="plan-chip" id="waitlist-plan" hidden>
+        Selected plan: <strong id="waitlist-plan-name"></strong>
+      </p>
 
       <form id="waitlist-form" class="waitlist-form" novalidate>
+        <input type="hidden" name="plan" value="" />
         <label class="visually-hidden" for="waitlist-email">Work email</label>
         <input
           id="waitlist-email"
@@ -254,6 +381,18 @@ const features = [
   const note = document.getElementById("waitlist-note")!;
   const thanks = document.getElementById("waitlist-thanks")!;
   const error = document.getElementById("waitlist-error")!;
+  const planInput = form.elements.namedItem("plan") as HTMLInputElement;
+  const planChip = document.getElementById("waitlist-plan")!;
+  const planName = document.getElementById("waitlist-plan-name")!;
+
+  // Pricing-card CTAs: remember the chosen plan, show it above the form.
+  document.querySelectorAll<HTMLAnchorElement>("[data-plan]").forEach((a) => {
+    a.addEventListener("click", () => {
+      planInput.value = a.dataset.plan || "";
+      planName.textContent = a.dataset.planName || "";
+      planChip.hidden = !planInput.value;
+    });
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -267,7 +406,11 @@ const features = [
       const res = await fetch("/waitlist", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, source: "landing" }),
+        body: JSON.stringify({
+          email,
+          source: "landing",
+          ...(planInput.value ? { plan: planInput.value } : {}),
+        }),
       });
       const data = await res.json().catch(() => ({ ok: false }));
       if (res.ok && data.ok) {
@@ -571,9 +714,101 @@ const features = [
     margin-top: var(--space-1);
   }
 
+  /* Pricing */
+  .plans {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    align-items: stretch;
+    margin-top: var(--space-3);
+  }
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--as-radius);
+    padding: var(--space-3) var(--space-2) var(--space-2);
+    box-shadow: var(--shadow);
+  }
+  .plan.featured {
+    border: 2px solid var(--as-gold);
+    background: color-mix(in srgb, var(--as-gold) 6%, var(--color-surface));
+  }
+  .plan-badge {
+    position: absolute;
+    top: -0.85rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: var(--as-gold);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--as-radius-pill);
+    margin: 0;
+  }
+  .plan h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.3rem;
+  }
+  .plan-price {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.15;
+  }
+  .plan-price-note {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0.15rem 0 var(--space-2);
+  }
+  .plan-points {
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+  }
+  .plan-points li::before {
+    content: "✓ ";
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .plan-cta {
+    margin-top: auto;
+    font-size: 0.85rem;
+    padding: 0.65rem 0.9rem;
+    text-align: center;
+  }
+  .pricing-soul {
+    max-width: 640px;
+    margin: var(--space-3) auto 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
   /* Waitlist */
   .waitlist {
     max-width: 640px;
+  }
+  .plan-chip {
+    display: inline-block;
+    margin: var(--space-1) auto 0;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--as-radius-pill);
+    background: var(--color-surface);
+    border: 1px solid var(--color-accent);
+    color: var(--color-text);
+    font-size: 0.9rem;
   }
   .waitlist-form {
     display: flex;
