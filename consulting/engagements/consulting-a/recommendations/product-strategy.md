@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Product Strategy Recommendation"
 artifact: recommendation
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
@@ -23,10 +23,11 @@ promotion_target: "IssueNumber.one owning Features and relevant Sneat Work owner
 
 ## Decision Needed
 
-The sponsor must decide whether product discovery should focus on one internal
-priority-to-action journey inside Sneat Work, while keeping public research,
+The sponsor must decide whether product discovery should focus on one internal,
+boundary-neutral priority-to-action journey while keeping the service,
+standalone and Sneat Work forms unresolved, and keeping public research,
 employee monitoring/organisational health, benchmarking and Moodometer
-combination outside the initial product promise.
+combination outside the initial promise.
 
 This is a product-boundary recommendation, not an architecture, interface or
 implementation design.
@@ -136,8 +137,8 @@ the cycle without this engagement transcript or unnecessary personal data.
   reuse exists; explicit responsibility context and issue/action history are
   narrower candidates
   ([graph report](../research/graph-value-and-defensibility.md)).
-- **Evidence:** O2 has the strongest relative bounded outcome and cold-start
-  hypothesis, not validated user demand
+- **Evidence:** The boundary-neutral job has the strongest relative bounded
+  outcome and cold-start learning profile, not validated user demand
   ([strategic options](../research/strategic-options.md)).
 - **Assumption:** Scarcity changes priority quality rather than merely causing
   frustration or suppressing minority evidence. The mechanism test can reject
@@ -153,7 +154,8 @@ the cycle without this engagement transcript or unnecessary personal data.
 |---|---|---|---|---|
 | Status quo Feature tree | Preserves current scarce issue/vote concept | No acceptance criteria or implemented journey; action/trust gaps remain | High | Current Conceptual canon |
 | Standalone scarce-priority cycle | Clean test of scarcity without ecosystem dependence | Manual context/action; another destination/tool | High | Mechanic exists conceptually only |
-| **Sneat Work bounded priority-to-action cycle** | One end-to-end job, explicit work context, accountable closure | Could import Sneat Work adoption/trust assumptions; no buyer | High before implementation | Relatively strongest hypothesis |
+| **Boundary-neutral bounded priority-to-action cycle** | One end-to-end job and accountable closure can be tested without product choice | Facilitation, scarcity and context effects remain confounded until tested | High | Recommended learning object, not product boundary |
+| Sneat Work capability | May reuse verified work context | Could import Sneat Work adoption/trust assumptions; no necessary relationship outcome | High before implementation | Must not outrank standalone/service yet |
 | Employee intelligence mode | Larger recurring scope and adjacent category budget | Monitoring, anonymity, suite competition and action-debt burden | Medium/low | Category practice, no wedge |
 | Public research mode | Public participation and governed reporting possibilities | Several incompatible methods and trust models | Medium | Method evidence, no buyer/product outcome |
 | One broad platform/two modes | Reuses concepts and brand | Context collapse, misunderstood reuse, scope before evidence | Low | Shared vocabulary only |
@@ -175,10 +177,14 @@ the cycle without this engagement transcript or unnecessary personal data.
 1. Discover the buyer/problem before committing to this boundary.
 2. Specify the synthetic journey and non-graph comparator.
 3. Test scarcity, action and one explicit context independently.
-4. Run a manual paid cycle before any product implementation.
-5. Record mechanism, trust and terminal-state results.
-6. Only after repeat paid value choose standalone versus Sneat Work boundary and
-   consider promoting requirements to owning Features.
+4. Run a manual paid cycle before any product implementation and label it
+   facilitated-service evidence.
+5. Require at least two second paid cycles without founder facilitation before
+   claiming product willingness to pay.
+6. Record mechanism, paired-actor trust, terminal-state and delivery-cost
+   results.
+7. Only after repeat product evidence compare standalone versus Sneat Work with
+   identical cycles and consider promoting requirements to owning Features.
 
 ## Verifies
 
@@ -205,7 +211,12 @@ the cycle without this engagement transcript or unnecessary personal data.
   outcome with lower switching cost.
 - The standalone IssueNumber.one brand may produce clearer discovery than a
   capability inside Sneat Work; no entry-path evidence resolves this.
-- Independent Devil's Advocate review is pending.
+- A decision-owner-only concept test cannot validate contributor trust. The
+  revised experiment uses paired contributor/owner roles and zero unsafe
+  identity guesses as a gate.
+- The independent [Devil's Advocate review](devils-advocate-review.md) retains
+  its full dissent. Managing Partner dispositions are recorded in
+  [recommendation resolution](../decisions/recommendation-resolution.md).
 
 ## Experiments
 
@@ -219,6 +230,6 @@ No product build is an experiment at this stage.
 The product priority is to prove or reject the end-to-end action journey and its
 mechanisms before specifying a platform, public mode, graph asset or benchmark.
 
-After the paid-cycle evidence, the sponsor decides among: stop; retain a
-standalone scarce-priority tool; adopt a Sneat Work capability; or reopen a
-different mode from the strategic-options set.
+After the paid/repeat evidence, the sponsor decides among: stop; retain a
+facilitated service; test a standalone scarce-priority tool against a Sneat Work
+capability; or reopen a different mode from the strategic-options set.

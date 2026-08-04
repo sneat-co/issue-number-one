@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Strategic Options Synthesis"
 artifact: research
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner acting as Chief Strategy Officer)"
 model: "GPT-5 (Codex)"
@@ -33,17 +33,17 @@ category spend or ecosystem reuse as validated demand?
 ## Concise Answer
 
 No option has enough evidence for an unconditional commitment. The strongest
-**provisional learning direction** is a narrow internal priority-to-action
-capability for bounded cross-functional teams, distributed through Sneat Work
-and tested against the current standalone scarce-priority concept and no-build
-status quo.
+**provisional learning question** is whether a narrow internal priority-to-
+action job exists for bounded cross-functional teams. Current evidence does not
+order a facilitator-led service, a standalone scarce-priority tool or a Sneat
+Work capability within that question; no-build remains the decision control.
 
-This direction ranks first because it can preserve IssueNumber.one's scarce
-issue/vote differentiation, produce value within one team and one decision
-cycle without a public network or benchmark cohort, connect a signal to an
-accountable action, and use only bounded explicit work context. It deliberately
-does not claim employee listening, organisational health, public opinion,
-benchmarking, a graph moat or a two-sided network effect.
+This question ranks first on **reversibility, cold-start and trust burden**, not
+on demonstrated demand. It can test IssueNumber.one's scarce issue/vote idea,
+an accountable action loop and bounded explicit work context independently,
+without a public network or benchmark cohort. It deliberately does not claim
+employee listening, organisational health, public opinion, benchmarking, a
+graph moat or a two-sided network effect.
 
 The direction remains low-confidence. No target buyer has confirmed the job,
 no team has repeated the cycle, no action outcome or payment has been observed,
@@ -222,7 +222,7 @@ They do not estimate market size or financial return.
 |---|---|---|---|---|---|---|---|---|
 | O0 research only | Unknown | None without authorised research | Higher | Higher | None | Neutral | None | Highest |
 | O1 standalone scarce priority | Unknown | Mixed | Higher if no sensitive claims | Higher | Unknown; mechanic only | Lower/mixed | Lower | High |
-| O2 Sneat Work priority-to-action | Unknown | **Relatively strongest hypothesis** | Mixed/higher with bounded explicit context | Higher | Unknown but falsifiable | **Relatively strongest hypothesis** | Lower | High if manual first |
+| O2 Sneat Work priority-to-action | Unknown | Mixed; same job as service/O1 until tested | Mixed/higher with bounded explicit context | Higher | Unknown; integration/context lift unevidenced | Higher internal fit, buyer value unknown | Lower | High if manual first |
 | O3 employee intelligence | Adjacent spend only | Mixed | Lower/high burden | Medium | Lower against suites | Mixed | Adjacent only | Medium/low |
 | O4 public participation/research | Distinct governed buyers exist | Mixed | Lower/high method burden | Medium/low | Unknown | Lower/mixed | Adjacent only | Medium |
 | O5 benchmark network | Adjacent feature spend only | Unknown | Lower/high method and disclosure burden | Lowest | Unknown | Mixed | None for this offer | Medium/low |
@@ -231,39 +231,49 @@ They do not estimate market size or financial return.
 
 ## Resolution
 
-O2 is the strongest provisional direction, but O0 is the correct control and O1
-is the necessary product-boundary comparator.
+The **boundary-neutral priority-to-action job** is the strongest provisional
+learning direction, but O0 is the decision control. O1, O2 and a facilitator-
+led service are observationally equivalent on current evidence; no product or
+Sneat Work boundary is selected.
 
 The deciding logic is:
 
-1. O2 can create a terminal other-actor outcome—an accountable response—rather
-   than stopping at collection or ranking.
+1. The candidate job can create a terminal other-actor outcome—an accountable
+   response—rather than stopping at collection or ranking.
 2. It can start inside one bounded decision cycle, avoiding O4/O5/O6 cold-start
    and method claims.
-3. It preserves the scarce-priority hypothesis from O1 while testing whether
-   Sneat Work context improves setup, routing or follow-through.
+3. It can test scarcity, accountable action and explicit context separately
+   before deciding whether a service, standalone tool or Sneat Work capability
+   carries the value.
 4. It can keep relationship context explicit and purpose-bound, avoiding O3's
    broad monitoring/health interpretation and H6's rejected universal reuse.
 5. It is reversible if tested manually before any platform, brand, architecture
    or cross-product data commitment.
 
-This is not evidence that O2 will win. It is evidence that O2 offers the
-highest decision yield per unit of trust, cold-start and implementation risk.
+This is not evidence that the internal job, O1 or O2 will win. It is a risk-and-
+learning ordering only; O3 and O4 remain untested on relative demand.
 
 ## Sequence and Decision Gates
 
-1. **Evidence inventory gate:** Accept privacy-preserving existing evidence if
-   the sponsor supplies it. Otherwise preserve “traction unknown.”
+1. **Evidence inventory gate:** Before participant contact, accept privacy-
+   preserving existing evidence or record the sponsor's explicit decline/
+   unavailability. Otherwise preserve “traction unknown.”
 2. **Problem/buyer gate:** A recent recurring priority-to-action decision, named
    buyer, current alternative and consequence must recur across target accounts.
-   If not, stop O2 and revisit O0/O1 or another job.
-3. **Mechanism gate:** Scarce prioritisation plus visible action must outperform
-   an explicit non-graph/manual baseline on decision/action without trust harm.
-4. **Payment/repeat gate:** At least one real budget owner must fund the bounded
-   outcome and state a repeat/renewal condition; participation alone fails.
-5. **Boundary gate:** Only after outcome and repeat evidence should a sponsor
-   choose standalone versus Sneat Work capability, public-mode sequencing,
-   benchmark or relationship-graph promotion.
+   If not, stop the candidate job and park it for 90 days unless materially new
+   evidence arrives.
+3. **Mechanism gate:** Scarcity and visible action must be separated before one
+   explicit-context variant is compared with the winning non-relationship
+   baseline.
+4. **Service/payment gate:** Paid facilitated delivery establishes only a
+   service hypothesis. Product willingness requires at least two independently
+   paid repeat cycles completed without founder facilitation at full marginal
+   delivery/support cost.
+5. **Boundary gate:** Before O2 outranks O1/service, at least two paid repeated
+   cycles must show a necessary explicit Sneat Work relationship improving the
+   buyer-valued outcome over manual/standalone context.
+6. **Expansion gate:** Public, employee-intelligence and benchmark options remain
+   not tested on demand; success here cannot reject or reopen them automatically.
 
 ## Risks and Dissent
 

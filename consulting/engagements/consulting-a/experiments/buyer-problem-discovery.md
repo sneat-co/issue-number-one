@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Buyer and Problem Discovery Experiment"
 artifact: experiment
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
@@ -23,9 +23,9 @@ promotion_target: "None — experiment result remains engagement evidence until 
 
 Among leaders accountable for bounded cross-functional product, engineering,
 operations or departmental decisions, a recurring priority-to-action failure
-exists that is more consequential and more safely testable than the proposed
-employee-intelligence or public-research alternatives, with a named economic
-buyer and budget path.
+exists with a named economic buyer and budget path. This contract does not test
+whether that job has stronger demand than employee intelligence or public
+research.
 
 ## Assumptions
 
@@ -35,17 +35,30 @@ buyer and budget path.
   IssueNumber.one concept.
 - The sponsor can authorise lawful, respectful contact and a bounded evidence-
   retention process.
-- Eight primary interviews and four comparator interviews can detect a strong
-  repeated pattern; they cannot estimate population prevalence or market size.
+- Eight primary interviews can detect only a strong repeated pattern; four
+  contextual interviews cannot order segments, estimate prevalence or reject a
+  comparator market.
 
 ## Smallest Possible Implementation
+
+Before any participant contact, the sponsor must supply the approved non-
+identifying current evidence inventory or record explicitly that it is
+unavailable/declined. Any supplied result reopens option ordering and recruitment
+before this protocol proceeds.
 
 Conduct 12 structured, consented interviews:
 
 - 8 product, engineering, operations or departmental leaders who personally
   owned a contested cross-functional decision in the previous 90 days;
-- 2 People/HR leaders as the employee-listening comparator;
-- 2 public/community/research commissioners as the public-mode comparator.
+- 2 People/HR leaders for contextual workflow contrast only;
+- 2 public/community/research commissioners for contextual workflow contrast
+  only.
+
+Before contact, create the complete eligible-account frame available under the
+approved source boundary. Record recruitment source, prior founder/partner
+relationship as `none`, `weak` or `strong`, contact attempts, refusals,
+exclusions and completion. Recruit primary candidates consecutively against the
+eligibility rule rather than selecting for responsiveness.
 
 For each, reconstruct the latest real decision: trigger, contributors, current
 tools, synthesis, disagreement, owner, action, follow-through, consequence,
@@ -75,20 +88,23 @@ but would not identify the actual workflow, buyer, consequence or budget path.
 
 ## Metrics and Guardrails
 
-- **Success:** At least 5 of 8 primary participants independently describe the
+- **Success (exploratory gate):** At least 5 of 8 primary participants independently describe the
   same materially similar priority-to-action failure in a recent real decision,
   say it recurs at least quarterly, name a consequence and current alternative;
   at least 3 name the economic buyer/budget path; and at least 2 accept a
-  concrete paid-concierge proposal step. Comparator interviews do not reveal a
-  clearly stronger, lower-risk initial job that invalidates the ordering.
+  concrete paid-concierge proposal step. At least 2 successful problem cases
+  must come from accounts with no prior founder/partner relationship; otherwise
+  the result is only founder-network feasibility. Contextual interviews cannot
+  support cross-segment ordering.
 - **Failure:** At most 2 of 8 primary participants share a recurring job, no
   participant can name a material action/budget consequence, or current forms,
-  meetings and work trackers are consistently adequate. Also fail the proposed
-  ordering if a comparator job shows materially stronger recurrence, buyer and
-  safe testability.
+  meetings and work trackers are consistently adequate.
 - **Inconclusive:** Three or four primary participants share the job; cases
   split into incompatible workflows; budget owner remains unclear; or access
-  bias means the sample cannot test the candidate segment.
+  bias means the sample cannot test the candidate segment. Because one case
+  changes 4/8 to 5/8, any one-case classification, withdrawal or missing-data
+  change that flips the branch makes the result inconclusive and triggers only
+  the one bounded follow-up.
 - **Guardrails / ethics:** Informed participation and withdrawal; no deceptive
   research; no employee solicitation through managers; no raw personal or
   sensitive issue data in Git; no claims of representativeness; no outreach or
@@ -97,20 +113,22 @@ but would not identify the actual workflow, buyer, consequence or budget path.
 
 ## Expected Learning
 
-The experiment can raise or lower confidence in O2, clarify the initial buyer,
-current alternative, value language and payment path, or reorder O1/O3/O4. It
-does not validate a product, price, market size or channel.
+The experiment can raise or lower confidence in the boundary-neutral job and
+clarify buyer, current alternative, value language and payment path. O3/O4 are
+not tested on relative demand. It does not validate O1/O2, a product, price,
+market size or channel.
 
 ## Precommitted Decisions
 
 - **On success:** Proceed to the synthetic mechanism/trust comparison and offer
   the paid concierge contract to qualifying primary candidates.
-- **On failure:** Stop the O2 priority-to-action direction; retain no-build and
+- **On failure:** Stop the priority-to-action direction; retain no-build and
   reopen the strongest evidenced comparator rather than broadening the platform
   claim.
 - **If inconclusive:** Run no product build. Resolve the specific sample/job/
   buyer ambiguity with at most one narrower follow-up cohort and the same
-  failure rules.
+  failure rules. If that remains inconclusive, park the direction for 90 days
+  unless materially new evidence arrives.
 
 ## Results
 

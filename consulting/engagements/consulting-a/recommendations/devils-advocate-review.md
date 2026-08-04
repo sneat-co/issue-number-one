@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Independent Devil's Advocate Review"
 artifact: assurance-review
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Devil's Advocate"
 model: "gpt-5.6-sol"

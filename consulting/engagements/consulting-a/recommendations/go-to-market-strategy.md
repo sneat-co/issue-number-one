@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Go-to-Market Strategy Recommendation"
 artifact: recommendation
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
@@ -29,14 +29,15 @@ as a measured access/content route rather than the primary platform or assumed
 channel.
 
 No outreach, campaign, paid media, account contact or spend is authorised by
-this Draft recommendation.
+this recommendation.
 
 ## Recommendation
 
 Do not launch broad awareness, paid LinkedIn acquisition, benchmark content or
 a free-product growth loop.
 
-Use a sequenced founder-led motion:
+Use a sequenced founder-led learning motion with an explicit eligible-account
+frame, relationship-strength labels, refusals and exclusions:
 
 1. identify candidate leaders who recently owned a contested cross-functional
    priority decision;
@@ -45,9 +46,10 @@ Use a sequenced founder-led motion:
 3. offer a paid, manually delivered priority-to-action cycle only where the
    repeated job is present;
 4. require an observable decision/action and a repeat condition;
-5. only after one buyer/offer converts, compare direct trusted access with
-   LinkedIn organic/targeted access using the same qualification and economic
-   stages.
+5. require non-warm evidence before generalising beyond founder-network
+   feasibility;
+6. only after one buyer/offer converts, compare matched access routes using one
+   fixed LinkedIn mechanism and the same qualification and economic stages.
 
 Position the outcome in customer language:
 
@@ -84,11 +86,15 @@ being silently treated as the same market.
 - **Candidate value metric:** accountable organisation/team scope or active
   decision cycle—not every contributor seat, vote or graph edge.
 - **Initial proof:** paid concierge engagement, not waitlist selection or verbal
-  willingness.
+  willingness. Funds received and a signed unconditional paid contract with
+  price, scope and start date are the only success states; non-binding budget or
+  procurement intent is separate.
 - **Pricing posture:** discover price through a paid offer tied to consequence
   and delivery cost; do not preserve the current landing tiers as validated.
-- **Renewal posture:** repeat cycle, expanded accountable scope or explicitly
-  stated renewal condition; participation alone is not retention.
+- **Renewal posture:** a second paid scope accepted after the first outcome;
+  participation or stated intent alone is not retention. Facilitated repeat is
+  service evidence until two buyers complete second cycles without founder
+  facilitation at full marginal delivery/support cost.
 
 No price point is recommended because adjacent list prices demonstrate category
 packaging rather than willingness to pay for this outcome.
@@ -139,7 +145,8 @@ Use one funnel across every motion:
    alternative are evidenced;
 3. **economic buyer/buying group** — owner, budget path and approval actors are
    named;
-4. **paid cycle** — money or contracted commitment, not plan selection;
+4. **paid cycle** — funds received or signed unconditional contract with price,
+   scope and start date, not plan selection or procurement intent;
 5. **activation to outcome** — decision occurs and the other actor sees the
    response/terminal state;
 6. **repeat/retention** — another cycle, expanded scope or explicit renewal;
@@ -151,7 +158,8 @@ invitations and issue counts are diagnostic only.
 
 ## LinkedIn Role
 
-LinkedIn should be treated as three separable hypotheses:
+LinkedIn should be treated as three separable hypotheses and tested one at a
+time:
 
 - **research access:** identify and, if authorised, contact candidate decision
   owners;
@@ -166,20 +174,24 @@ stage date, source, cost and retained outcome; attribution is not incrementality
 
 ## Dependencies and Sequence
 
-1. Sponsor supplies/declines non-identifying current demand evidence.
+1. Sponsor supplies the approved non-identifying inventory or explicitly records
+   that it is unavailable/declined.
 2. Sponsor approves participant, outreach, retention and evidence boundaries for
    discovery.
-3. Complete buyer/problem discovery and stop if thresholds fail.
+3. Complete buyer/problem discovery with the full eligible frame, relationship
+   strength, refusals and exclusions; stop if thresholds fail.
 4. Complete mechanism/trust test before implying product capability.
-5. Offer paid concierge cycles; record decision outcome and repeat condition.
-6. If an offer converts, run the controlled channel comparison.
+5. Offer paid concierge cycles; separate facilitated-service from product
+   evidence and apply the exact payment states.
+6. If an offer converts, run the matched controlled channel comparison.
 7. Only then decide positioning, price metric, LinkedIn investment, partner
    motion or product-led loop.
 
 ## Dissent and Unresolved Challenges
 
 - Founder-led discovery may overfit warm relationships and founder persuasion;
-  the experiment includes comparable qualification and explicit failure states.
+  the revised experiment preserves the full frame and requires non-warm cases
+  before generalising beyond founder-network feasibility.
 - Requiring early payment may reject a valuable job whose procurement cycle is
   longer than the experiment. Contracted budget-owner commitment can be
   recorded separately from compliments or waitlist intent.
@@ -190,7 +202,11 @@ stage date, source, cost and retained outcome; attribution is not incrementality
   specific. The channel experiment must allow LinkedIn to lose.
 - The existing landing may confuse results because it tests older positioning;
   do not interpret its aggregate as demand for the recommended promise.
-- Independent Devil's Advocate review is pending.
+- The LinkedIn comparison can test only one fixed organic direct-contact
+  mechanism; paid LinkedIn and content distribution remain unknown.
+- The independent [Devil's Advocate review](devils-advocate-review.md) retains
+  its full dissent. Managing Partner dispositions are recorded in
+  [recommendation resolution](../decisions/recommendation-resolution.md).
 
 ## Experiments
 
