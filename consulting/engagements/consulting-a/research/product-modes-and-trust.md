@@ -11,17 +11,17 @@ confidence: "Medium-low — strong standards and product-practice evidence defin
 dependencies:
   - "../README.md"
   - "../checkpoints/iteration-001-bootstrap.md"
-  - "../../../spec/features/README.md"
+  - "../../../../spec/features/README.md"
   - "sneat-co/backstage@5f29c3424de8ffda0dfe7f7ac09c510741043381"
 related_specs:
-  - "spec/features/issue/README.md"
-  - "spec/features/issue/anonymity/README.md"
-  - "spec/features/issue/visibility/README.md"
-  - "spec/features/organization/README.md"
-  - "spec/features/organization/topic/README.md"
-  - "spec/features/permissions/README.md"
-  - "spec/features/voting/README.md"
-  - "spec/features/ai-integration/README.md"
+  - "../../../../spec/features/issue/README.md"
+  - "../../../../spec/features/issue/anonymity/README.md"
+  - "../../../../spec/features/issue/visibility/README.md"
+  - "../../../../spec/features/organization/README.md"
+  - "../../../../spec/features/organization/topic/README.md"
+  - "../../../../spec/features/permissions/README.md"
+  - "../../../../spec/features/voting/README.md"
+  - "../../../../spec/features/ai-integration/README.md"
 promotion_target: "None while Draft; possible future owners are the relevant IssueNumber.one Features and reviewed Sneat platform relationship-graph decisions"
 ---
 # IssueNumber.one Product Modes, Trust and Relationship-Context Research
