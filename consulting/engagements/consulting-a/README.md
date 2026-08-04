@@ -1,7 +1,7 @@
 ---
 title: "IssuerNumber.One Strategy Engagement Plan"
 artifact: engagement
-status: Draft
+status: Accepted
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
@@ -76,9 +76,9 @@ After the engagement—not during bootstrap—the sponsor should be able to deci
 
 ## Engagement governance
 
-- **Sponsor:** Not supplied by name. The requester is the provisional sponsor
-  contact; accountable decision ownership must be confirmed before a material
-  recommendation is accepted.
+- **Sponsor:** The requester, confirmed by approval as sponsor and decision
+  contact for this public-source research iteration. A personal name is not
+  required unless later governance or promotion needs one.
 - **Managing Partner:** Codex.
 - **Host policy reference:** The runtime and repository policy supplied in the
   session's `AGENTS.md`, plus the authoritative
@@ -122,7 +122,7 @@ and retention are resolved.
 | `ENGAGEMENT_CONFIG` | This `README.md` |
 | `ENGAGEMENT_STATE` | No prior checkpoint; no iteration has completed |
 | `AVAILABLE_TOOLS` | Local repository/Git inspection and public web research; no sensitive-data credential is assumed |
-| `MODEL_MAPPING` | No engagement-specific mapping supplied; the Managing Partner used GPT-5 (Codex), and every later dispatch must record its actual model |
+| `MODEL_MAPPING` | Managing Partner: current GPT-5 Codex session; bounded market/growth research: `gpt-5.6-terra`; product/trust/graph research and later assurance: `gpt-5.6-sol`; every dispatch records model and reasoning level |
 | `BUDGET_ENVELOPE` | No numerical budget supplied |
 | `SPECIALIST_OVERLAYS` | None activated; two possible overlays are identified below but require a bounded question before dispatch |
 
@@ -345,12 +345,13 @@ as validation.
 Only two branches are blocked; safe public and repository research can proceed
 after plan approval.
 
-1. **Sensitive evidence branch:** Who is the named sponsor/decision owner, what
-   confidentiality classification applies, who may participate and how long may
-   raw/derived evidence be retained?
-2. **Private demand evidence/outreach branch:** Will the sponsor provide the
-   aggregate evidence inventory above, and later authorize any private-system
-   access or direct customer/interview outreach separately?
+1. **Sensitive evidence branch:** Public/repository-only classification and
+   Git retention are approved for the current iteration. Any later raw or
+   personal evidence still requires a narrower participant, storage and
+   retention decision.
+2. **Private demand evidence/outreach branch:** No private-system access or
+   outreach is authorized. The sponsor may later provide the aggregate evidence
+   inventory above or authorize either branch separately.
 
 ## Engagement success
 
@@ -410,8 +411,8 @@ reviewer and authority limits.
 
 | Stage | Owner | Observable good result | Artifact | Status |
 |---|---|---|---|---|
-| Understand | Managing Partner | Sponsor can see and approve/correct mandate, scope, authority, evidence baseline and plan | `README.md` | In Review |
-| Research | Customer & Market Research plus bounded specialists | Evidence, provenance, freshness, contradictions, failed searches and limitations are visible | `research/` | Pending approval |
+| Understand | Managing Partner | Sponsor can see and approve/correct mandate, scope, authority, evidence baseline and plan | `README.md` | Completed 2026-08-04 |
+| Research | Customer & Market Research plus bounded specialists | Evidence, provenance, freshness, contradictions, failed searches and limitations are visible | `research/` | In progress |
 | Identify unknowns | Managing Partner | Decision-sensitive gaps are ranked; safe defaults and affected branches are explicit | `README.md` and research reports | Bootstrap complete; iterative |
 | Ask questions | Managing Partner | Only decision-changing asks are sent; safe work continues under defaults | `README.md`, later checkpoints | Two branch-specific asks open |
 | Dispatch specialists | Managing Partner | Each activated role has a contract-complete, model-named brief and separate file | Dispatch recorded in owned artifact | Pending approval |
@@ -543,9 +544,10 @@ finding and a separate review.
 
 ## Current checkpoint
 
-- **Latest checkpoint:** None — no iteration has completed yet.
-- This bootstrap brief remains Draft and in sponsor review; it is not an
-  iteration checkpoint and does not make its assessments canonical.
+- **Latest checkpoint:** [`checkpoints/iteration-001-bootstrap.md`](checkpoints/iteration-001-bootstrap.md).
+- The bootstrap iteration was accepted by the sponsor on 2026-08-04. Its
+  assessments remain provisional engagement context and do not become
+  canonical product truth through approval of the plan.
 - On completion of an iteration, create a new immutable file from
   `checkpoints/_template.md`; never overwrite its predecessor. Update the latest
   checkpoint pointer here to the new path.
@@ -556,11 +558,13 @@ Only engagement-governance questions are recorded here. Product questions
 remain in the strategic-question/unknown registers above and, if promoted,
 must be routed to their owning SpecScore Feature.
 
-1. Is the tested framing approved, including treating all proposed modes,
-   relationship-graph claims, benchmarking and LinkedIn as hypotheses?
-2. Who is the named sponsor and final decision owner?
-3. What confidentiality classification, allowed-participant boundary and
-   retention rule should apply before sensitive evidence is accessed?
-4. Will the sponsor provide the aggregate, non-identifying demand-evidence
-   inventory, and should any later private access or external outreach be
-   authorized separately?
+No question blocks the approved public/repository research iteration.
+
+- **Resolved:** The sponsor approved the tested framing, work plan, parallel
+  specialist use, named model routing and publication to `main` on 2026-08-04.
+- **Resolved for this iteration:** Evidence remains repository-visible or
+  public, participants are the sponsor contact, Managing Partner and approved
+  bounded specialists, and governed artifacts remain in Git.
+- **Open for a later branch:** Supplying aggregate demand evidence, accessing
+  private systems, collecting personal evidence or conducting outreach requires
+  separate sponsor authorization.
