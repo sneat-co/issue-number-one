@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Voting is the mechanism by which eligible members decide which issue is #1 at each scope. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time.
+Voting is the positive-support mechanism by which eligible members decide which issue is #1 at each scope. The MVP has no downvotes or opposing votes. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time.
 
 ## Contents
 
@@ -78,6 +78,14 @@ A voter MUST be allowed to allocate available budgeted vote units to their own n
 
 The automatic creator star on a personal #1 MUST NOT reduce the creator's available support-vote budget.
 
+### Positive support only
+
+The MVP lets members express support by assigning positive votes. It does not let a voter oppose an issue or reduce its score with a negative vote.
+
+#### REQ: mvp-voting-is-positive-only
+
+The MVP MUST NOT provide downvotes, negative votes, opposition votes, or any other vote that subtracts from an issue's support score.
+
 ### Vote refunds on closure
 
 When an issue exits the `raised` state, every supporter gets all units allocated to it back.
@@ -139,5 +147,4 @@ Not defined yet.
 ## Open Questions
 
 - May an organization configure different budget sizes by membership type, or must every eligible voter receive the same number?
-- Are negative/downvotes part of the MVP, or is voting support-only?
 - Acceptance criteria not yet defined for this feature.

@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Rating covers the visible output of voting: the free creator star on a personal #1, budgeted support assigned directly to issues, vote attribution, ranking, and issue-list sort orders. Each issue has one support score wherever it appears in the hierarchy. The founder-defined MVP uses positive support; whether negative votes exist later remains open.
+Rating covers the visible output of voting: the free creator star on a personal #1, positive budgeted support assigned directly to issues, vote attribution, ranking, and issue-list sort orders. Each issue has one non-negative support score wherever it appears in the hierarchy. The founder-defined MVP has no downvotes; whether negative votes exist later remains open.
 
 ## Problem
 
@@ -49,7 +49,11 @@ A voter's multiple budgeted units on one issue MUST all count toward that issue'
 
 ### Support-only ranking
 
-The current ranking mechanism counts positive support units. Negative voting is not required by the founder-defined MVP.
+The MVP ranking mechanism counts positive support units only. It has no negative, downvote, or opposition action.
+
+#### REQ: mvp-has-no-negative-votes
+
+The MVP MUST NOT allow any voter action to subtract support units from an issue's score.
 
 #### REQ: support-score-nonnegative
 

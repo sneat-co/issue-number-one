@@ -61,6 +61,7 @@ have changed the described outcome.
 | E7 | Founder requirement | Issues may be authored or anonymous. Management activity does not close an issue; it stays open with a visible age, can lose rank without closing, is normally closed by its creator, and may be closed by peer vote when the creator is unavailable. | Sponsor interview, 2026-08-04 | Unavailable-author proof and peer threshold remain unresolved |
 | E8 | Observed specification conflict | The prior Specs capped active issues, prohibited self-voting, limited one vote per issue, inconsistently described top-N versus #1 bubble-up, and let ordinary members archive active issues. | IssueNumber.one Feature tree inspected 2026-08-04 before correction | Shows source-of-truth drift, not market evidence |
 | E9 | Founder requirement | Votes are assigned to issues, not hierarchy levels. When an issue becomes visible or ineligible at another level, its votes do not travel, split, reset, or receive a separate scope score. | Sponsor interview, 2026-08-04 | Product intent, not validation |
+| E10 | Founder requirement | MVP voting is positive support only, with no downvotes or opposing votes. | Sponsor interview, 2026-08-04 | Product intent, not validation; whether negative voting is permanently excluded remains open in the Rating Feature |
 
 ## Findings
 
@@ -75,6 +76,8 @@ have changed the described outcome.
   top N is a scope view, not the number of issues promoted (E5–E6).
 - Votes remain attached to an issue. Hierarchy levels change candidate
   eligibility and visibility, while the issue retains one support score (E9).
+- MVP votes express positive support only; a voter cannot subtract support from
+  an issue (E10).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -106,8 +109,8 @@ The remaining product decisions are recorded only in the relevant Feature
 plus a separate support budget that defaults to one, is configurable from one
 to seven, and is shared across all levels within an organization. Votes are
 assigned directly to issues, so there is no separate lower-level or parent-level
-vote total. The next central rating unknown is whether the product is
-support-only or will include negative votes.
+vote total. Negative votes are excluded from the MVP. The next central ranking
+unknown is how equal support scores determine a single #1.
 
 ## Confidence
 
