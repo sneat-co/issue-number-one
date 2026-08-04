@@ -1,7 +1,7 @@
 ---
 title: "IssuerNumber.One Customer and Market Evidence"
 artifact: research
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Customer & Market Research specialist"
 model: "gpt-5.6-terra"

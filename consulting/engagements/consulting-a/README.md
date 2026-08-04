@@ -7,19 +7,19 @@ author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
 created: "2026-08-04"
 updated: "2026-08-04"
-confidence: "Medium — grounded in current repository sources; customer, market, usage and sponsor-governance evidence remain uncollected"
+confidence: "Low-medium — public and repository research is complete, while customer, usage, repeat-behaviour and willingness-to-pay evidence remain unavailable"
 dependencies:
   - "sneat-co/issue-number-one@570ef67fd1a84274de6f7b35f68ef9a8e2b26793"
   - "sneat-co/backstage@5f29c3424de8ffda0dfe7f7ac09c510741043381"
 related_specs:
   - "https://github.com/sneat-co/backstage/blob/5f29c3424de8ffda0dfe7f7ac09c510741043381/spec/features/ai-consulting-framework/README.md"
-  - "spec/features/README.md"
+  - "../../../spec/features/README.md"
 promotion_target: "None until reviewed; candidate owners are the IssueNumber.one SpecScore Features and the relevant Backstage ecosystem sources"
 framework_version: "sneat-co/backstage@5f29c3424de8ffda0dfe7f7ac09c510741043381"
 confidentiality: "Repository-visible evidence only until the sponsor approves a classification and participant boundary"
 retention: "Git-retained engagement artifacts; no sensitive or personal evidence may be collected until a sponsor-approved retention rule exists"
 participants:
-  - "Requester acting as provisional sponsor contact"
+  - "Requester acting as sponsor and decision contact"
   - "Codex acting as Managing Partner"
 ---
 # IssuerNumber.One Strategy Engagement Plan
@@ -382,15 +382,18 @@ disappears.
 
 ## Organization
 
-No specialist has been dispatched in this bootstrap iteration.
+The research iteration used three model-named specialists in isolated
+worktrees. The Managing Partner reviewed and integrated each report and
+completed the graph-defensibility artifact after terminating an over-broad
+follow-up that had produced an evidence audit but no file.
 
 | Role | Owned question | Artifact | Capability band / actual model | Reviewer |
 |---|---|---|---|---|
-| Managing Partner | What framing, evidence and choices will produce a defensible consulting position? | `README.md`, later `executive-summary.md` | Frontier reasoning / GPT-5 (Codex) for bootstrap | Sponsor; Executive Editor for terminal package |
-| Customer & Market Research | What customer, buyer, problem, alternatives, demand and market evidence exist? | `research/customer-market-evidence.md` | Balanced analysis / not dispatched; actual model required in brief | Managing Partner |
+| Managing Partner | What framing, evidence and choices will produce a defensible consulting position? | `README.md`, `research/graph-value-and-defensibility.md`, later `executive-summary.md` | Frontier reasoning / GPT-5 (Codex) | Sponsor; Executive Editor for terminal package |
+| Customer & Market Research | What customer, buyer, problem, alternatives, demand and market evidence exist? | `research/customer-market-evidence.md` | Balanced analysis / `gpt-5.6-terra`, high reasoning | Managing Partner; completed 2026-08-04 |
 | Chief Strategy Officer | Which strategic options, business models and defensibility mechanisms survive evidence? | `research/strategic-options.md` | Frontier for consequential synthesis / not dispatched | Managing Partner; Devil's Advocate |
-| Chief Product Officer | Which users, jobs, modes, trust requirements and product boundaries are coherent? | `research/product-modes-and-trust.md` | Balanced, escalate on conflicting trust evidence / not dispatched | Managing Partner; Devil's Advocate |
-| Chief Growth Officer | Which buyer journey, channel, pricing and growth loops are credible, including LinkedIn? | `research/growth-and-commercial-evidence.md` | Balanced analysis / not dispatched | Managing Partner |
+| Chief Product Officer | Which users, jobs, modes, trust requirements and product boundaries are coherent? | `research/product-modes-and-trust.md` | Frontier analysis / `gpt-5.6-sol`, high reasoning | Managing Partner; completed 2026-08-04 |
+| Chief Growth Officer | Which buyer journey, channel, pricing and growth loops are credible, including LinkedIn? | `research/growth-and-commercial-evidence.md` | Balanced analysis / `gpt-5.6-terra`, high reasoning | Managing Partner; completed 2026-08-04 |
 | Chief of Experiments | Which smallest tests can change confidence in later material recommendations? | `experiments/` | Balanced analysis / not dispatched until hypotheses are precise | Managing Partner |
 | Devil's Advocate | What evidence, alternatives, risks or biases falsify the draft consulting position? | Review section in each material recommendation | Capability selected at review / independent, not dispatched | Managing Partner resolves; cannot author recommendation |
 | Executive Editor | Is the terminal package coherent, traceable and complete without hiding uncertainty? | `executive-summary.md` | Frontier reasoning / independent, not dispatched | Sponsor |
@@ -412,11 +415,11 @@ reviewer and authority limits.
 | Stage | Owner | Observable good result | Artifact | Status |
 |---|---|---|---|---|
 | Understand | Managing Partner | Sponsor can see and approve/correct mandate, scope, authority, evidence baseline and plan | `README.md` | Completed 2026-08-04 |
-| Research | Customer & Market Research plus bounded specialists | Evidence, provenance, freshness, contradictions, failed searches and limitations are visible | `research/` | In progress |
-| Identify unknowns | Managing Partner | Decision-sensitive gaps are ranked; safe defaults and affected branches are explicit | `README.md` and research reports | Bootstrap complete; iterative |
-| Ask questions | Managing Partner | Only decision-changing asks are sent; safe work continues under defaults | `README.md`, later checkpoints | Two branch-specific asks open |
-| Dispatch specialists | Managing Partner | Each activated role has a contract-complete, model-named brief and separate file | Dispatch recorded in owned artifact | Pending approval |
-| Collect findings | Managing Partner | Reports satisfy the specialist contract and another role can trace their evidence | `research/` | Pending |
+| Research | Customer & Market Research plus bounded specialists | Evidence, provenance, freshness, contradictions, failed searches and limitations are visible | `research/` | Completed 2026-08-04 under public/repository boundary |
+| Identify unknowns | Managing Partner | Decision-sensitive gaps are ranked; safe defaults and affected branches are explicit | `README.md` and research reports | Completed for research iteration; repeats after new evidence |
+| Ask questions | Managing Partner | Only decision-changing asks are sent; safe work continues under defaults | `README.md`, later checkpoints | One non-blocking sponsor evidence ask open |
+| Dispatch specialists | Managing Partner | Each activated role has a contract-complete, model-named brief and separate file | Dispatch recorded in owned artifact | Completed 2026-08-04 |
+| Collect findings | Managing Partner | Reports satisfy the specialist contract and another role can trace their evidence | `research/` | Completed 2026-08-04; artifacts In Review |
 | Challenge findings | Devil's Advocate | Strongest conclusions, assumptions, alternatives and simpler explanations are tested | Recommendation review sections | Pending |
 | Resolve disagreements | Managing Partner | Evidence and decision criteria resolve conflicts or preserve material dissent | `decisions/` | Pending |
 | Design experiments | Chief of Experiments | Only later material recommendations receive smallest safe decision-changing tests | `experiments/` | Pending; no experiment proposed in bootstrap |
@@ -517,7 +520,7 @@ architecture task begins before its evidence dependency is met.
 | Sponsor ask / promised deliverable | Evidence or artifact | State | Deferral owner/reason |
 |---|---|---|---|
 | First engagement output: grounded engagement plan | `README.md` | Delivered for sponsor review | — |
-| Evidence base and research limitations | `research/` | Planned after approval | — |
+| Evidence base and research limitations | `research/` | Delivered; In Review | Sponsor may supply non-identifying demand evidence |
 | Validation or rejection of the supplied strategic hypotheses | Hypothesis assessment across research, decisions and recommendations | Planned after approval | — |
 | Strongest business strategy, including status quo and pivots | `recommendations/business-strategy.md` | Planned after evidence | — |
 | Strongest product strategy, including public/internal mode choice | `recommendations/product-strategy.md` | Planned after evidence | — |
@@ -544,10 +547,10 @@ finding and a separate review.
 
 ## Current checkpoint
 
-- **Latest checkpoint:** [`checkpoints/iteration-001-bootstrap.md`](checkpoints/iteration-001-bootstrap.md).
-- The bootstrap iteration was accepted by the sponsor on 2026-08-04. Its
-  assessments remain provisional engagement context and do not become
-  canonical product truth through approval of the plan.
+- **Latest checkpoint:** [`checkpoints/iteration-002-research.md`](checkpoints/iteration-002-research.md).
+- The public/repository research iteration completed on 2026-08-04. Its
+  findings are In Review and remain provisional engagement evidence rather than
+  canonical product truth.
 - On completion of an iteration, create a new immutable file from
   `checkpoints/_template.md`; never overwrite its predecessor. Update the latest
   checkpoint pointer here to the new path.
@@ -558,13 +561,18 @@ Only engagement-governance questions are recorded here. Product questions
 remain in the strategic-question/unknown registers above and, if promoted,
 must be routed to their owning SpecScore Feature.
 
-No question blocks the approved public/repository research iteration.
+No question blocked the completed public/repository research iteration.
 
 - **Resolved:** The sponsor approved the tested framing, work plan, parallel
   specialist use, named model routing and publication to `main` on 2026-08-04.
 - **Resolved for this iteration:** Evidence remains repository-visible or
   public, participants are the sponsor contact, Managing Partner and approved
   bounded specialists, and governed artifacts remain in Git.
-- **Open for a later branch:** Supplying aggregate demand evidence, accessing
-  private systems, collecting personal evidence or conducting outreach requires
-  separate sponsor authorization.
+- **Open and decision-changing, but not blocking safe synthesis:** Will the
+  sponsor provide non-identifying monthly waitlist totals, aggregate
+  source/plan counts, traffic/conversion if available, de-identified prior
+  problem-conversation summaries and any aggregate repeat-use, purchase-intent
+  or budget-owner evidence? Without it, traction remains unknown and later
+  recommendations must carry lower confidence.
+- **Not authorised:** Accessing raw/private systems, personal evidence or
+  conducting outreach still requires separate sponsor authorization.

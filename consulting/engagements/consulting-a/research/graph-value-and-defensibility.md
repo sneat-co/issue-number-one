@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Graph Value and Defensibility Research"
 artifact: research
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"

@@ -1,7 +1,7 @@
 ---
 title: "IssuerNumber.One Growth and Commercial Evidence"
 artifact: research
-status: Draft
+status: In Review
 engagement: consulting-a
 author: "Chief Growth Officer"
 model: "gpt-5.6-terra"

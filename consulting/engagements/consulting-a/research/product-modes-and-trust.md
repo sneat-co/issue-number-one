@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Product Modes, Trust and Relationship-Context Research"
 artifact: research
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Chief Product Officer specialist"
 model: "gpt-5.6-sol"

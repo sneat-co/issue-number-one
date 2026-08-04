@@ -1,7 +1,7 @@
 ---
 title: "IssueNumber.one Current-State and Demand-Evidence Baseline"
 artifact: research
-status: Draft
+status: In Review
 engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
