@@ -1,6 +1,13 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Topic
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/organization/topic?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/organization/topic?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/organization/topic?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/organization/topic?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -70,7 +77,7 @@ Public topics MUST be stored in a public GitHub repository via the git-storage b
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - Who moderates spam or abuse in public topics — platform-level moderators, or delegated?
 - Can a topic be "claimed" by an org and transitioned into org-owned storage?

@@ -202,10 +202,17 @@ market size or channel.
 - Sponsor authorisation: Accepted 2026-08-04 with development/product-manager
   amendment, 20–25-hour ceiling, no incentives, private raw notes and 30-day
   raw-note deletion.
-- Actual execution: Authorised; eligible-participant frame and recruitment have
-  not started.
+- Founder MVP definition: The sponsor requested a founder interview in place of
+  beginning external interviews. Confirmed intent and the retrospective founder
+  case are recorded in
+  [Founder MVP Definition](../research/founder-mvp-definition.md). This evidence
+  is excluded from all experiment metrics and does not validate demand.
+- Actual execution: Authorised but not started. No eligible-participant frame,
+  recruitment, or independent interview has been completed.
 - Deviations: Primary cohort narrowed from the In Review contract to 4
-  development managers and 4 product managers at sponsor direction.
+  development managers and 4 product managers at sponsor direction. External
+  execution is currently unstarted while the founder definition is clarified;
+  it has not been reported as failed or replaced.
 - Measurements: Pending.
 - Confidence after: Pending.
 - Decision taken: Pending.

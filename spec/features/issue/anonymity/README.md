@@ -1,10 +1,17 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Issue Anonymity
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/anonymity?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/anonymity?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/anonymity?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/anonymity?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
-Teams and orgs can configure whether issues may be raised anonymously, how many anonymous issues each member may have, and whether anonymous issues require a small fee to deter artificial boosting. Anonymous issues must still be updatable and withdrawable by their original author — without revealing who that is.
+Teams and orgs can configure whether issues may be raised anonymously and whether anonymous issues require a small fee to deter artificial boosting. Anonymous issues must still be controllable by their original author — without revealing who that is — and participate in the same personal-#1 nomination and vote-budget rules as authored issues.
 
 ## Problem
 
@@ -20,13 +27,13 @@ Anonymity is off by default. A team or org MUST explicitly enable anonymous issu
 
 A newly-created team or org MUST NOT allow anonymous issues until explicitly enabled.
 
-### Separate caps for personal and anonymous
+### Authored and anonymous issues share one nomination
 
-A team may allow a mix of personal and anonymous issues per member — for example, 1 personal + 1 anonymous. The per-person active-issue cap from [issue](../README.md) applies to the combined total.
+A person may keep multiple authored or anonymous issues, but may nominate at most one personal #1 across both types in the same scope.
 
-#### REQ: separate-anonymous-cap
+#### REQ: anonymity-shares-personal-top-nomination
 
-Teams MAY configure independent caps for personal (`X`) and anonymous (`Y`) issues per member, subject to the overall cap of three.
+Authored and anonymous issues MUST share the same one-personal-#1 nomination limit for their creator in a scope.
 
 ### Optional fee for anonymous issues
 
@@ -49,22 +56,22 @@ The author of an anonymous issue MUST NOT be visible to any other user, includin
 
 #### REQ: anon-author-can-modify
 
-The system MUST allow the original anonymous author to update or withdraw their issue without revealing their identity.
+The system MUST allow the original anonymous author to update, nominate, withdraw, or resolve their issue without revealing their identity.
 
-### Self-voting still prohibited
+### Anonymous self-support
 
-Even though the author is hidden, anonymous issues MUST enforce the global no-self-vote rule from [voting](../../voting/README.md).
+The original author may allocate support votes to their own anonymous nominated issue under the same budget as any other voter. The system enforces the budget and nomination rule without exposing the author relationship.
 
-#### REQ: anon-no-self-voting
+#### REQ: anonymous-author-may-self-support
 
-An anonymous author MUST NOT be able to vote on their own anonymous issue.
+An anonymous author MUST be able to allocate available support votes to their own nominated issue without revealing their identity to other users.
 
 ## Interaction with Other Features
 
 | Feature | Interaction |
 |---------|-------------|
-| [issue](../README.md) | Anonymity is a property of an issue; active caps still apply |
-| [voting](../../voting/README.md) | Self-vote prevention must still work despite hidden author |
+| [issue](../README.md) | Anonymity is a property of an issue; the personal-#1 nomination rule still applies |
+| [voting](../../voting/README.md) | Vote-budget enforcement must work without exposing an anonymous author |
 | [permissions](../../permissions/README.md) | Enabling anonymity is an org/team admin action |
 
 ## Dependencies
@@ -77,9 +84,9 @@ An anonymous author MUST NOT be able to vote on their own anonymous issue.
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
-- How is author identity stored such that the system can enforce author-only update/withdraw and no-self-voting while being unable to reveal identity to anyone (including admins or AI analysis)?
+- How is author control represented so the system can enforce author-only update/withdraw/resolve and budget rules while being unable to reveal identity to admins or AI analysis?
 - Should anonymous-issue fees be refundable when the issue is withdrawn or resolved?
 - For the `per-vote` fee mode, when is the fee charged — per vote received, or capped at a maximum?
 - Does AI analysis of issues need special handling for anonymous authors to avoid re-identification through writing style?

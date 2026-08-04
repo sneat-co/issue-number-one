@@ -1,10 +1,17 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Issue
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
-An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, org, or public topic must identify and address. Unlike a traditional issue tracker, IssueNumber.one caps how many issues any one person can have active, forcing surfaced priorities to reflect what actually matters today.
+An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue in a scope at a time. Only that nominated issue enters collective voting, so scarcity applies to attention rather than to recording problems.
 
 ## Contents
 
@@ -17,37 +24,45 @@ An issue is the atomic unit of IssueNumber.one — a raised priority item that a
 
 ### lifecycle
 
-Defines the statuses an issue can be in (`raised`, `withdrawn`, `resolved`, `banned/moderated`, `archived`) and who can transition an issue between them. Only the creator can withdraw their own issue; team members can archive team issues; public topic issues cannot be archived.
+Defines the statuses an issue can be in (`raised`, `withdrawn`, `resolved`, `banned/moderated`, `archived`) and who can transition an issue between them. An issue stays open and visibly ageing when it loses votes or rank. Only the creator normally withdraws or resolves it; eligible peers may close it by vote only when the creator is unavailable.
 
 ### anonymity
 
-Teams may allow anonymous issues (and configure a small fee to prevent artificial boosting) while still letting the originator update or withdraw their anonymous issue. Some teams allow a mix of personal and anonymous issues per member.
+Teams may allow authored and anonymous issues while still letting the originator control an anonymous issue. Authored and anonymous issues share the same one-personal-#1 nomination rule.
 
 ### visibility
 
-Every issue has a visibility level: `team/space`, `org`, or `public`. Top-ranked team issues bubble up to the org level when sufficiently upvoted, and only the team's current #1 issue is visible externally to other teams.
+Every issue has a visibility level: `team/space`, `org`, or `public`. Each scope shows its top N issues to eligible members, while only its current #1 issue automatically becomes a candidate in the parent scope. No manager approval is required.
 
 ### moderation
 
-Any team member can archive any team issue. Any org member can archive any team. Public topic issues cannot be archived — only withdrawn by their creator. Supporters and creators are notified when an issue is archived.
+Moderation handles abusive or policy-violating content without providing a way to suppress an inconvenient issue. A manager or ordinary member cannot archive an active issue merely to close it. A ban requires an authorized moderator, a visible reason, and notifications to the creator and supporters.
 
 ## Problem
 
-Traditional issue trackers encourage backlog growth: everything accumulates and nothing is truly prioritized. Teams end up with hundreds of issues that are all nominally important, managers can't reliably answer "what is the one thing we should do next?", and critical work disappears under daily tasks. IssueNumber.one treats an issue as a scarce resource — by limiting how many each person can have active at once, the list that surfaces is the list that matters.
+Traditional issue trackers encourage backlog growth: everything accumulates and nothing is truly prioritized. Teams end up with hundreds of issues that are all nominally important, managers cannot reliably answer "what is the one thing we should do next?", and critical work disappears under daily tasks. IssueNumber.one lets people record the issues they know about while forcing each person to identify only one current #1 for collective prioritization.
 
 ## Behavior
 
-### Per-person issue budget
+### Personal issue list and #1 nomination
 
-By default each team member has exactly one active issue per team. A team may relax this cap, but never above three. This is not an issue tracker.
+A person may keep multiple open issues in a scope. They choose at most one as their personal #1. Only that nominated issue is eligible for collective voting in the immediate team or scope.
 
-#### REQ: one-active-issue-default
+#### REQ: multiple-open-issues-per-person
 
-By default, every team member MUST be limited to exactly one active issue per team.
+A member MUST be able to keep multiple `raised` issues in the same scope.
 
-#### REQ: max-three-per-person-cap
+#### REQ: one-personal-top-nomination
 
-A team MAY allow its members to raise more than one active issue, but MUST NOT allow more than three active issues per member per team.
+A member MUST have at most one nominated personal #1 issue per scope at a time.
+
+#### REQ: only-personal-top-enters-voting
+
+Only a member's nominated personal #1 issue MUST be eligible for collective voting in that member's immediate scope.
+
+#### REQ: changing-nomination-does-not-close
+
+When a member changes their personal #1 nomination, the previously nominated issue MUST remain `raised` unless the creator separately withdraws or resolves it.
 
 ### Issue fields
 
@@ -67,6 +82,7 @@ Every issue has the following fields:
 | `scope` | The team, org, or topic this issue belongs to |
 | `createdAt` | Creation timestamp |
 | `updatedAt` | Last update timestamp |
+| `nominatedAt` | When the creator most recently made this issue their personal #1, or empty when it is not nominated |
 
 #### REQ: issue-required-fields
 
@@ -74,11 +90,11 @@ Every issue MUST have `id`, `title`, `status`, `visibility`, and `scope`. All ot
 
 ### Raising an issue
 
-Anyone with the required permission in a scope can raise an issue in that scope. If the user is already at their active-issue cap, they MUST first withdraw an existing issue before raising a new one.
+Anyone with the required permission in a scope can raise an issue in that scope. Raising it does not automatically make it the creator's personal #1.
 
-#### REQ: raise-requires-capacity
+#### REQ: raising-does-not-replace-nomination
 
-A user MUST NOT be able to raise a new issue if doing so would exceed their per-team active-issue cap. They MUST withdraw an existing issue first.
+Raising a new issue MUST NOT replace the creator's existing personal #1 nomination without an explicit nomination action by the creator.
 
 #### REQ: raise-requires-permission
 
@@ -96,13 +112,37 @@ Only the issue's creator MAY withdraw an issue. No other team member, including 
 
 When an issue is withdrawn, all supporters MUST be notified.
 
+### Resolving an issue
+
+Management acknowledgement, assignment, explanation, or claimed action does not close an issue. The creator confirms when the problem has been addressed. If the creator is unavailable, eligible peers may close it through the governed closure vote defined in [lifecycle](lifecycle/README.md).
+
+#### REQ: creator-confirms-resolution
+
+Only the creator MUST normally be allowed to mark a `raised` issue as `resolved`.
+
+#### REQ: management-action-does-not-close
+
+Acknowledging, assigning, commenting on, or recording work against an issue MUST NOT change its lifecycle status or reset its open age.
+
 ### The team's #1 issue
 
-Each team always has at most one currently-active #1 issue (the one with the highest score). This issue is the only one visible externally to other teams and is the team's current focus.
+Each team or organizational scope always has at most one current #1 issue: the eligible candidate with the highest support score in that scope. This #1 automatically becomes eligible in the parent scope while remaining open in its source scope.
 
 #### REQ: single-top-issue-per-team
 
-At any given moment, a team MUST have at most one "#1 issue" — the issue with the highest score. Ties MUST be resolved deterministically (e.g., by creation time).
+At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest scope-specific support score. Ties MUST be resolved deterministically.
+
+### Visible age and persistence
+
+An unresolved issue stays recorded and its age remains visible even when it is no longer nominated, receives no votes, or falls out of a top-N list.
+
+#### REQ: open-age-visible
+
+Every `raised` issue MUST expose how long it has remained open, derived from its original creation timestamp.
+
+#### REQ: loss-of-rank-does-not-close
+
+Removing votes from an issue, changing a nomination, or losing rank MUST NOT withdraw, resolve, archive, or reset the age of that issue.
 
 ## Interaction with Other Features
 
@@ -110,7 +150,7 @@ At any given moment, a team MUST have at most one "#1 issue" — the issue with 
 |---------|-------------|
 | [voting](../voting/README.md) | Votes determine an issue's score and therefore its rank and bubble-up eligibility |
 | [organization](../organization/README.md) | Every issue is scoped to a team, org, or topic |
-| [permissions](../permissions/README.md) | Permissions gate who can raise/see/archive each issue |
+| [permissions](../permissions/README.md) | Permissions gate who can raise, see, vote, close, and moderate each issue |
 | [storage](../storage/README.md) | Issues are persisted in either cloud or git-backed storage |
 | [ai-integration](../ai-integration/README.md) | AI executive summaries analyze the current set of issues |
 
@@ -124,9 +164,10 @@ At any given moment, a team MUST have at most one "#1 issue" — the issue with 
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - Should `assignee` and `deadline` be mandatory once an issue becomes the team's #1, or remain optional?
 - Should `progress` be a free-form field, a 0–100 integer, or discrete milestones?
 - How are ties in score broken when selecting the team's #1 issue?
+- Should a person have a configurable maximum number of recorded open issues, or no product-enforced maximum?
 - Acceptance criteria not yet defined for this feature.

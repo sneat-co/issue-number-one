@@ -1,55 +1,54 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Issue Moderation
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/moderation?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/moderation?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/moderation?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/issue/moderation?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
-Moderation covers archiving and banning issues. Any team member may archive any team issue; any org member may archive any team; public topic issues cannot be archived. Moderation always notifies the creator and supporters.
+Moderation removes abusive or policy-violating content without becoming a route for managers or ordinary members to suppress an inconvenient active issue. A ban requires an authorized moderator, a visible reason, and notification of the creator and supporters. Archival applies only to already-terminal records and is governed by lifecycle retention.
 
 ## Problem
 
-A product that caps active issues per person must also have a safety valve for clearing out stale, duplicate, off-topic, or abusive issues. Without moderation, junk issues consume budget slots and crowd out real priorities. But moderation must be visible and accountable so it isn't abused to silence dissent — every action notifies the affected parties.
+A product intended to surface issues through collective support must handle abuse without allowing authority figures to erase persistent dissent. Moderation therefore addresses policy violations, not staleness, low rank, disagreement, or management inconvenience.
 
 ## Behavior
 
-### Archive vs ban
+### Retention archive vs moderation ban
 
 | Action | Who | Effect |
 |--------|-----|--------|
-| `archive` | Any team member (team issues); any org member (whole teams) | Closes the issue without marking it resolved; stays visible in archive |
-| `ban` | Authorized moderators only | Moderated out; visible only as a tombstone with reason |
+| `archive` | Retention policy or authorized custodian | Moves an already-terminal record out of normal history views; never closes a raised issue |
+| `ban` | Authorized moderators only | Removes policy-violating content; visible as a tombstone with reason |
 
 #### REQ: archive-is-soft
 
-Archiving MUST close the issue in its current state and preserve its content for later reference.
+Archiving MUST preserve an already-terminal issue and its closure reason for later reference. It MUST NOT be available as a transition from `raised`.
 
 #### REQ: ban-is-tombstone
 
 A banned issue's content MUST be hidden from normal views; only a tombstone (author redacted, reason shown) MUST remain.
 
-### Who can archive
+### No suppression through moderation
 
-| Scope | Who can archive an issue |
-|-------|--------------------------|
-| Team issue | Any member of that team |
-| Org-level issue | Any org admin |
-| Public topic issue | No one — only the creator may withdraw |
+An issue's age, low rank, disagreement, lack of management response, or inconvenience are not moderation grounds.
 
-#### REQ: any-team-member-archives-team-issue
+#### REQ: ordinary-members-cannot-moderate-close
 
-Any member of a team MUST be allowed to archive any issue within that team.
+An ordinary member or manager MUST NOT be able to archive, ban, withdraw, or resolve another creator's `raised` issue merely to remove it from active views.
 
-#### REQ: any-org-member-archives-team
+#### REQ: ban-requires-reason
 
-Any member of an organization MUST be allowed to archive an entire team within that organization.
-
-#### REQ: public-topic-no-archive
-
-Public topic issues MUST NOT be archivable by anyone. See also [issue/lifecycle#req-public-topic-no-archive](../lifecycle/README.md).
+Every ban MUST record an authorized moderator, a policy reason, and the time of the action.
 
 ### Notifications
 
-Every archive or ban action MUST notify the issue's creator and all supporters.
+Every archive or ban action MUST notify the issue's creator and all current supporters.
 
 #### REQ: notify-on-moderation
 
@@ -57,13 +56,13 @@ When an issue is archived or banned, the system MUST notify its creator and ever
 
 ### Vote refunds
 
-Moderation exits the `raised` state, which triggers refunds per [issue/lifecycle#req-refund-on-exit-raised](../lifecycle/README.md).
+A ban exits the `raised` state, which triggers refunds per [issue/lifecycle#req-refund-on-exit-raised](../lifecycle/README.md). Retention archival occurs only after votes have already been refunded by an earlier terminal transition.
 
 ## Interaction with Other Features
 
 | Feature | Interaction |
 |---------|-------------|
-| [issue/lifecycle](../lifecycle/README.md) | Moderation drives transitions to `archived` or `banned` |
+| [issue/lifecycle](../lifecycle/README.md) | Moderation may drive a transition to `banned`; archival only follows a terminal state |
 | [voting](../../voting/README.md) | Moderation triggers vote refunds |
 | [permissions](../../permissions/README.md) | Defines who is allowed to moderate |
 
@@ -77,10 +76,9 @@ Moderation exits the `raised` state, which triggers refunds per [issue/lifecycle
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
-- Can archived issues be un-archived, or is archival terminal?
 - Should there be an appeal or review mechanism for banned issues?
 - Who is authorized to ban — only org admins, or can teams elect moderators?
-- Should archiving an entire team cascade-archive all its issues, or leave them readable as a frozen snapshot?
+- Who is the authorized retention custodian for already-terminal issues, and can an archive action be reversed?
 - Acceptance criteria not yet defined for this feature.

@@ -1,6 +1,13 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Cloud Storage
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/cloud-storage?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/cloud-storage?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/cloud-storage?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/cloud-storage?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -52,7 +59,7 @@ Cloud-storage users MUST NOT have direct access to the underlying Firestore inst
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - What regions are supported, and can a team pin their data to a specific region?
 - What is the data-retention policy for archived issues, teams, and orgs?

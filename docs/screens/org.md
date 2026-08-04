@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The primary page for an organization. Shows every team in the org, each team's current #1 issue, org-level bubble-up issues, and org-wide navigation.
+The primary page for the root company scope. Shows the company's top N, every direct department's current #1 candidate, and organizational navigation. An authorized leader can drill through department, project, team, person, and originating issue; promotion into this view is automatic rather than manager-approved.
 
 ## Layout
 

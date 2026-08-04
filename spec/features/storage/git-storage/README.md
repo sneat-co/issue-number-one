@@ -1,6 +1,13 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Git Storage
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/git-storage?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/git-storage?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/git-storage?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage/git-storage?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -73,7 +80,7 @@ Commit author metadata MUST NOT reveal the identity of an anonymous issue author
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - The inGitDB schema for IssueNumber.one entities needs a dedicated specification — where should it live (in this repo, in a separate schema repo, in the inGitDB project)?
 - How are anonymous commits implemented such that git history cannot be used to re-identify authors?

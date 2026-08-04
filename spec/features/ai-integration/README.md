@@ -1,6 +1,13 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: AI Integration
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/ai-integration?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/ai-integration?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/ai-integration?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/ai-integration?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -77,7 +84,7 @@ The SaaS mode MUST document its value proposition versus DIY, covering at minimu
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - What is the default curated prompt for the SaaS mode?
 - How is the SaaS value proposition surfaced and priced versus DIY (free-prompt) mode?

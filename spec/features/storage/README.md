@@ -1,6 +1,13 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Storage
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/storage?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -71,7 +78,7 @@ All user-visible behavior MUST be identical across supported storage backends.
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - Can an org migrate from cloud to git (or vice versa) after creation?
 - Is there a hybrid mode — e.g., metadata in cloud, long-form content in git?

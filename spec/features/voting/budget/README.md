@@ -1,59 +1,78 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Vote Budget
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/budget?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/budget?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/budget?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/budget?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
-Every team member has a small per-team vote budget that they spend on issues they want to prioritize. The budget forces prioritization — if you want to back a new issue, you must withdraw one of your existing votes first.
+Every eligible voter has a configurable budget of one to seven support-vote units. They may concentrate several units on one eligible issue or distribute them, and may reallocate them at any time. The still-open hierarchy question is whether this budget is separate at each scope or shared across scopes.
 
 ## Problem
 
-Unlimited voting devalues every vote. A budget forces users to make meaningful trade-offs: when you support something new, you must let go of something old. That trade-off is the whole point of IssueNumber.one — it surfaces what people genuinely think matters most *today*.
+Unlimited voting devalues every vote. A one-to-seven-unit budget forces users to make meaningful trade-offs: when all units are allocated, supporting something new requires moving support from something else. Concentrating several units also lets a voter express relative priority without receiving unlimited influence.
 
 ## Behavior
 
-### Budget is per team
+### Configurable one-to-seven budget
 
-Budgets are not global. Each team a user belongs to gives them a separate allocation.
+The configured budget is an integer from one through seven inclusive. Every allocation in a voting context counts against the applicable budget.
 
-#### REQ: budget-is-per-team
+#### REQ: configured-budget-range
 
-A user's vote budget MUST be scoped to a single team and MUST NOT be shared across teams.
+The vote budget MUST be configurable as an integer from 1 through 7 inclusive.
 
-### Raising an issue consumes a slot too
+#### REQ: allocations-cannot-exceed-budget
 
-Within the scope of the [issue](../../issue/README.md) active-issue cap, a user's own raised issue implicitly counts against the same prioritization budget. In other words: raising an issue OR voting on someone else's issue are both ways to spend your priority attention.
+A voter MUST NOT have more allocated support units than the budget applicable to that voting context.
 
-#### REQ: raise-counts-against-priority
+### Concentrated or distributed allocation
 
-A user's own active issue MUST count against their priority budget, so that raising more issues leaves fewer votes to spend.
+A voter may put several units on one candidate, including their own nominated issue, or distribute units among several candidates.
+
+#### REQ: budget-may-be-concentrated
+
+A voter MUST be allowed to allocate any number of their available units to one eligible issue, up to their remaining budget.
+
+#### REQ: own-issue-uses-same-budget
+
+Units allocated to the voter's own nominated issue MUST count against the same budget as units allocated to other candidates.
+
+### Issue recording is separate from voting budget
+
+Raising or keeping an issue does not consume support-vote units. The separate scarcity rule is that a person may nominate only one personal #1 per scope.
+
+#### REQ: raising-does-not-consume-votes
+
+Raising, recording, or keeping an issue open MUST NOT consume vote-budget units.
 
 ### Trading a vote for a new issue
 
-If a user is at their active-issue cap and wants to raise a new issue, they MUST first withdraw an existing issue (per [issue#req-raise-requires-capacity](../../issue/README.md)). Similarly, if a user is at their vote cap and wants to vote on a new issue, they MUST withdraw an existing vote.
+If a voter has allocated their full budget and wants to support another issue, they must remove one or more existing allocations first.
 
 #### REQ: withdraw-to-vote-again
 
-A user at their vote cap MUST withdraw one of their existing votes before casting a new vote.
+A user at their vote cap MUST withdraw one or more existing vote units before allocating those units to another issue.
 
-#### REQ: withdraw-vote-to-raise
+### Scope eligibility
 
-If a user is at their combined priority cap, they MAY reclaim a slot by withdrawing a vote they have cast elsewhere.
+Any member of an organizational scope, including members in descendant teams, may use the applicable budget to vote in that scope's ranking.
 
-### Minimum team size
+#### REQ: descendant-members-eligible
 
-A team must be large enough for budgeting to make sense. Teams of one or two create prioritization theater.
-
-#### REQ: minimum-team-size
-
-A team MUST have at least three members for voting to be meaningful. Teams below this size MAY behave as personal scratch space but MUST NOT participate in bubble-up or cross-team visibility.
+A member of a descendant team MUST be eligible for the vote budget used in an enclosing department or company ranking.
 
 ## Interaction with Other Features
 
 | Feature | Interaction |
 |---------|-------------|
 | [voting](../README.md) | Budget is the mechanism voting uses |
-| [issue](../../issue/README.md) | Active-issue caps and budget caps interact |
+| [issue](../../issue/README.md) | One personal #1 nomination is separate from vote-budget scarcity |
 | [organization](../../organization/README.md) | Defines team membership |
 
 ## Dependencies
@@ -66,9 +85,10 @@ A team MUST have at least three members for voting to be meaningful. Teams below
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
-- What are the default budget values (total votes per member)?
-- Does an org admin set the budget, or is it fixed per product version?
-- Is the priority budget literally the sum of (issues raised + votes cast), or are they counted separately?
+- What is the default budget within the confirmed 1–7 range?
+- Does each hierarchy level provide a separate budget, or does one budget span all scopes in which a person can vote?
+- Who configures the budget, and may different scopes choose different values?
+- Is a minimum membership size required before collective ranking and bubble-up apply?
 - Acceptance criteria not yet defined for this feature.

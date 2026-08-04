@@ -1,60 +1,59 @@
+---
+format: https://specscore.md/feature-specification
+status: Conceptual
+---
+
 # Feature: Rating
 
+> [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/rating?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/rating?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/rating?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/voting/rating?op=request-change) |
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
-Rating covers the visible output of voting: upvotes, downvotes, an issue's total score, and the sort orders used in issue lists. Upvotes are public by default; downvotes are anonymous by default; teams may disable downvotes entirely.
+Rating covers the visible output of voting: an issue's support score in each organizational scope, vote attribution, and the sort orders used in issue lists. The founder-defined MVP mechanism uses positive support allocations; whether negative votes exist later remains open.
 
 ## Problem
 
-Raw voting data needs a presentation layer. Users want to understand how an issue is trending, whether their vote is public, and how to sort a list of issues. Rating defines those conventions so every screen behaves consistently and every team can configure the amount of social transparency they want.
+Raw voting data needs a presentation layer. Users want to understand an issue's support at the current scope, whether their allocation is public, and how the candidate list is ranked. Scores must remain scope-specific because the same issue may be the #1 of a team while competing separately at department and company levels.
 
 ## Behavior
 
-### Upvotes and downvotes
+### Scope-specific support score
 
-An issue has an upvote count, a downvote count, and a total score.
+An eligible issue has a support score for each voting scope in which it appears.
 
 #### REQ: score-formula
 
-An issue's `score` MUST equal `upvotes − downvotes`.
+An issue's support score in a scope MUST equal the sum of support-vote units currently allocated to it in that scope.
 
-#### REQ: one-vote-per-user-per-issue
+#### REQ: score-is-scope-specific
 
-A user MUST NOT cast more than one vote on a given issue at a time. Changing their mind means withdrawing and re-casting.
+A team, department, and company score for the same issue MUST be stored and presented as separate scope-specific values.
 
-### Users choose up or down
+#### REQ: multiple-units-from-one-voter-count
 
-A user spends one unit of their vote budget on either an upvote or a downvote, not both.
+A voter's multiple allocated units on one issue MUST all count toward that issue's support score.
 
-#### REQ: one-direction-per-vote
+### Support-only ranking
 
-A single vote MUST be either an upvote or a downvote, not both.
+The current ranking mechanism counts positive support units. Negative voting is not required by the founder-defined MVP.
 
-### Teams may disable downvotes
+#### REQ: support-score-nonnegative
 
-Downvotes are optional per team or org. When disabled, users may only cast upvotes.
-
-#### REQ: downvotes-optional
-
-Teams and orgs MUST be able to disable downvotes entirely. When disabled, attempts to cast a downvote MUST be rejected.
+A scope's support score MUST be a non-negative integer.
 
 ### Public vs anonymous vote display
 
-By default, upvotes are publicly attributed and downvotes are anonymous. Teams may change these defaults.
+By default, support allocations are publicly attributed. Teams may hide attribution without changing the total score.
 
-#### REQ: upvotes-public-by-default
+#### REQ: support-public-by-default
 
-Upvotes MUST default to public attribution — other users can see who upvoted.
-
-#### REQ: downvotes-anonymous-by-default
-
-Downvotes MUST default to anonymous — the voter's identity is hidden from other users.
+Support allocations MUST default to public attribution so eligible viewers can see who allocated support.
 
 #### REQ: vote-visibility-configurable
 
-Teams and orgs MUST be able to override the default public/anonymous setting for both upvotes and downvotes.
+Teams and orgs MUST be able to hide individual support attribution while retaining aggregate scores.
 
 ### Sort orders
 
@@ -62,7 +61,7 @@ Issue lists support three sort orders:
 
 | Order | Description |
 |-------|-------------|
-| `score` | Total score (upvotes − downvotes), highest first |
+| `score` | Scope-specific support score, highest first |
 | `created` | Creation timestamp, newest first |
 | `activity` | Last-activity timestamp, most recent first |
 
@@ -75,7 +74,7 @@ Issue list views MUST support sorting by `score`, `created`, and `activity`.
 | Feature | Interaction |
 |---------|-------------|
 | [voting](../README.md) | Rating is the visible layer over the voting mechanism |
-| [issue/visibility](../../issue/visibility/README.md) | Score drives bubble-up |
+| [issue/visibility](../../issue/visibility/README.md) | Scope-specific score determines each #1 and automatic bubble-up |
 | [permissions](../../permissions/README.md) | Controls who may see vote attribution |
 
 ## Dependencies
@@ -88,9 +87,9 @@ Issue list views MUST support sorting by `score`, `created`, and `activity`.
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
-- Should there be an additional sort mode like `controversial` (high up AND high down)?
-- Should vote-count totals be visible even when individual attribution is anonymous?
-- Should users be allowed to flip their vote direction directly, or must they withdraw and re-cast?
+- Should aggregate support totals remain visible when individual attribution is hidden?
+- Are negative/downvotes intentionally excluded from the product, or only from the MVP?
+- How are equal support scores ordered when determining a single #1?
 - Acceptance criteria not yet defined for this feature.

@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Signed-in user's dashboard of every team they belong to, with each team's current #1 issue and a quick link to jump in.
+Signed-in user's dashboard of every team and enclosing organizational scope they belong to, with each scope's current #1 issue, top-N entry point, and a quick link to vote or drill in.
 
 ## Layout
 

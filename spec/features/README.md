@@ -1,3 +1,7 @@
+---
+format: https://specscore.md/features-index-specification
+---
+
 # IssueNumber.one Features
 
 Top-level features of IssueNumber.one — a communication tool that helps teams identify and address their top priority issues through a continuous focused feedback and improvements process.
@@ -7,7 +11,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 | Feature | Status | Description |
 |---------|--------|-------------|
 | [issue](issue/README.md) | Conceptual | The atomic unit — what an issue is, who can raise it, its lifecycle, anonymity, visibility, and moderation |
-| [voting](voting/README.md) | Conceptual | Vote economics, per-team budgets, up/down rating, and sort orders |
+| [voting](voting/README.md) | Conceptual | Scarce 1–7 support-vote budgets, multi-unit allocation, scope-specific scores, and sort orders |
 | [organization](organization/README.md) | Conceptual | Org/team/sub-team hierarchy, peers, and public topics |
 | [permissions](permissions/README.md) | Conceptual | Who can do what — the access matrix across teams, orgs, topics, and issues |
 | [storage](storage/README.md) | Conceptual | Where org data lives — IssueNumber.one cloud or a GitHub repository via inGitDB |
@@ -17,19 +21,19 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 
 ### issue
 
-The core entity. An issue is a raised priority item with an author (or anonymous origin), status, assignee, deadline, and progress. By default every team member has exactly one active issue; teams may allow up to three. Issues have a clear lifecycle (raised → withdrawn/resolved/archived/banned), configurable anonymity, multi-level visibility, and defined moderation rules.
+The core entity. A person may keep multiple open issues, but may nominate at most one personal #1 issue in a scope at a time. Only that nomination enters collective voting. Issues may be authored or anonymous, remain visibly open and ageing when they lose rank, and have a clear creator-controlled closure lifecycle.
 
 ### voting
 
-Votes are scarce by design. Each team member has a small per-team vote budget that forces prioritization of what actually matters today. Users cannot vote on their own issues, votes are refunded when an issue closes, and supporters can be notified on withdrawal. Ratings use upvotes and (optionally) downvotes, with configurable public/anonymous display.
+Votes are scarce by design. Each eligible person receives a configurable budget of one to seven support votes, may put several on the same issue, may support their own nominated issue, and may reallocate votes at any time. Scope-level rankings determine which single #1 issue automatically becomes eligible at the parent scope.
 
 ### organization
 
-Everything in IssueNumber.one is scoped to a team. An organization is simply a root-level team. Teams may have sub-teams, peer teams, and peer colleagues; members may specify their own peers. Public topics live outside the org hierarchy and may nest into sub-topics.
+Everything in IssueNumber.one is scoped to a nested team node. A company is the root node; departments, projects, and teams are nested nodes beneath it. Every node has its own ranking, exposes its top N locally, and contributes only its current #1 issue to its parent. Leaders can drill from company to department, project, team, person, and originating issue.
 
 ### permissions
 
-Defines who can raise, see, archive, and create across teams, orgs, topics, and issues. Example rules: only team mates can raise a team issue; anyone in an org can see all teams' org-level issues; anyone on a team can archive any team issue.
+Defines who can raise, see, vote, close, moderate, and create across teams, companies, topics, and issues. Members see their own issue list plus the top N issues at their department and company scopes. Any department member may vote in the department ranking; a manager cannot block automatic promotion or close an active issue merely to remove it from view.
 
 ### storage
 
@@ -59,7 +63,7 @@ graph LR
     AI --> ISS
 ```
 
-## Outstanding Questions
+## Open Questions
 
 - Should `assignee` and `deadline` (surfaced on the landing page) be part of `issue` core or a separate `issue/assignment` sub-feature?
 - Should progress tracking (the progress bar surfaced on the landing page) be its own sub-feature of `issue`?

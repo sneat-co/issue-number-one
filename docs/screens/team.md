@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The primary page for a team. Shows the team's current #1 issue, all other team issues (subject to the viewer's permissions), team membership, and links to sub-teams and peer teams.
+The primary page for a team or nested organizational scope. It shows the viewer's own issues, the candidates eligible for voting in this scope, the scope's top N and current #1, and the top N for each enclosing department and company scope. It also links to child and peer teams and supports drill-down to the originating person and issue without exposing unrelated personal issues.
 
 ## Layout
 

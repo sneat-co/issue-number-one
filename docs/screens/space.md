@@ -15,6 +15,5 @@ TBD.
 - [organization](../../spec/features/organization/README.md)
 - [issue](../../spec/features/issue/README.md)
 
-## Outstanding Questions
-
-- How does `space` relate to `team` and `topic`? Is it a third scope, an alias, or a super-type?
+The unresolved scope-model question for this screen is owned by the
+[Organization Feature](../../spec/features/organization/README.md#open-questions).

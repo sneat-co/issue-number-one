@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Signed-in user's dashboard of every issue they have raised, every issue they currently support, and their remaining vote budget across all teams.
+Signed-in user's dashboard of every issue they have raised, the one personal #1 they have nominated in each scope, every issue they currently support, each issue's open age, and their remaining vote budget in each applicable voting context.
 
 ## Layout
 
