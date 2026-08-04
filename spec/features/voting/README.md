@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Voting is the mechanism by which eligible members decide which issue is #1 at each scope. Every person has a configurable budget of one to seven support-vote units, may allocate several units to the same issue, may support their own nominated issue, and may move allocations at any time.
+Voting is the mechanism by which eligible members decide which issue is #1 at each scope. Every person has one configurable budget of one to seven support-vote units shared across all levels of an organization, may allocate several units to the same issue, may support their own nominated issue, and may move allocations at any time.
 
 ## Contents
 
@@ -53,6 +53,10 @@ Each eligible voter has a configurable total budget between one and seven units.
 #### REQ: vote-budget-one-to-seven
 
 The configured vote budget for an eligible voter MUST be an integer from 1 through 7 inclusive.
+
+#### REQ: one-budget-shared-across-org-levels
+
+A voter MUST have one vote budget shared across every team, project, department, and company ranking within the same organization. Allocating a unit at any level MUST reduce the same remaining balance; entering another level MUST NOT create or reset a separate budget.
 
 #### REQ: multiple-units-per-issue
 
@@ -115,7 +119,6 @@ Not defined yet.
 ## Open Questions
 
 - What is the default budget size within the confirmed 1–7 range?
-- Does each person receive a separate 1–7 budget at every hierarchy level, or one shared budget across team, department, and company rankings?
-- May the configured budget vary by scope or membership type, or must every eligible voter receive the same number?
+- May an organization configure different budget sizes by membership type, or must every eligible voter receive the same number?
 - Are negative/downvotes part of the MVP, or is voting support-only?
 - Acceptance criteria not yet defined for this feature.

@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Every eligible voter has a configurable budget of one to seven support-vote units. They may concentrate several units on one eligible issue or distribute them, and may reallocate them at any time. The still-open hierarchy question is whether this budget is separate at each scope or shared across scopes.
+Every eligible voter has one configurable budget of one to seven support-vote units shared across all levels of an organization. They may concentrate several units on one eligible issue, distribute them among issues at different levels, and reallocate them at any time.
 
 ## Problem
 
@@ -19,9 +19,9 @@ Unlimited voting devalues every vote. A one-to-seven-unit budget forces users to
 
 ## Behavior
 
-### Configurable one-to-seven budget
+### One organization-wide one-to-seven budget
 
-The configured budget is an integer from one through seven inclusive. Every allocation in a voting context counts against the applicable budget.
+The configured budget is an integer from one through seven inclusive. Within one organization, every allocation at team, project, department, or company level counts against the same personal budget.
 
 #### REQ: configured-budget-range
 
@@ -29,7 +29,15 @@ The vote budget MUST be configurable as an integer from 1 through 7 inclusive.
 
 #### REQ: allocations-cannot-exceed-budget
 
-A voter MUST NOT have more allocated support units than the budget applicable to that voting context.
+A voter MUST NOT have more support units allocated across all organizational levels in total than their shared budget.
+
+#### REQ: budget-shared-across-all-levels
+
+A voter MUST receive one shared budget within an organization. Voting in a different team, project, department, or company-level ranking within that organization MUST NOT create an additional allocation.
+
+#### REQ: cross-level-allocation-reduces-same-balance
+
+Every unit allocated at any organizational level MUST reduce the same available balance, and every withdrawn or refunded unit MUST return to that balance.
 
 ### Concentrated or distributed allocation
 
@@ -61,11 +69,11 @@ A user at their vote cap MUST withdraw one or more existing vote units before al
 
 ### Scope eligibility
 
-Any member of an organizational scope, including members in descendant teams, may use the applicable budget to vote in that scope's ranking.
+Any member of an organizational scope, including members in descendant teams, may use their shared organization-wide budget to vote in that scope's ranking.
 
 #### REQ: descendant-members-eligible
 
-A member of a descendant team MUST be eligible for the vote budget used in an enclosing department or company ranking.
+A member of a descendant team MUST be eligible to spend their shared organization-wide vote budget in an enclosing department or company ranking.
 
 ## Interaction with Other Features
 
@@ -88,7 +96,7 @@ Not defined yet.
 ## Open Questions
 
 - What is the default budget within the confirmed 1–7 range?
-- Does each hierarchy level provide a separate budget, or does one budget span all scopes in which a person can vote?
-- Who configures the budget, and may different scopes choose different values?
+- Who configures the shared budget, and is the same value mandatory for every member of the organization?
+- If a person belongs to multiple organizations, does each organization provide its own independent shared budget?
 - Is a minimum membership size required before collective ranking and bubble-up apply?
 - Acceptance criteria not yet defined for this feature.

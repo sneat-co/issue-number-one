@@ -51,7 +51,7 @@ have changed the described outcome.
 | E1 | Founder-reported case | Integration tests were disabled to permit an urgent release, were expected to return the next week, and remained disabled for more than three months. | Sponsor interview, 2026-08-04 | Retrospective single case; no independent record inspected |
 | E2 | Founder-reported case | New build servers did not support the containers and database setup assumed by the integration tests; developers had raised the problem in stand-ups, retrospectives, and meetings for roughly two years without sufficient escalation or resolution. | Sponsor interview, 2026-08-04 | Retrospective single case; employer and project intentionally not recorded |
 | E3 | Founder requirement | A person may keep multiple issues but nominate only one personal #1; only nominated issues enter collective voting. | Sponsor interview, 2026-08-04 | Product intent, not validation |
-| E4 | Founder requirement | Each person has a configurable budget of 1–7 support votes, may put multiple votes on one issue, may vote on their own nominated issue, and may reallocate votes at any time. | Sponsor interview, 2026-08-04 | Budget scope across hierarchy remains unresolved in the owning voting Feature |
+| E4 | Founder requirement | Each person has one configurable budget of 1–7 support votes shared across team, project, department, and company levels; may put multiple votes on one issue; may vote on their own nominated issue; and may reallocate votes at any time. | Sponsor interview, 2026-08-04 | Membership in multiple organizations remains unresolved in the owning Vote Budget Feature |
 | E5 | Founder requirement | Anyone in a department may vote; every scope's #1 moves upward automatically without a manager gate. A company leader sees each department's most important issue and can drill down through department, project, team, person, and issue. | Sponsor interview, 2026-08-04 | Exact candidate and budget behavior is specified where confirmed; remaining questions stay with the owning Features |
 | E6 | Founder requirement | Members see their own issues, the top N department issues, and the top N company issues. | Sponsor interview, 2026-08-04 | Default N remains unresolved |
 | E7 | Founder requirement | Issues may be authored or anonymous. Management activity does not close an issue; it stays open with a visible age, can lose rank without closing, is normally closed by its creator, and may be closed by peer vote when the creator is unavailable. | Sponsor interview, 2026-08-04 | Unavailable-author proof and peer threshold remain unresolved |
@@ -93,9 +93,8 @@ have changed the described outcome.
 ## Assumptions and Unknowns
 
 The remaining product decisions are recorded only in the relevant Feature
-`## Open Questions` sections. The next central unknown is whether a
-person receives a separate vote budget at each hierarchy level or one shared
-budget across all levels.
+`## Open Questions` sections. The founder has confirmed that one 1–7 budget is
+shared across all levels within an organization.
 
 ## Confidence
 

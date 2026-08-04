@@ -122,7 +122,7 @@ Any member of an organization MUST be allowed to archive any team within that or
 | Feature | Interaction |
 |---------|-------------|
 | [issue](../issue/README.md) | Every issue is scoped to a team, org, or topic |
-| [voting](../voting/README.md) | Each scope has an eligible candidate set and support ranking |
+| [voting](../voting/README.md) | Each scope has an eligible candidate set and support ranking, while each member's 1–7 vote budget is shared across all levels of the organization |
 | [permissions](../permissions/README.md) | Membership determines visibility and action rights |
 | [storage](../storage/README.md) | Orgs choose where their data lives |
 
@@ -138,7 +138,6 @@ Not defined yet.
 
 - Can a user belong to multiple orgs, and if so, are budgets independent per org?
 - How does `space` relate to `team` and `topic`: a third scope, an alias, or a super-type?
-- Does each scope have a separate vote budget, or does a member share one budget across enclosing scopes?
 - May parent scopes contain directly raised issues in addition to child #1 candidates?
 - When a team is archived, what happens to its sub-teams and issues?
 - Can a sub-team outlive its parent being archived (i.e., be re-parented)?
