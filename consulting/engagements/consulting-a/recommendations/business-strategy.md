@@ -23,10 +23,12 @@ promotion_target: "IssueNumber.one owning Features and the Backstage product-con
 
 ## Decision Needed
 
-The sponsor must decide whether IssueNumber.one should investigate a
-provisional, stage-gated **internal priority-to-action job** while leaving its
-service, standalone-product and Sneat Work boundaries unresolved and retaining
-the no-build status quo as an operated control.
+The sponsor accepted investigation of a provisional, stage-gated **internal
+priority-to-action job** on 2026-08-04, with the initial primary segment narrowed
+to development managers and product managers. Service, standalone-product and
+Sneat Work boundaries remain unresolved, and no-build remains an operated
+control. See the
+[sponsor decision](../decisions/sponsor-discovery-authorization.md).
 
 This decision authorises learning direction only. Outreach, participant
 research, spend, product construction and canonical promotion remain separate
@@ -39,9 +41,10 @@ listening suite, public-research network or benchmark business.
 
 Adopt a narrow provisional business thesis:
 
-> A leader responsible for a bounded cross-functional decision may pay to turn
-> scattered, contested issues into a tested priority mechanism, an accountable
-> response and a visible terminal outcome.
+> A development manager or product manager responsible for product or delivery
+> decisions may pay to surface important pain points in time, turn them into a
+> tested priority and provide an accountable response and visible terminal
+> outcome.
 
 Treat this as a sequence of kill-gated commercial hypotheses:
 
@@ -75,9 +78,11 @@ willingness to pay.
 - **Evidence:** No graph moat, benchmark network effect, switching cost or
   willingness to pay is established
   ([graph report](../research/graph-value-and-defensibility.md)).
-- **Assumption:** Some product, engineering, operations or departmental leaders
-  face a recurring contested-priority decision not served adequately by forms,
-  meetings and work trackers. If false, stop this direction.
+- **Assumption:** Some development managers and product managers face a
+  recurring pain-point-surfacing and contested-priority failure not served
+  adequately by forms, meetings and work trackers. The sponsor has experienced
+  this directly, but independent recurrence remains unvalidated. If false, stop
+  this direction.
 - **Assumption:** One explicit work context may reduce setup or action friction.
   This does not select Sneat Work; the same cycle with manual/standalone context
   remains the required baseline.
@@ -147,8 +152,9 @@ No experiment is authorised or executed by this recommendation.
 This is the highest-priority strategic decision because product, pricing,
 channel and ecosystem positioning all depend on the initial job and buyer.
 
-The sponsor should approve, reject or amend the boundary-neutral learning thesis.
-If approved, the next material decision is whether to authorise the buyer/
-problem discovery contract. If it fails or remains inconclusive after its one
-bounded follow-up, park the direction for 90 days unless materially new evidence
+The sponsor approved the boundary-neutral learning thesis and buyer/problem
+discovery with the segment amendment above. The next dependency is access to an
+eligible development manager and product manager for the first two protocol
+checks. If discovery fails or remains inconclusive after its one bounded
+follow-up, park the direction for 90 days unless materially new evidence
 arrives; do not broaden the platform story.

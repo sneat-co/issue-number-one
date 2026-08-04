@@ -28,6 +28,11 @@ founder-led problem discovery and a paid concierge decision cycle, with LinkedIn
 as a measured access/content route rather than the primary platform or assumed
 channel.
 
+The sponsor authorised only the first discovery contract on 2026-08-04 and
+narrowed its primary segment to development managers and product managers. A
+paid cycle and channel comparison remain unauthorised. See the
+[sponsor decision](../decisions/sponsor-discovery-authorization.md).
+
 No outreach, campaign, paid media, account contact or spend is authorised by
 this recommendation.
 
@@ -39,8 +44,9 @@ a free-product growth loop.
 Use a sequenced founder-led learning motion with an explicit eligible-account
 frame, relationship-strength labels, refusals and exclusions:
 
-1. identify candidate leaders who recently owned a contested cross-functional
-   priority decision;
+1. identify development managers and product managers who recently owned a case
+   where an important pain point surfaced late, weakly, repeatedly or not at
+   all;
 2. discover the actual workflow, consequence, current alternative, decision
    owner and budget path;
 3. offer a paid, manually delivered priority-to-action cycle only where the
@@ -62,10 +68,10 @@ Those claims are either implementation language, separate jobs or unsupported.
 
 ## Initial Segment and Buying Hypothesis
 
-The initial **candidate**, not validated segment, is a bounded product,
-engineering, operations or departmental leadership group where:
+The initial **candidate**, not validated segment, is development managers and
+product managers where:
 
-- one leader owns a real cross-functional decision;
+- the manager owns a real product or delivery decision and its follow-through;
 - issues arrive through meetings, chat, forms, tickets or escalation;
 - the current process produces contested priority, repetition or no visible
   follow-through;
@@ -81,8 +87,8 @@ being silently treated as the same market.
 
 - **Outcome sold:** one bounded priority-to-action decision cycle with a visible
   owner response and close.
-- **Candidate payer:** leader accountable for the decision or the organisational
-  budget owner supporting that function.
+- **Candidate payer:** development/product leader accountable for the decision
+  or the organisational budget owner supporting that function.
 - **Candidate value metric:** accountable organisation/team scope or active
   decision cycle—not every contributor seat, vote or graph edge.
 - **Initial proof:** paid concierge engagement, not waitlist selection or verbal

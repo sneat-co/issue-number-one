@@ -420,16 +420,16 @@ reviewer and authority limits.
 | Understand | Managing Partner | Sponsor can see and approve/correct mandate, scope, authority, evidence baseline and plan | `README.md` | Completed 2026-08-04 |
 | Research | Customer & Market Research plus bounded specialists | Evidence, provenance, freshness, contradictions, failed searches and limitations are visible | `research/` | Completed 2026-08-04 under public/repository boundary |
 | Identify unknowns | Managing Partner | Decision-sensitive gaps are ranked; safe defaults and affected branches are explicit | `README.md` and research reports | Completed for research iteration; repeats after new evidence |
-| Ask questions | Managing Partner | Only decision-changing asks are sent; safe work continues under defaults | `executive-summary.md`, checkpoints | Three sponsor decisions open; no unsafe work proceeds by default |
+| Ask questions | Managing Partner | Only decision-changing asks are sent; safe work continues under defaults | decisions and checkpoints | Sponsor direction decisions answered; participant-access ask open |
 | Dispatch specialists | Managing Partner | Each activated role has a contract-complete, model-named brief and separate file | Dispatch recorded in owned artifact | Completed 2026-08-04 |
 | Collect findings | Managing Partner | Reports satisfy the specialist contract and another role can trace their evidence | `research/` | Completed 2026-08-04; artifacts In Review |
 | Challenge findings | Devil's Advocate | Strongest conclusions, assumptions, alternatives and simpler explanations are tested | `recommendations/devils-advocate-review.md` | Completed 2026-08-04; four blockers and ten additional challenges recorded |
 | Resolve disagreements | Managing Partner | Evidence and decision criteria resolve conflicts or preserve material dissent | `decisions/recommendation-resolution.md` | Completed 2026-08-04; every challenge accepted, narrowed or retained |
-| Design experiments | Chief of Experiments | Only material recommendations receive smallest safe decision-changing tests | `experiments/` | Completed as four In Review contracts; none authorised or executed |
+| Design experiments | Chief of Experiments | Only material recommendations receive smallest safe decision-changing tests | `experiments/` | Buyer/problem discovery Accepted; three later contracts remain In Review and unauthorised |
 | Synthesize | Managing Partner | Business, product and GTM options and recommendations follow evidence and retained dissent | `recommendations/` | Completed 2026-08-04; artifacts In Review |
 | Review | Devil's Advocate, Managing Partner, Executive Editor | Mechanical checks, adversarial review, resolution and editorial reconciliation pass in order | `executive-summary.md` | Completed 2026-08-04; sponsor review remains |
 | Promote recommendations | Managing Partner and canonical owners | Accepted knowledge moves in a separate reviewed change with backlinks | Canonical owner | Pending; no promotion authorized |
-| Repeat | Managing Partner | New evidence reopens the earliest affected stage and an immutable checkpoint records why | `checkpoints/` | Awaiting sponsor evidence and direction decisions |
+| Repeat | Managing Partner | New evidence reopens the earliest affected stage and an immutable checkpoint records why | `checkpoints/` | Discovery authorised; eligible frame and recruitment not started |
 
 ## Source-linked work plan
 
@@ -528,7 +528,7 @@ architecture task begins before its evidence dependency is met.
 | Strongest business strategy, including status quo and pivots | `recommendations/business-strategy.md` | Delivered; In Review | Sponsor direction decision pending |
 | Strongest product strategy, including public/internal mode choice | `recommendations/product-strategy.md` | Delivered; In Review | Boundary remains unresolved; public/internal unity not recommended |
 | Strongest go-to-market strategy, including LinkedIn assessment | `recommendations/go-to-market-strategy.md` | Delivered; In Review | LinkedIn remains an unproven instrument |
-| Integrated decision package with risks, dissent and next learning | `executive-summary.md`, `decisions/`, `experiments/` | Delivered for sponsor review | No experiment or promotion authorised |
+| Integrated decision package with risks, dissent and next learning | `executive-summary.md`, `decisions/`, `experiments/` | Delivered; buyer/problem discovery Accepted | Later experiments and promotion remain unauthorised |
 | Roadmap, architecture and implementation | Unpopulated `roadmap.md`; no architecture or implementation artifact | Approved deferral | Sponsor excluded these; evidence and separate authority are absent |
 
 Allowed terminal states: Delivered, Accepted experiment/promotion, Approved
@@ -550,11 +550,11 @@ finding and a separate review.
 
 ## Current checkpoint
 
-- **Latest checkpoint:** [`checkpoints/iteration-003-recommendation-review.md`](checkpoints/iteration-003-recommendation-review.md).
-- Recommendation synthesis, independent challenge, Managing Partner resolution
-  and independent editorial review completed on 2026-08-04. The package is In
-  Review and remains provisional engagement evidence rather than canonical
-  product truth or experiment authority.
+- **Latest checkpoint:** [`checkpoints/iteration-004-sponsor-discovery-authorization.md`](checkpoints/iteration-004-sponsor-discovery-authorization.md).
+- On 2026-08-04 the sponsor recorded the evidence inventory as unavailable,
+  accepted the learning thesis with a development/product-manager amendment and
+  authorised only the buyer/problem discovery contract. No outreach has started
+  and no later experiment or product boundary is approved.
 - On completion of an iteration, create a new immutable file from
   `checkpoints/_template.md`; never overwrite its predecessor. Update the latest
   checkpoint pointer here to the new path.
@@ -566,24 +566,25 @@ remain in the strategic-question/unknown registers above and, if promoted,
 must be routed to their owning SpecScore Feature.
 
 No question blocked the completed public/repository research, synthesis or
-assurance stages. The next iteration requires sponsor decisions before any
-participant or external action.
+assurance stages. The sponsor has now authorised the bounded discovery; access
+to eligible participants is the next dependency.
 
 - **Resolved:** The sponsor approved the tested framing, work plan, parallel
   specialist use, named model routing and publication to `main` on 2026-08-04.
 - **Resolved for this iteration:** Evidence remains repository-visible or
   public, participants are the sponsor contact, Managing Partner and approved
   bounded specialists, and governed artifacts remain in Git.
-- **Open decision 1:** Will the sponsor supply the non-identifying evidence
-  inventory or explicitly state that it is unavailable/declined? Without it,
-  traction remains unknown.
-- **Open decision 2:** Does the sponsor approve, reject or amend the
-  boundary-neutral priority-to-action learning thesis? Approval selects a
-  question, not a product boundary, experiment, campaign or build.
-- **Open decision 3, conditional on decision 2 approval:** Does the sponsor
-  authorise the buyer/problem discovery contract, including participant
-  outreach, raw-note storage/retention, 20–25 founder/research hours and either
-  no incentives or a stated incentive ceiling?
-- **Not authorised:** Raw/private-system access, personal evidence, outreach,
-  later experiments, spend, product work and canonical promotion remain outside
-  authority until the applicable decision is explicit.
+- **Resolved:** The sponsor confirmed no existing aggregate product evidence is
+  available. Traction remains unknown; founder experience is recorded
+  separately as plausibility evidence.
+- **Resolved:** The sponsor accepted the learning thesis after narrowing the
+  primary segment to development managers and product managers.
+- **Resolved:** The sponsor authorised the buyer/problem discovery with the
+  defaults recorded in
+  [`decisions/sponsor-discovery-authorization.md`](decisions/sponsor-discovery-authorization.md).
+- **Open, execution-specific:** Which eligible development and product managers
+  can the sponsor introduce or authorise for contact? Start with one of each role
+  before expanding the frame.
+- **Not authorised:** Raw/private-system access, incentives or other spend,
+  later experiments, product work and canonical promotion remain outside
+  authority. Discovery outreach is authorised only under the accepted protocol.

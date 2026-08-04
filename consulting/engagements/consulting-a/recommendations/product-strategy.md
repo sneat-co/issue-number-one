@@ -29,6 +29,11 @@ standalone and Sneat Work forms unresolved, and keeping public research,
 employee monitoring/organisational health, benchmarking and Moodometer
 combination outside the initial promise.
 
+The sponsor authorised buyer/problem discovery on 2026-08-04 with development
+managers and product managers as the initial primary segment. This does not yet
+accept a product boundary or build. See the
+[sponsor decision](../decisions/sponsor-discovery-authorization.md).
+
 This is a product-boundary recommendation, not an architecture, interface or
 implementation design.
 
@@ -37,7 +42,8 @@ implementation design.
 Define the initial product hypothesis as a **bounded decision cycle**, not an
 intelligence platform:
 
-1. a convenor names a real decision, participants and close date;
+1. a development manager or product manager names a real product/delivery
+   decision, participants and close date;
 2. eligible contributors state few issues and allocate scarce support;
 3. a decision owner sees the signal and its limitations;
 4. the owner acknowledges, acts, defers, rejects or transfers each material
