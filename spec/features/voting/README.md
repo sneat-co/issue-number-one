@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Voting is the mechanism by which eligible members decide which issue is #1 at each scope. Every person has one configurable budget of one to seven support-vote units shared across all levels of an organization, may allocate several units to the same issue, may support their own nominated issue, and may move allocations at any time.
+Voting is the mechanism by which eligible members decide which issue is #1 at each scope. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. They may allocate several budgeted units to one issue, support their own nominated issue, and move allocations at any time.
 
 ## Contents
 
@@ -22,15 +22,15 @@ Voting is the mechanism by which eligible members decide which issue is #1 at ea
 
 ### budget
 
-Votes are a limited resource. Members allocate a small number of units among the candidates eligible in a scope and must move existing units when their priority changes. Raising or recording an issue does not consume this vote budget; nominating one personal #1 is the separate scarcity mechanism.
+Budgeted votes are a limited resource. Members allocate a small number of units among the candidates eligible in a scope and must move existing units when their priority changes. Raising or recording an issue does not consume this vote budget. Nominating one personal #1 automatically supplies one separate creator star without consuming the budget.
 
 ### rating
 
-An issue's support score in a scope is the total number of support-vote units allocated to it in that scope. Vote attribution may be public or hidden. Issue lists sort by support score, creation date, or last activity date.
+An issue's support display distinguishes the automatic creator star from budgeted support-vote units allocated at each scope. Vote attribution may be public or hidden. Issue lists sort by their applicable ranking score, creation date, or last activity date.
 
 ## Problem
 
-Traditional voting systems give every user unlimited votes, which turns voting into a popularity contest rather than a prioritization tool. In IssueNumber.one, votes are limited on purpose: a member has only one to seven units and may concentrate or move them as priorities change. Combined with one personal #1 nomination, this forces a hierarchy toward shared focus without preventing people from recording other unresolved issues.
+Traditional voting systems give every user unlimited votes, which turns voting into a popularity contest rather than a prioritization tool. In IssueNumber.one, a personal nomination contributes one free creator star, while additional support is limited on purpose: the default budget is one unit, configurable up to seven, and may be concentrated or moved as priorities change. This forces a hierarchy toward shared focus without preventing people from recording other unresolved issues.
 
 ## Behavior
 
@@ -48,11 +48,15 @@ Only each direct child scope's current #1 issue MUST be eligible in a parent vot
 
 ### Budget, concentration, and self-support
 
-Each eligible voter has a configurable total budget between one and seven units. They may distribute the units or place several, including all available units, on one eligible issue. They may vote for an issue they authored.
+Each eligible voter has one budgeted support unit by default, configurable between one and seven. They may distribute the units or place several, including all available units, on one eligible issue. They may allocate budgeted support to an issue they authored in addition to its free creator star.
 
 #### REQ: vote-budget-one-to-seven
 
 The configured vote budget for an eligible voter MUST be an integer from 1 through 7 inclusive.
+
+#### REQ: default-vote-budget-one
+
+A new organization MUST default each eligible voter to one budgeted support-vote unit.
 
 #### REQ: one-budget-shared-across-org-levels
 
@@ -64,7 +68,11 @@ A voter MUST be allowed to allocate more than one available vote unit to the sam
 
 #### REQ: self-support-allowed
 
-A voter MUST be allowed to allocate available vote units to their own nominated issue.
+A voter MUST be allowed to allocate available budgeted vote units to their own nominated issue in addition to its automatic creator star.
+
+#### REQ: creator-star-is-outside-budget
+
+The automatic creator star on a personal #1 MUST NOT reduce the creator's available support-vote budget.
 
 ### Vote refunds on closure
 
@@ -104,7 +112,7 @@ When an issue stops being eligible in a voting scope, every vote unit allocated 
 |---------|-------------|
 | [issue](../issue/README.md) | Votes drive issue scores and ranking |
 | [issue/lifecycle](../issue/lifecycle/README.md) | Exiting `raised` triggers refunds |
-| [issue/visibility](../issue/visibility/README.md) | Scope-specific support rankings determine each #1 and automatic bubble-up |
+| [issue/visibility](../issue/visibility/README.md) | The applicable ranking score determines each #1 and automatic bubble-up |
 | [permissions](../permissions/README.md) | Who may vote in which scopes |
 
 ## Dependencies
@@ -118,7 +126,6 @@ Not defined yet.
 
 ## Open Questions
 
-- What is the default budget size within the confirmed 1–7 range?
 - May an organization configure different budget sizes by membership type, or must every eligible voter receive the same number?
 - Are negative/downvotes part of the MVP, or is voting support-only?
 - Acceptance criteria not yet defined for this feature.

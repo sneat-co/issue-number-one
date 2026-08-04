@@ -88,7 +88,7 @@ Issues in public topics MUST always be `public` visibility; they MUST NOT suppor
 | Feature | Interaction |
 |---------|-------------|
 | [issue](../README.md) | The #1-issue rule depends on [issue#req-single-top-issue-per-team](../README.md) |
-| [voting](../../voting/README.md) | Scope-specific support scores determine #1 and top-N ranking |
+| [voting](../../voting/README.md) | The applicable ranking score determines #1 and top-N order; support allocations retain their source scope |
 | [organization](../../organization/README.md) | Team/org/topic structure defines the scopes |
 | [permissions](../../permissions/README.md) | Visibility is enforced via permissions |
 

@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue in a scope at a time. Only that nominated issue enters collective voting, so scarcity applies to attention rather than to recording problems.
+An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue within an organization at a time. Only that nominated issue enters collective voting, so scarcity applies to attention rather than to recording problems.
 
 ## Contents
 
@@ -46,7 +46,7 @@ Traditional issue trackers encourage backlog growth: everything accumulates and 
 
 ### Personal issue list and #1 nomination
 
-A person may keep multiple open issues in a scope. They choose at most one as their personal #1. Only that nominated issue is eligible for collective voting in the immediate team or scope.
+A person may keep multiple open issues across the teams they belong to within an organization. They choose at most one as their personal #1 for that organization. Only that nominated issue is eligible for collective voting in its immediate source team.
 
 #### REQ: multiple-open-issues-per-person
 
@@ -54,15 +54,23 @@ A member MUST be able to keep multiple `raised` issues in the same scope.
 
 #### REQ: one-personal-top-nomination
 
-A member MUST have at most one nominated personal #1 issue per scope at a time.
+A member MUST have at most one nominated personal #1 issue within an organization at a time, regardless of how many teams or organizational levels they belong to.
 
 #### REQ: only-personal-top-enters-voting
 
-Only a member's nominated personal #1 issue MUST be eligible for collective voting in that member's immediate scope.
+Only a member's nominated personal #1 issue MUST be eligible for collective voting in the issue's immediate source team.
+
+#### REQ: personal-top-gets-creator-star
+
+When a member nominates their personal #1, that issue MUST automatically receive exactly one creator star from that member.
+
+#### REQ: creator-star-does-not-consume-budget
+
+The automatic creator star MUST NOT consume or reduce the creator's support-vote budget.
 
 #### REQ: changing-nomination-does-not-close
 
-When a member changes their personal #1 nomination, the previously nominated issue MUST remain `raised` unless the creator separately withdraws or resolves it.
+When a member changes their personal #1 nomination, the automatic creator star MUST move to the newly nominated issue. The previously nominated issue MUST remain `raised` unless the creator separately withdraws or resolves it.
 
 ### Issue fields
 
@@ -126,11 +134,11 @@ Acknowledging, assigning, commenting on, or recording work against an issue MUST
 
 ### The team's #1 issue
 
-Each team or organizational scope always has at most one current #1 issue: the eligible candidate with the highest support score in that scope. This #1 automatically becomes eligible in the parent scope while remaining open in its source scope.
+Each team or organizational scope always has at most one current #1 issue: the eligible candidate with the highest applicable ranking score in that scope. This #1 automatically becomes eligible in the parent scope while remaining open in its source scope.
 
 #### REQ: single-top-issue-per-team
 
-At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest scope-specific support score. Ties MUST be resolved deterministically.
+At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest applicable ranking score. Ties MUST be resolved deterministically.
 
 ### Visible age and persistence
 

@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Every eligible voter has one configurable budget of one to seven support-vote units shared across all levels of an organization. They may concentrate several units on one eligible issue, distribute them among issues at different levels, and reallocate them at any time.
+Every eligible voter has one budgeted support-vote unit by default, configurable from one to seven and shared across all levels of an organization. This budget is additional to the free automatic creator star on the voter's nominated personal #1. Budgeted units may be concentrated, distributed across levels, and reallocated at any time.
 
 ## Problem
 
@@ -21,15 +21,19 @@ Unlimited voting devalues every vote. A one-to-seven-unit budget forces users to
 
 ### One organization-wide one-to-seven budget
 
-The configured budget is an integer from one through seven inclusive. Within one organization, every allocation at team, project, department, or company level counts against the same personal budget.
+The budget defaults to one support-vote unit and is configurable from one through seven inclusive. Within one organization, every budgeted allocation at team, project, department, or company level counts against the same personal budget. The automatic creator star does not.
 
 #### REQ: configured-budget-range
 
 The vote budget MUST be configurable as an integer from 1 through 7 inclusive.
 
+#### REQ: default-budget-one
+
+A new organization MUST give each eligible voter one budgeted support-vote unit by default.
+
 #### REQ: allocations-cannot-exceed-budget
 
-A voter MUST NOT have more support units allocated across all organizational levels in total than their shared budget.
+A voter MUST NOT have more budgeted support units allocated across all organizational levels in total than their shared budget. The automatic creator star MUST be excluded from this total.
 
 #### REQ: budget-shared-across-all-levels
 
@@ -41,7 +45,7 @@ Every unit allocated at any organizational level MUST reduce the same available 
 
 ### Concentrated or distributed allocation
 
-A voter may put several units on one candidate, including their own nominated issue, or distribute units among several candidates.
+A voter may put several budgeted units on one candidate, including their own nominated issue, or distribute units among several candidates. Their own nominated issue already has one separate automatic creator star.
 
 #### REQ: budget-may-be-concentrated
 
@@ -49,15 +53,19 @@ A voter MUST be allowed to allocate any number of their available units to one e
 
 #### REQ: own-issue-uses-same-budget
 
-Units allocated to the voter's own nominated issue MUST count against the same budget as units allocated to other candidates.
+Any budgeted units allocated to the voter's own nominated issue MUST count against the same budget as units allocated to other candidates. Its one automatic creator star MUST NOT count against that budget.
 
 ### Issue recording is separate from voting budget
 
-Raising or keeping an issue does not consume support-vote units. The separate scarcity rule is that a person may nominate only one personal #1 per scope.
+Raising or keeping an issue does not consume support-vote units. Nominating one personal #1 within the organization automatically contributes one creator star, which is separate from the shared support-vote budget.
 
 #### REQ: raising-does-not-consume-votes
 
 Raising, recording, or keeping an issue open MUST NOT consume vote-budget units.
+
+#### REQ: nomination-star-free
+
+Nominating the person's one personal #1 within an organization MUST create one automatic creator star and MUST leave the creator's full configured support-vote budget available.
 
 ### Trading a vote for a new issue
 
@@ -95,7 +103,6 @@ Not defined yet.
 
 ## Open Questions
 
-- What is the default budget within the confirmed 1–7 range?
 - Who configures the shared budget, and is the same value mandatory for every member of the organization?
 - If a person belongs to multiple organizations, does each organization provide its own independent shared budget?
 - Is a minimum membership size required before collective ranking and bubble-up apply?

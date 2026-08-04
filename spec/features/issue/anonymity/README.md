@@ -29,11 +29,11 @@ A newly-created team or org MUST NOT allow anonymous issues until explicitly ena
 
 ### Authored and anonymous issues share one nomination
 
-A person may keep multiple authored or anonymous issues, but may nominate at most one personal #1 across both types in the same scope.
+A person may keep multiple authored or anonymous issues, but may nominate at most one personal #1 across both types within the same organization.
 
 #### REQ: anonymity-shares-personal-top-nomination
 
-Authored and anonymous issues MUST share the same one-personal-#1 nomination limit for their creator in a scope.
+Authored and anonymous issues MUST share the same one-personal-#1 nomination limit for their creator within an organization.
 
 ### Optional fee for anonymous issues
 
@@ -60,11 +60,15 @@ The system MUST allow the original anonymous author to update, nominate, withdra
 
 ### Anonymous self-support
 
-The original author may allocate support votes to their own anonymous nominated issue under the same budget as any other voter. The system enforces the budget and nomination rule without exposing the author relationship.
+The original anonymous author automatically contributes one free creator star when they nominate the issue as their personal #1. They may also allocate budgeted support votes to it under the same rules as any other voter. The system enforces both signals without exposing the author relationship.
+
+#### REQ: anonymous-nomination-gets-hidden-creator-star
+
+An anonymous personal #1 MUST receive the same free automatic creator star as an authored personal #1 without revealing who supplied it.
 
 #### REQ: anonymous-author-may-self-support
 
-An anonymous author MUST be able to allocate available support votes to their own nominated issue without revealing their identity to other users.
+An anonymous author MUST be able to allocate additional available support votes to their own nominated issue without revealing their identity to other users. Those additional votes MUST consume the shared support budget; the automatic creator star MUST NOT.
 
 ## Interaction with Other Features
 
