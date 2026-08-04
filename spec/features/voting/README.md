@@ -46,6 +46,10 @@ Only members' nominated personal #1 issues MUST be eligible in the immediate tea
 
 Only each direct child scope's current #1 issue MUST be eligible in a parent voting context through automatic bubble-up.
 
+#### REQ: public-topic-candidates-are-topic-personal-tops
+
+Within a public topic, only each participant's personal #1 nomination for that topic MUST be eligible for topic voting. A nomination in one organization or public topic MUST NOT automatically enter another public topic's candidate set.
+
 ### Budget, concentration, and self-support
 
 Each eligible voter has one budgeted support unit by default, configurable between one and seven. They may distribute the units or place several, including all available units, on one eligible issue. They may allocate budgeted support to an issue they authored in addition to its free creator star.

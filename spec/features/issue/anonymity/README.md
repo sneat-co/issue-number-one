@@ -29,11 +29,11 @@ A newly-created team or org MUST NOT allow anonymous issues until explicitly ena
 
 ### Authored and anonymous issues share one nomination
 
-A person may keep multiple authored or anonymous issues, but may nominate at most one personal #1 across both types within the same organization.
+A person may keep multiple authored or anonymous issues, but may nominate at most one personal #1 across both types within each organization and separately within each public topic.
 
 #### REQ: anonymity-shares-personal-top-nomination
 
-Authored and anonymous issues MUST share the same one-personal-#1 nomination limit for their creator within an organization.
+Authored and anonymous issues MUST share the same one-personal-#1 nomination limit for their creator within each organization or public topic.
 
 ### Optional fee for anonymous issues
 

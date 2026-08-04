@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Signed-in user's dashboard of every issue they have raised, their one personal #1 nomination within each organization with its free creator star, every issue they currently support, each issue's open age, and their remaining shared organization-wide budgeted support balance.
+Signed-in user's dashboard of every issue they have raised, their one personal #1 nomination within each organization and within each public topic with its free creator star, every issue they currently support, each issue's open age, and their remaining shared organization-wide budgeted support balance.
 
 ## Layout
 

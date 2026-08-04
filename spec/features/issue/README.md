@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue within an organization at a time. Only that nominated issue enters collective voting, so scarcity applies to attention rather than to recording problems.
+An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue within each organization and separately within each public topic. Only those context-specific nominations enter collective voting, so scarcity applies to attention rather than to recording problems.
 
 ## Contents
 
@@ -46,7 +46,7 @@ Traditional issue trackers encourage backlog growth: everything accumulates and 
 
 ### Personal issue list and #1 nomination
 
-A person may keep multiple open issues across the teams they belong to within an organization. They choose at most one as their personal #1 for that organization. Only that nominated issue is eligible for collective voting in its immediate source team.
+A person may keep multiple open issues across the teams they belong to within an organization and within public topics. They choose at most one personal #1 for each organization and at most one separate personal #1 for each public topic. An organizational nomination is eligible in its immediate source team; a topic nomination is eligible in that public topic.
 
 #### REQ: multiple-open-issues-per-person
 
@@ -54,11 +54,11 @@ A member MUST be able to keep multiple `raised` issues in the same scope.
 
 #### REQ: one-personal-top-nomination
 
-A member MUST have at most one nominated personal #1 issue within an organization at a time, regardless of how many teams or organizational levels they belong to.
+A member MUST have at most one nominated personal #1 issue within each organization at a time, regardless of how many teams or organizational levels they belong to, and at most one separate personal #1 within each public topic.
 
 #### REQ: only-personal-top-enters-voting
 
-Only a member's nominated personal #1 issue MUST be eligible for collective voting in the issue's immediate source team.
+Only a member's nominated personal #1 issue for an organization MUST be eligible for collective voting in the issue's immediate source team. Only their nominated personal #1 for a public topic MUST be eligible for collective voting in that topic.
 
 #### REQ: personal-top-gets-creator-star
 

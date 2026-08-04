@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-A topic is a public discussion space that is not owned by any single organization. Anyone may create a public topic or a sub-topic inside an existing public topic. Issues in topics are always public, cannot be archived, and can only be withdrawn by their creator.
+A topic is a public discussion space that is not owned by any single organization. Anyone may create a public topic or a sub-topic inside an existing public topic. A participant may nominate one personal #1 per topic, which receives one free creator star. Issues are always public and cannot be directly archived while raised.
 
 ## Problem
 
@@ -43,13 +43,25 @@ Topic issues are always `public` visibility. There is no team-scoped mode.
 
 All issues in topics MUST have `public` visibility. See also [issue/visibility#req-public-topic-always-public](../../issue/visibility/README.md).
 
+### One personal #1 per participant and topic
+
+A participant may keep multiple issues in a public topic but may nominate at most one personal #1 in that topic. The topic nomination is separate from their nomination in any organization or other public topic.
+
+#### REQ: one-personal-top-per-public-topic
+
+A participant MUST have at most one personal #1 nomination within a public topic at a time.
+
+#### REQ: topic-personal-top-gets-creator-star
+
+A participant's personal #1 in a public topic MUST automatically receive one free creator star without consuming any budgeted support allocation.
+
 ### Moderation constraints
 
-Topic issues cannot be archived. The only way to close them is withdrawal by the creator, or — in extreme cases — banning by platform moderators.
+Raised topic issues cannot be directly archived. They may be withdrawn or resolved by the creator, resolved by eligible peers when the creator is unavailable under the lifecycle rules, or banned by platform moderators.
 
 #### REQ: topic-issues-not-archivable
 
-Issues in topics MUST NOT be archivable by anyone. See also [issue/lifecycle#req-public-topic-no-archive](../../issue/lifecycle/README.md).
+Raised issues in topics MUST NOT be directly archivable by anyone. See also [issue/lifecycle#req-public-topic-no-archive](../../issue/lifecycle/README.md).
 
 ### Storage
 
@@ -64,13 +76,17 @@ Public topics MUST be stored in a public GitHub repository via the git-storage b
 | Feature | Interaction |
 |---------|-------------|
 | [organization](../README.md) | Topics live outside the org hierarchy but use the same nesting model |
+| [issue](../../issue/README.md) | Each participant may nominate one personal #1 per topic and receives one free creator star |
 | [issue/visibility](../../issue/visibility/README.md) | Topics are always `public` |
+| [voting](../../voting/README.md) | Topic candidate eligibility uses each participant's personal #1 for that topic; budget rules remain open |
 | [storage/git-storage](../../storage/git-storage/README.md) | Topics are persisted as git-storage |
 
 ## Dependencies
 
 - organization
+- issue
 - issue/visibility
+- voting
 - storage/git-storage
 
 ## Acceptance Criteria

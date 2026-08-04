@@ -21,7 +21,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 
 ### issue
 
-The core entity. A person may keep multiple open issues, but may nominate at most one personal #1 issue within an organization at a time. Only that nomination enters collective voting and it automatically receives one free creator star. Issues may be authored or anonymous, remain visibly open and ageing when they lose rank, and have a clear creator-controlled closure lifecycle.
+The core entity. A person may keep multiple open issues, but may nominate at most one personal #1 issue within each organization and separately within each public topic. Each nomination automatically receives one free creator star and is the only one of that person's issues entering collective voting in that context. Issues may be authored or anonymous, remain visibly open and ageing when they lose rank, and have a clear creator-controlled closure lifecycle.
 
 ### voting
 

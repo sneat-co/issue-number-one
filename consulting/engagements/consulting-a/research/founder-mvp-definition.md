@@ -29,7 +29,8 @@ supports building or selling it?
 
 IssueNumber.one is intended to prevent consequential unresolved problems from
 remaining trapped in meetings and management layers. People may record multiple
-issues but nominate only one personal #1, which receives one free creator star.
+issues but nominate only one personal #1 per organization or public topic, and
+each nomination receives one free creator star.
 Each person also receives one budgeted support vote by default, configurable to
 1–7, shared across levels, and continuously movable. These signals select one #1 at each organizational scope; that issue automatically
 enters the parent scope until a company-level view can show the most important
@@ -51,7 +52,7 @@ have changed the described outcome.
 |---|---|---|---|---|
 | E1 | Founder-reported case | Integration tests were disabled to permit an urgent release, were expected to return the next week, and remained disabled for more than three months. | Sponsor interview, 2026-08-04 | Retrospective single case; no independent record inspected |
 | E2 | Founder-reported case | New build servers did not support the containers and database setup assumed by the integration tests; developers had raised the problem in stand-ups, retrospectives, and meetings for roughly two years without sufficient escalation or resolution. | Sponsor interview, 2026-08-04 | Retrospective single case; employer and project intentionally not recorded |
-| E3 | Founder requirement | A person may keep multiple issues but nominate only one personal #1; only nominated issues enter collective voting, and the nomination automatically supplies one creator star without consuming support-vote budget. | Sponsor interview, 2026-08-04 | Product intent, not validation |
+| E3 | Founder requirement | A person may keep multiple issues but nominate only one personal #1 per organization or per public topic; only context-specific nominations enter collective voting, and each nomination automatically supplies one creator star without consuming support-vote budget. | Sponsor interview, 2026-08-04 | Product intent, not validation |
 | E4 | Founder requirement | Each person receives one budgeted support vote by default, configurable from 1–7 and shared across team, project, department, and company levels; may put multiple budgeted votes on one issue; may spend them on their own nominated issue in addition to its creator star; and may reallocate them at any time. | Sponsor interview, 2026-08-04 | Membership in multiple organizations and parent-score roll-up remain unresolved in the owning Voting Features |
 | E5 | Founder requirement | Anyone in a department may vote; every scope's #1 moves upward automatically without a manager gate. A company leader sees each department's most important issue and can drill down through department, project, team, person, and issue. | Sponsor interview, 2026-08-04 | Exact candidate and budget behavior is specified where confirmed; remaining questions stay with the owning Features |
 | E6 | Founder requirement | Members see their own issues, the top N department issues, and the top N company issues. | Sponsor interview, 2026-08-04 | Default N remains unresolved |
@@ -64,9 +65,9 @@ have changed the described outcome.
 
 - The founder's concrete case is a priority-to-action and escalation failure,
   not merely a missing suggestion box (E1–E2).
-- The intended scarcity mechanism is one nominated personal #1 with a free
-  creator star plus a separate scarce support budget that defaults to one, not
-  a hard cap on recording open issues (E3–E4).
+- The intended scarcity mechanism is one nominated personal #1 per organization
+  or public topic with a free creator star plus a separate scarce support budget
+  that defaults to one, not a hard cap on recording open issues (E3–E4).
 - Promotion is recursive and automatic: a child #1 becomes a parent candidate;
   top N is a scope view, not the number of issues promoted (E5–E6).
 - Persistence is a product signal. An unresolved issue remaining open for, for
