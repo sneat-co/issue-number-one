@@ -3,8 +3,8 @@ title: "IssueNumber.one Strategy Executive Summary"
 artifact: executive-summary
 status: In Review
 engagement: "consulting-a"
-author: "Executive Editor"
-model: "gpt-5.6-sol"
+author: "Executive Editor; sponsor response reconciled by Codex (Managing Partner)"
+model: "gpt-5.6-sol; GPT-5 (Codex)"
 created: "2026-08-04"
 updated: "2026-08-04"
 confidence: "Low — the negative conclusion is well supported by public and repository evidence, but the candidate buyer, repeated problem, demand, payment, repeat use and product boundary remain unobserved"
@@ -17,6 +17,9 @@ dependencies:
   - "recommendations/go-to-market-strategy.md"
   - "recommendations/devils-advocate-review.md"
   - "decisions/recommendation-resolution.md"
+  - "decisions/sponsor-discovery-authorization.md"
+  - "checkpoints/iteration-004-sponsor-discovery-authorization.md"
+  - "experiments/buyer-problem-discovery.md"
 related_specs:
   - "../../../spec/features/README.md"
   - "https://github.com/sneat-co/backstage/blob/5f29c3424de8ffda0dfe7f7ac09c510741043381/spec/features/ai-consulting-framework/README.md"
@@ -26,31 +29,34 @@ promotion_target: "None"
 
 ## I need from you
 
-1. Supply the non-identifying evidence inventory listed below, or explicitly
-   state that it is unavailable or declined.
-2. Approve, reject or amend the boundary-neutral **priority-to-action learning
-   thesis**; approval selects only a question to investigate, not a product,
-   service, Sneat Work boundary, experiment, campaign or build.
-3. **Only if item 2 is approved:** authorise or decline the
-   [buyer/problem discovery contract](experiments/buyer-problem-discovery.md),
-   including participant outreach, the raw-notes storage and retention rule,
-   20–25 founder/research hours, and either no incentives or a stated incentive
-   budget ceiling.
+1. Introduce one eligible development manager and one eligible product manager
+   for the first two interviews, or say that you want a different recruitment
+   route.
 
 ## Here is why
 
-1. The live landing and waitlist write path are observed, but traffic, signups,
-   conversion, selected plans, qualified conversations, repeated use, payment
-   and revenue were not supplied. The inventory is the smallest evidence that
-   could change option order before new contact or spend.
-2. The broad platform is not recommended. Priority-to-action ranks only as the
-   most reversible, lowest-cold-start learning candidate; no evidence yet
-   distinguishes a facilitated service, standalone workflow, Sneat Work
-   capability or no-build.
-3. Discovery is the first step that needs consequential authority. Its draft
-   contract requires contact with 12 professionals and governed evidence
-   retention; later mechanism, paid-cycle and channel contracts remain gated
-   and are not authorised by approving discovery.
+1. Discovery is Accepted, but recruitment has not started. Beginning with one
+   person in each primary role checks eligibility, interviewing and evidence
+   handling before the cohort expands. No product is presented in these
+   interviews.
+
+## Sponsor Response — 2026-08-04
+
+- The sponsor confirmed that no aggregate product evidence is available.
+  Traction remains unknown.
+- The sponsor's experience as a development manager and across corporations
+  sharpens the problem hypothesis—important pain points fail to bubble up—but
+  does not count as independent customer validation.
+- The sponsor accepted the boundary-neutral learning direction with development
+  managers and product managers as the initial primary segment.
+- The sponsor authorised the
+  [buyer/problem discovery](experiments/buyer-problem-discovery.md) for 20–25
+  combined hours, no incentives, private raw notes outside Git, de-identified
+  engagement evidence and deletion of raw notes within 30 days of synthesis.
+- No outreach has started. No later experiment, product, campaign, architecture,
+  implementation or promotion is authorised
+  ([decision](decisions/sponsor-discovery-authorization.md);
+  [checkpoint](checkpoints/iteration-004-sponsor-discovery-authorization.md)).
 
 ## Recommendation and Priority
 
@@ -61,20 +67,21 @@ health, universal cross-product signal value or LinkedIn primacy.
 
 Retain only this low-confidence, boundary-neutral learning thesis:
 
-> A leader responsible for a bounded cross-functional decision may value a
-> process that turns scattered, contested issues into a tested priority, an
-> accountable response and a visible terminal outcome.
+> A development manager or product manager may value a process that surfaces
+> important pain points in time, turns them into a tested priority and provides
+> an accountable response and visible terminal outcome.
 
 This is a learning candidate, not a recommended product. The priority order is:
 
-1. resolve or explicitly decline existing non-identifying evidence;
-2. decide whether the learning thesis merits discovery;
-3. if separately authorised, test the problem and buyer;
-4. test scarcity, visible action and one explicit context field independently;
-5. treat any early payment as facilitated-service evidence;
-6. require founder-independent paid repeat before considering product transfer;
-7. only then compare service, standalone and Sneat Work boundaries;
-8. compare channels only after buyer, offer and product-transfer evidence are
+1. recruit one eligible development manager and one product manager and confirm
+   the interview/evidence process;
+2. complete the Accepted discovery cohort and apply its role-separated gates;
+3. only after discovery success, request authority to test scarcity, visible
+   action and one explicit context field independently;
+4. treat any later early payment as facilitated-service evidence;
+5. require founder-independent paid repeat before considering product transfer;
+6. only then compare service, standalone and Sneat Work boundaries;
+7. compare channels only after buyer, offer and product-transfer evidence are
    stable.
 
 No-build remains live throughout. Public research, employee intelligence and
@@ -111,20 +118,14 @@ on demand.
   ([decision record](decisions/recommendation-resolution.md)).
 
 **Confidence is low** on the strategic winner. Confidence is medium-high that
-the broad platform and its trust/graph claims are unsupported now. The decisive
-unknown is a recent, repeated, consequential problem with a named economic
-buyer, budget path, failed current alternative, paid outcome and repeat
-condition. The first missing input is the non-identifying inventory:
-
-- monthly unique waitlist totals;
-- aggregate source and selected-plan counts;
-- aggregate landing traffic and conversion, if available;
-- de-identified summaries of prior problem conversations; and
-- aggregate evidence of active/repeated use, purchase intent or budget
-  ownership.
-
-If none exists, “traction unknown” remains the result; it does not become zero
-or positive demand.
+the broad platform and its trust/graph claims are unsupported now. The sponsor
+confirmed that no aggregate product-evidence inventory is available, so
+“traction unknown” remains the result; it does not become zero or positive
+demand. The sponsor's direct management experience raises problem plausibility
+but cannot establish recurrence, buyer, budget, payment or repeat. The decisive
+unknown is whether independent development and product managers describe the
+same recent, repeated and consequential failure with an inadequate current
+alternative and named economic buyer/budget path.
 
 ## Alternatives and Dissent
 
@@ -153,13 +154,13 @@ These are the retained Devil's Advocate positions, not editorial caveats
 
 ## Experiments and Next Decisions
 
-All four contracts are **In Review, unexecuted and unauthorised**. Approval of
-the thesis does not approve any contract; approval of discovery does not approve
-later contracts.
+Buyer/problem discovery is **Accepted, unexecuted and authorised** under the
+bounded sponsor decision. The three later contracts remain **In Review and
+unauthorised**; discovery success would not approve them automatically.
 
 | Contract | Cost / duration | Decision after result | Current sponsor-authorisation state |
 |---|---|---|---|
-| [Buyer/problem discovery](experiments/buyer-problem-discovery.md) | 20–25 founder/research hours, plus only sponsor-approved incentives; three weeks | Success: proceed to mechanism/trust testing and paid offers. Failure: stop this direction and reopen the strongest evidenced comparator. Inconclusive: one bounded follow-up, then park for 90 days. | Decision requested only if the thesis is approved; outreach, retention, time and incentives are not authorised. |
+| [Buyer/problem discovery](experiments/buyer-problem-discovery.md) | Up to 20–25 combined founder/research hours; no incentives; three weeks from first contact | Success: request the next mechanism/trust decision and allow later paid offers only through their own authority. Failure: stop this direction and reopen the strongest evidenced comparator. Inconclusive: one bounded follow-up, then park for 90 days. | **Accepted.** Four development managers, four product managers and four contextual interviews; private raw notes outside Git, de-identified engagement evidence and 30-day raw-note deletion. Recruitment has not started. |
 | [Factorial mechanism and paired-trust test](experiments/relationship-scarcity-lift.md) | 25–30 research hours, plus only sponsor-approved incentives; two weeks after discovery success | Preserve only mechanisms that pass. Remove failed scarcity/context claims; stop the direction if visible action adds no value. One correction/repeat only for a named rubric or wording defect. | Not authorised; gated by discovery success and a later participant/budget decision. Any context result is **explicit-context lift, not graph lift**. |
 | [Paid priority-to-action cycle](experiments/paid-priority-cycle.md) | Sponsor-approved delivery time/tools and a customer-paid, non-token fixed price; up to eight weeks | Phase 1 success retains only a facilitated-service hypothesis. Phase 2 requires at least two paid founder-independent repeat cycles at full marginal cost before a product-boundary review. Failure stops the failed phase; inconclusive permits at most one bounded case. | Not authorised; gated by discovery and mechanism/trust results plus later commercial, participant and retention approval. **Service evidence is not product evidence.** |
 | [Initial channel comparison](experiments/initial-channel-comparison.md) | 40 eligible accounts; founder/partner time and ordinary tools; no paid-media budget; four weeks plus paid-cycle/30-day repeat window | A balanced robust winner may serve the next bounded cohort. Feasibility without balance or robust superiority produces no channel ranking. Failure reopens buyer/offer evidence; inconclusive produces no expansion. | Not authorised; gated by product-transfer success and later outreach approval. **Route feasibility is not a channel winner.** |
@@ -170,8 +171,8 @@ economics.
 
 ## Risks and Dependencies
 
-- **Buyer risk:** Product, engineering, operations and departmental leaders are
-  candidates, not validated buyers; People/HR spend does not transfer.
+- **Buyer risk:** Development managers and product managers are candidates, not
+  validated buyers; founder experience and People/HR spend do not transfer.
 - **Trust risk:** Keep anonymous-author mappings, individual Moodometer signals,
   employee free text, individual votes, moderation/safeguarding cases, public
   research microdata, benchmark contributions and derived opinion/health/
@@ -187,9 +188,10 @@ economics.
   can create false positives; retain the complete eligible frame, refusals,
   exclusions, relationship strength, marginal delivery cost and exact payment
   state.
-- **Dependency:** Any participant research needs approved outreach,
-  confidentiality, raw-note storage, retention, withdrawal and incentive rules.
-  Any paid or external motion needs separate sponsor authority.
+- **Dependency:** Discovery has approved outreach, confidentiality, raw-note
+  storage, retention, withdrawal and no-incentive rules. It still needs eligible
+  participant access. Any paid or later external motion needs separate sponsor
+  authority.
 
 ## Deliverables and Deferrals
 
@@ -200,7 +202,7 @@ economics.
 | Strongest business strategy, including status quo and pivots | [Business recommendation](recommendations/business-strategy.md) and [challenge resolution](decisions/recommendation-resolution.md) | Delivered; In Review. Broad platform rejected; boundary-neutral learning thesis only; no-build live. |
 | Strongest product strategy and public/internal choice | [Product recommendation](recommendations/product-strategy.md) and [trust research](research/product-modes-and-trust.md) | Delivered; In Review as a bounded journey/exclusion set, not a build or boundary decision. Public/internal unity remains unresolved. |
 | Strongest GTM strategy, including LinkedIn | [GTM recommendation](recommendations/go-to-market-strategy.md) and [growth evidence](research/growth-and-commercial-evidence.md) | Delivered; In Review. Founder-led discovery is a proposed learning motion; LinkedIn remains an unproven instrument. |
-| Integrated risks, dissent, decisions and learning sequence | [Devil's Advocate review](recommendations/devils-advocate-review.md), [resolution](decisions/recommendation-resolution.md), four linked contracts and this summary | Delivered for sponsor review; no experiment or promotion is approved. |
+| Integrated risks, dissent, decisions and learning sequence | [Devil's Advocate review](recommendations/devils-advocate-review.md), [resolution](decisions/recommendation-resolution.md), [sponsor decision](decisions/sponsor-discovery-authorization.md), four linked contracts and this summary | Delivered; buyer/problem discovery Accepted. No later experiment or promotion is approved. |
 | Roadmap, architecture, product design and implementation | Unpopulated `roadmap.md`; no architecture, design or implementation artifact | Not delivered: excluded from the first-output mandate and explicitly deferred pending evidence and separate authority. |
 
 Explicitly deferred and not approved: a public-research product or study;
@@ -215,8 +217,8 @@ and any canonical product, Sneat Work, relationship-graph or framework change.
 - **Canonical promotions:** None proposed or authorised. Every engagement
   artifact remains provisional; sponsor acceptance would still require a
   separate, exact, owner-reviewed promotion change.
-- **Next review trigger:** the sponsor's evidence-inventory response and
-  decision on the boundary-neutral thesis. Only if the thesis is approved does
-  the discovery-authorisation decision become operative. Later reviews occur
-  after each gated result, with failure, inconclusive and no-build branches
-  preserved exactly as above.
+- **Next review trigger:** one eligible development-manager interview and one
+  eligible product-manager interview, any protocol/safety deviation or a
+  sponsor correction to the recorded defaults. Later reviews occur after each
+  gated result, with failure, inconclusive and no-build branches preserved
+  exactly as above.
