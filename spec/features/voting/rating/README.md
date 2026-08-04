@@ -11,17 +11,17 @@ status: Conceptual
 
 ## Summary
 
-Rating covers the visible output of voting: the free creator star on a personal #1, budgeted support allocated in each organizational scope, vote attribution, ranking, and issue-list sort orders. The founder-defined MVP uses positive support; whether negative votes exist later remains open.
+Rating covers the visible output of voting: the free creator star on a personal #1, budgeted support assigned directly to issues, vote attribution, ranking, and issue-list sort orders. Each issue has one support score wherever it appears in the hierarchy. The founder-defined MVP uses positive support; whether negative votes exist later remains open.
 
 ## Problem
 
-Raw voting data needs a presentation layer. Users need to distinguish the creator's automatic nomination signal from scarce peer or self-support, understand support at each scope, know whether attribution is public, and see how candidates are ranked. The same issue may be the #1 of a team while competing at department and company levels.
+Raw voting data needs a presentation layer. Users need to distinguish the creator's automatic nomination signal from scarce peer or self-support, know whether attribution is public, and see how candidates are ranked. The same issue may appear in team, department, and company views, but its votes and score do not split by view.
 
 ## Behavior
 
 ### Creator star and budgeted support
 
-Every current personal #1 has one automatic creator star. Budgeted support allocations are recorded separately with the organizational scope in which each unit was allocated.
+Every current personal #1 has one automatic creator star. Every budgeted support allocation is assigned directly to one issue.
 
 #### REQ: one-creator-star-for-personal-top
 
@@ -33,15 +33,19 @@ The creator star MUST NOT reduce the creator's configured support-vote budget.
 
 #### REQ: score-formula
 
-An issue's local support score in a voting scope MUST equal its creator star plus the budgeted support-vote units allocated to it in that scope.
+An issue's support score MUST equal its creator star, if any, plus all budgeted support-vote units currently assigned to that issue.
 
-#### REQ: allocation-scope-recorded
+#### REQ: one-global-issue-score
 
-Every budgeted support unit MUST retain the team, project, department, or company voting scope in which it was allocated so lower-level and parent-level support can be distinguished.
+The same issue MUST expose the same support score in every team, project, department, company, or other ranking view in which it appears.
+
+#### REQ: ranking-view-does-not-own-vote
+
+The view or hierarchy level from which a voter assigns support MAY be retained as interaction metadata, but MUST NOT own, duplicate, or create a separate score for that vote.
 
 #### REQ: multiple-units-from-one-voter-count
 
-A voter's multiple budgeted units on one issue MUST all count toward that issue's local support score.
+A voter's multiple budgeted units on one issue MUST all count toward that issue's support score.
 
 ### Support-only ranking
 
@@ -49,7 +53,7 @@ The current ranking mechanism counts positive support units. Negative voting is 
 
 #### REQ: support-score-nonnegative
 
-A scope's local support score MUST be a non-negative integer.
+An issue's support score MUST be a non-negative integer.
 
 ### Public vs anonymous vote display
 
@@ -69,7 +73,7 @@ Issue lists support three sort orders:
 
 | Order | Description |
 |-------|-------------|
-| `score` | Applicable ranking score, highest first |
+| `score` | Issue support score, highest first |
 | `created` | Creation timestamp, newest first |
 | `activity` | Last-activity timestamp, most recent first |
 
@@ -82,7 +86,7 @@ Issue list views MUST support sorting by `score`, `created`, and `activity`.
 | Feature | Interaction |
 |---------|-------------|
 | [voting](../README.md) | Rating is the visible layer over the voting mechanism |
-| [issue/visibility](../../issue/visibility/README.md) | The applicable ranking score determines each #1 and automatic bubble-up |
+| [issue/visibility](../../issue/visibility/README.md) | The issue score determines order within each eligible candidate set and therefore each #1 |
 | [permissions](../../permissions/README.md) | Controls who may see vote attribution |
 
 ## Dependencies
@@ -99,6 +103,5 @@ Not defined yet.
 
 - Should aggregate support totals remain visible when individual attribution is hidden?
 - Are negative/downvotes intentionally excluded from the product, or only from the MVP?
-- When an issue becomes a parent-scope candidate, does its ranking score carry budgeted support from lower scopes or use only the creator star plus support allocated at the parent scope?
 - How are equal support scores ordered when determining a single #1?
 - Acceptance criteria not yet defined for this feature.

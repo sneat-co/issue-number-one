@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-IssueNumber.one models a company as a root team with nested department, project, and team nodes. Each node has its own voting context and top-N ranking, and automatically contributes only its current #1 issue to its parent. Leaders may drill from the root through every node to the originating person and issue. Public topics live outside this hierarchy.
+IssueNumber.one models a company as a root team with nested department, project, and team nodes. Each node has its own candidate set and top-N ranking, and automatically contributes only its current #1 issue to its parent. Votes remain assigned to the issue as its visibility changes. Leaders may drill from the root through every node to the originating person and issue. Public topics live outside this hierarchy.
 
 ## Contents
 
@@ -39,7 +39,7 @@ An organization MUST be modeled as a team with no parent. When an org joins anot
 
 ### Teams nest
 
-A team MAY have any number of sub-teams. A sub-team is itself a team and has its own issues, budget, and membership.
+A team MAY have any number of sub-teams. A sub-team is itself a team and has its own issues, candidate set, ranking, and membership.
 
 #### REQ: team-nesting
 
@@ -122,7 +122,7 @@ Any member of an organization MUST be allowed to archive any team within that or
 | Feature | Interaction |
 |---------|-------------|
 | [issue](../issue/README.md) | Every issue is scoped to a team, org, or topic |
-| [voting](../voting/README.md) | Each scope has an eligible candidate set and support ranking, while each member's 1–7 vote budget is shared across all levels of the organization |
+| [voting](../voting/README.md) | Each scope has an eligible candidate set and ranking, while every vote stays attached to its issue and each member's 1–7 budget is shared across the organization |
 | [permissions](../permissions/README.md) | Membership determines visibility and action rights |
 | [storage](../storage/README.md) | Orgs choose where their data lives |
 

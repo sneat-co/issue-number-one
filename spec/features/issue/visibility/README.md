@@ -65,7 +65,7 @@ A member MUST be able to see their own recorded issues, the top N issues in thei
 
 ### Drill-down and changing leaders
 
-A leader may drill from the company view through department, project, team, person, and originating issue. When a scope's #1 changes, the former #1 stops being the candidate at the parent but remains open and visibly ageing at its source.
+A leader may drill from the company view through department, project, team, person, and originating issue. When a scope's #1 changes, the former #1 stops being the candidate at the parent but remains open and visibly ageing at its source. Its assigned votes remain attached to the issue; hierarchy changes only its visibility and candidate eligibility.
 
 #### REQ: hierarchy-drill-down
 
@@ -73,7 +73,7 @@ An authorized viewer MUST be able to trace a bubbled issue through each child sc
 
 #### REQ: replaced-top-remains-open
 
-When a new issue becomes a scope's #1, the previous #1 MUST lose parent-scope candidate visibility but MUST remain `raised` with its original age unless separately closed under the lifecycle rules.
+When a new issue becomes a scope's #1, the previous #1 MUST lose parent-scope candidate visibility but MUST remain `raised` with its original age and assigned votes unless separately closed under the lifecycle rules.
 
 ### Public topics
 
@@ -88,7 +88,7 @@ Issues in public topics MUST always be `public` visibility; they MUST NOT suppor
 | Feature | Interaction |
 |---------|-------------|
 | [issue](../README.md) | The #1-issue rule depends on [issue#req-single-top-issue-per-team](../README.md) |
-| [voting](../../voting/README.md) | The applicable ranking score determines #1 and top-N order; support allocations retain their source scope |
+| [voting](../../voting/README.md) | One issue-bound support score determines order within every candidate set; hierarchy affects visibility and eligibility, not vote ownership |
 | [organization](../../organization/README.md) | Team/org/topic structure defines the scopes |
 | [permissions](../../permissions/README.md) | Visibility is enforced via permissions |
 

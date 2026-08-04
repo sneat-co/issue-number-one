@@ -11,22 +11,22 @@ status: Conceptual
 
 ## Summary
 
-Voting is the mechanism by which eligible members decide which issue is #1 at each scope. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. They may allocate several budgeted units to one issue, support their own nominated issue, and move allocations at any time.
+Voting is the mechanism by which eligible members decide which issue is #1 at each scope. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time.
 
 ## Contents
 
 | Directory | Description |
 |-----------|-------------|
 | [budget/](budget/README.md) | One-to-seven vote budgets, multi-unit allocation, and reallocation rules |
-| [rating/](rating/README.md) | Scope-specific support scores, sort orders, and public/anonymous display |
+| [rating/](rating/README.md) | One issue-bound support score, sort orders, and public/anonymous display |
 
 ### budget
 
-Budgeted votes are a limited resource. Members allocate a small number of units among the candidates eligible in a scope and must move existing units when their priority changes. Raising or recording an issue does not consume this vote budget. Nominating one personal #1 automatically supplies one separate creator star without consuming the budget.
+Budgeted votes are a limited resource. Members assign a small number of units directly to eligible issues and must reassign existing units when their priority changes. Raising or recording an issue does not consume this vote budget. Nominating one personal #1 automatically supplies one separate creator star without consuming the budget.
 
 ### rating
 
-An issue's support display distinguishes the automatic creator star from budgeted support-vote units allocated at each scope. Vote attribution may be public or hidden. Issue lists sort by their applicable ranking score, creation date, or last activity date.
+An issue's support display distinguishes the automatic creator star from budgeted support-vote units assigned to the issue. The issue has one score wherever it appears in the hierarchy. Vote attribution may be public or hidden. Issue lists sort by issue score, creation date, or last activity date.
 
 ## Problem
 
@@ -102,13 +102,21 @@ Every member of a department is eligible to vote in that department's ranking, i
 
 Every member of an organizational scope, including members of its descendant scopes, MUST be allowed to vote on the candidates eligible in that scope.
 
-### Candidate replacement refunds scope allocations
+### Votes remain assigned to issues
 
-When an issue ceases to be eligible in a voting scope because a person changes their nomination or a child scope gets a different #1, allocations made in that scope return to their voters. The issue remains open at its source.
+Hierarchy changes affect an issue's candidate eligibility and visibility, not its votes. When an issue becomes visible at a higher level, its votes are not copied, moved, reset, or re-cast. Newly eligible members may add their own votes to that same issue. If the issue later loses candidate eligibility, its existing votes remain assigned and continue consuming their voters' budgets until those voters reassign them or the issue leaves the `raised` state.
 
-#### REQ: refund-when-candidate-leaves-scope
+#### REQ: budgeted-vote-belongs-to-issue
 
-When an issue stops being eligible in a voting scope, every vote unit allocated to it in that scope MUST immediately return to its voter without changing the issue's lifecycle status.
+Every budgeted support-vote unit MUST reference one issue and MUST NOT belong to an organizational hierarchy level or ranking view.
+
+#### REQ: hierarchy-change-does-not-move-votes
+
+An issue becoming or ceasing to be a candidate at any hierarchy level MUST NOT copy, move, reset, refund, or re-scope any vote assigned to it.
+
+#### REQ: ineligible-issue-keeps-assigned-votes
+
+If an issue ceases to be eligible in a ranking view, its existing budgeted votes MUST remain assigned and MUST continue consuming their voters' budgets until individually withdrawn or released when the issue leaves the `raised` state.
 
 ## Interaction with Other Features
 
@@ -116,7 +124,7 @@ When an issue stops being eligible in a voting scope, every vote unit allocated 
 |---------|-------------|
 | [issue](../issue/README.md) | Votes drive issue scores and ranking |
 | [issue/lifecycle](../issue/lifecycle/README.md) | Exiting `raised` triggers refunds |
-| [issue/visibility](../issue/visibility/README.md) | The applicable ranking score determines each #1 and automatic bubble-up |
+| [issue/visibility](../issue/visibility/README.md) | An issue's single score determines its order within each eligible candidate set and therefore automatic bubble-up |
 | [permissions](../permissions/README.md) | Who may vote in which scopes |
 
 ## Dependencies

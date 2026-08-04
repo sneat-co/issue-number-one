@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Every eligible voter has one budgeted support-vote unit by default, configurable from one to seven and shared across all levels of an organization. This budget is additional to the free automatic creator star on the voter's nominated personal #1. Budgeted units may be concentrated, distributed across levels, and reallocated at any time.
+Every eligible voter has one budgeted support-vote unit by default, configurable from one to seven and shared across all levels of an organization. This budget is additional to the free automatic creator star on the voter's nominated personal #1. Budgeted units are assigned directly to issues and may be concentrated, distributed among issues, and reallocated at any time.
 
 ## Problem
 
@@ -21,7 +21,7 @@ Unlimited voting devalues every vote. A one-to-seven-unit budget forces users to
 
 ### One organization-wide one-to-seven budget
 
-The budget defaults to one support-vote unit and is configurable from one through seven inclusive. Within one organization, every budgeted allocation at team, project, department, or company level counts against the same personal budget. The automatic creator star does not.
+The budget defaults to one support-vote unit and is configurable from one through seven inclusive. Within one organization, every budgeted vote assigned through a team, project, department, or company view counts against the same personal budget. A view does not own the vote. The automatic creator star does not count against the budget.
 
 #### REQ: configured-budget-range
 
@@ -33,15 +33,15 @@ A new organization MUST give each eligible voter one budgeted support-vote unit 
 
 #### REQ: allocations-cannot-exceed-budget
 
-A voter MUST NOT have more budgeted support units allocated across all organizational levels in total than their shared budget. The automatic creator star MUST be excluded from this total.
+A voter MUST NOT have more budgeted support units assigned to issues in an organization than their shared budget. The automatic creator star MUST be excluded from this total.
 
 #### REQ: budget-shared-across-all-levels
 
-A voter MUST receive one shared budget within an organization. Voting in a different team, project, department, or company-level ranking within that organization MUST NOT create an additional allocation.
+A voter MUST receive one shared budget within an organization. Voting from a different team, project, department, or company-level view within that organization MUST NOT create an additional budget or a view-specific vote.
 
 #### REQ: cross-level-allocation-reduces-same-balance
 
-Every unit allocated at any organizational level MUST reduce the same available balance, and every withdrawn or refunded unit MUST return to that balance.
+Every unit assigned to an issue in the organization MUST reduce the same available balance. Withdrawing a unit or closing its issue MUST make that unit available again.
 
 ### Concentrated or distributed allocation
 
@@ -77,7 +77,7 @@ A user at their vote cap MUST withdraw one or more existing vote units before al
 
 ### Scope eligibility
 
-Any member of an organizational scope, including members in descendant teams, may use their shared organization-wide budget to vote in that scope's ranking.
+Any member of an organizational scope, including members in descendant teams, may use their shared organization-wide budget to support an issue while it is eligible in that scope's ranking. The resulting vote remains assigned to the issue rather than the scope.
 
 #### REQ: descendant-members-eligible
 

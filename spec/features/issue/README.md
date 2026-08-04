@@ -134,11 +134,11 @@ Acknowledging, assigning, commenting on, or recording work against an issue MUST
 
 ### The team's #1 issue
 
-Each team or organizational scope always has at most one current #1 issue: the eligible candidate with the highest applicable ranking score in that scope. This #1 automatically becomes eligible in the parent scope while remaining open in its source scope.
+Each team or organizational scope always has at most one current #1 issue: the eligible candidate with the highest issue support score. This #1 automatically becomes eligible in the parent scope while remaining open in its source scope. The issue retains the same votes and score as its visibility changes.
 
 #### REQ: single-top-issue-per-team
 
-At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest applicable ranking score. Ties MUST be resolved deterministically.
+At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest issue support score. Ties MUST be resolved deterministically.
 
 ### Visible age and persistence
 
@@ -150,7 +150,7 @@ Every `raised` issue MUST expose how long it has remained open, derived from its
 
 #### REQ: loss-of-rank-does-not-close
 
-Removing votes from an issue, changing a nomination, or losing rank MUST NOT withdraw, resolve, archive, or reset the age of that issue.
+Removing votes from an issue, changing a nomination, or losing rank MUST NOT withdraw, resolve, archive, or reset the age of that issue. Changing nomination or hierarchy eligibility MUST NOT alter the budgeted votes already assigned to the issue.
 
 ## Interaction with Other Features
 

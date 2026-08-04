@@ -11,7 +11,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 | Feature | Status | Description |
 |---------|--------|-------------|
 | [issue](issue/README.md) | Conceptual | The atomic unit — what an issue is, who can raise it, its lifecycle, anonymity, visibility, and moderation |
-| [voting](voting/README.md) | Conceptual | A free creator star, one shared 1–7 support-vote budget per person, scoped support records, ranking, and sort orders |
+| [voting](voting/README.md) | Conceptual | A free creator star, one shared 1–7 support-vote budget per person, issue-bound votes, one issue score, ranking, and sort orders |
 | [organization](organization/README.md) | Conceptual | Org/team/sub-team hierarchy, peers, and public topics |
 | [permissions](permissions/README.md) | Conceptual | Who can do what — the access matrix across teams, orgs, topics, and issues |
 | [storage](storage/README.md) | Conceptual | Where org data lives — IssueNumber.one cloud or a GitHub repository via inGitDB |
@@ -25,7 +25,7 @@ The core entity. A person may keep multiple open issues, but may nominate at mos
 
 ### voting
 
-Votes are scarce by design. Each eligible person receives one support vote by default, configurable from one to seven and shared across all organizational levels. This budget is additional to the free creator star on their personal #1. Budgeted votes may be concentrated on one issue, including the voter's own, and reallocated at any time. Scope-level rankings determine which single #1 issue automatically becomes eligible at the parent scope.
+Votes are scarce by design. Each eligible person receives one support vote by default, configurable from one to seven and shared across all organizational levels. This budget is additional to the free creator star on their personal #1. Budgeted votes are assigned directly to issues, may be concentrated on one issue including the voter's own, and may be reallocated at any time. Every issue has one score wherever it appears; scope-level candidate sets determine which single #1 issue automatically becomes eligible at the parent scope.
 
 ### organization
 
