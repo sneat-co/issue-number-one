@@ -71,6 +71,8 @@ have changed the described outcome.
 | E16 | Founder ecosystem requirement | The person who creates an organization automatically becomes its first administrator in every Sneat app for now. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; canonical owner is the Backstage Spaceus Feature |
 | E17 | Founder ecosystem requirement | Any existing organization administrator may designate another current organization member as an administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; administrator removal is confirmed separately in E18 |
 | E18 | Founder ecosystem requirement | Any existing organization administrator may remove administrator status from another administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; self-removal and last-administrator departure remain unresolved in Spaceus |
+| E19 | Founder ecosystem requirement | An organization administrator may remove their own administrator status when at least one other current administrator remains. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; the last administrator's departure or account deletion remains unresolved in Spaceus |
+| E20 | Founder product requirement | Team and department views should show how quickly issues close and both the absolute number and percentage of their originating issues that reach the top. | Sponsor interview, 2026-08-05 | Product intent, not validation; calculation start, reporting statistic, cohort, period, and meaning of “reaches the top” remain unresolved in the Issue performance metrics Feature |
 
 ## Findings
 
@@ -102,6 +104,10 @@ have changed the described outcome.
 - Every Sneat app inherits the Spaceus rule that any existing organization
   administrator may remove administrator status from another administrator
   (E18).
+- An administrator may relinquish their own administrator status when another
+  current administrator remains; the last administrator may not do so (E19).
+- Team and department views need issue closure-speed and escalation-reach
+  metrics, with both count and percentage shown for reach (E20).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -138,9 +144,11 @@ issues win equal-score ties. Voter identities are visible to eligible viewers
 by default, and hiding them does not hide the aggregate score. Every eligible
 member receives the same configured vote budget in the MVP. Existing
 administrators may appoint other current members as administrators and remove
-administrator status from another administrator. The next central governance
-unknown, owned by Spaceus rather than IssueNumber.one, is whether an
-administrator may remove their own administrator status.
+administrator status from another administrator. They may also relinquish their
+own status when another administrator remains. The last administrator's
+departure or account deletion remains a Spaceus-owned unknown. Team and
+department issue-performance metrics are required, but their calculation and
+the meaning of “reaches the top” remain open in the owning Feature.
 
 ## Confidence
 

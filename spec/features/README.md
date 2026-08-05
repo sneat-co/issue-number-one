@@ -16,6 +16,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 | [permissions](permissions/README.md) | Conceptual | Who can do what — the access matrix across teams, orgs, topics, and issues |
 | [storage](storage/README.md) | Conceptual | Where org data lives — IssueNumber.one cloud or a GitHub repository via inGitDB |
 | [ai-integration](ai-integration/README.md) | Conceptual | Optional AI-powered executive summaries of current issues |
+| [issue-metrics](issue-metrics/README.md) | Draft | Shows team- and department-level measures of issue closure speed and how often originating issues rise through the priority hierarchy. |
 
 ## Feature Summaries
 
@@ -43,6 +44,10 @@ Teams and orgs choose where their data lives: the IssueNumber.one cloud (default
 
 An optional feature a team/org can enable to have AI analyze current issues and provide an executive summary. Includes both a free-prompt mode and a hosted SaaS offering optimized for easy setup, privacy (including anonymity preservation), and zero maintenance.
 
+### issue-metrics
+
+Shows team- and department-level measures of how quickly issues close and how many originating issues reach the defined top-priority milestone. Reach is displayed as both an absolute count and a percentage with its denominator and reporting context.
+
 ## Feature Dependency Graph
 
 ```mermaid
@@ -53,6 +58,7 @@ graph LR
     PERM[permissions]
     STOR[storage]
     AI[ai-integration]
+    MET[issue-metrics]
 
     ISS --> ORG
     VOT --> ISS
@@ -61,6 +67,8 @@ graph LR
     PERM --> ISS
     STOR --> ORG
     AI --> ISS
+    MET --> ISS
+    MET --> ORG
 ```
 
 ## Open Questions
