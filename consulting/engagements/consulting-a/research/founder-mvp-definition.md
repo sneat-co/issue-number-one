@@ -6,7 +6,7 @@ engagement: "consulting-a"
 author: "Codex (Managing Partner)"
 model: "GPT-5 (Codex)"
 created: "2026-08-04"
-updated: "2026-08-04"
+updated: "2026-08-05"
 confidence: "High on the sponsor's stated product intent and case description; low on customer demand, usability, buyer fit, and outcome improvement because this is founder evidence only"
 dependencies:
   - "../decisions/sponsor-discovery-authorization.md"
@@ -62,6 +62,7 @@ have changed the described outcome.
 | E8 | Observed specification conflict | The prior Specs capped active issues, prohibited self-voting, limited one vote per issue, inconsistently described top-N versus #1 bubble-up, and let ordinary members archive active issues. | IssueNumber.one Feature tree inspected 2026-08-04 before correction | Shows source-of-truth drift, not market evidence |
 | E9 | Founder requirement | Votes are assigned to issues, not hierarchy levels. When an issue becomes visible or ineligible at another level, its votes do not travel, split, reset, or receive a separate scope score. | Sponsor interview, 2026-08-04 | Product intent, not validation |
 | E10 | Founder requirement | MVP voting is positive support only, with no downvotes or opposing votes. | Sponsor interview, 2026-08-04 | Product intent, not validation; whether negative voting is permanently excluded remains open in the Rating Feature |
+| E11 | Founder requirement | When eligible issues have equal star totals, the older unresolved issue ranks higher. | Sponsor interview, 2026-08-05 | Product intent, not validation; exact timestamp ties use a stable deterministic fallback |
 
 ## Findings
 
@@ -78,6 +79,7 @@ have changed the described outcome.
   eligibility and visibility, while the issue retains one support score (E9).
 - MVP votes express positive support only; a voter cannot subtract support from
   an issue (E10).
+- Age breaks equal-score ties: the older unresolved issue ranks higher (E11).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -109,8 +111,9 @@ The remaining product decisions are recorded only in the relevant Feature
 plus a separate support budget that defaults to one, is configurable from one
 to seven, and is shared across all levels within an organization. Votes are
 assigned directly to issues, so there is no separate lower-level or parent-level
-vote total. Negative votes are excluded from the MVP. The next central ranking
-unknown is how equal support scores determine a single #1.
+vote total. Negative votes are excluded from the MVP, and older unresolved
+issues win equal-score ties. The next central display unknown is whether an
+aggregate score remains visible when individual voter attribution is hidden.
 
 ## Confidence
 

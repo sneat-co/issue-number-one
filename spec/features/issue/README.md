@@ -138,7 +138,7 @@ Each team or organizational scope always has at most one current #1 issue: the e
 
 #### REQ: single-top-issue-per-team
 
-At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest issue support score. Ties MUST be resolved deterministically.
+At any given moment, a scope MUST have at most one "#1 issue" — the eligible issue with the highest issue support score. If scores are equal, the older unresolved issue MUST rank higher; an exact timestamp tie MUST use a stable deterministic final key.
 
 ### Visible age and persistence
 
@@ -176,6 +176,5 @@ Not defined yet.
 
 - Should `assignee` and `deadline` be mandatory once an issue becomes the team's #1, or remain optional?
 - Should `progress` be a free-form field, a 0–100 integer, or discrete milestones?
-- How are ties in score broken when selecting the team's #1 issue?
 - Should a person have a configurable maximum number of recorded open issues, or no product-enforced maximum?
 - Acceptance criteria not yet defined for this feature.

@@ -85,6 +85,18 @@ Issue lists support three sort orders:
 
 Issue list views MUST support sorting by `score`, `created`, and `activity`.
 
+### Oldest issue wins an equal-score tie
+
+When two eligible issues have the same support score, the issue that has remained unresolved for longer ranks higher. This prevents a newer issue with equal support from silently displacing an older unresolved problem.
+
+#### REQ: older-issue-wins-support-tie
+
+When eligible issues have equal support scores, the issue with the earliest original creation timestamp MUST rank higher.
+
+#### REQ: exact-tie-order-stable
+
+If eligible issues have both equal support scores and equal creation timestamps, the ranking MUST use a stable deterministic final key so the selected #1 does not oscillate.
+
 ## Interaction with Other Features
 
 | Feature | Interaction |
@@ -107,5 +119,4 @@ Not defined yet.
 
 - Should aggregate support totals remain visible when individual attribution is hidden?
 - Are negative/downvotes intentionally excluded from the product, or only from the MVP?
-- How are equal support scores ordered when determining a single #1?
 - Acceptance criteria not yet defined for this feature.
