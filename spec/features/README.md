@@ -17,6 +17,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 | [storage](storage/README.md) | Conceptual | Where org data lives — IssueNumber.one cloud or a GitHub repository via inGitDB |
 | [ai-integration](ai-integration/README.md) | Conceptual | Optional AI-powered executive summaries of current issues |
 | [issue-metrics](issue-metrics/README.md) | Draft | Shows team- and department-level measures of issue closure speed and how often originating issues rise through the priority hierarchy. |
+| [github-issues](github-issues/README.md) | Draft | Lets GitHub Issues participate in IssueNumber.one nomination, scarce voting, and bubble-up without replacing GitHub as the issue system of record. |
 
 ## Feature Summaries
 
@@ -48,6 +49,13 @@ An optional feature a team/org can enable to have AI analyze current issues and 
 
 Shows team- and department-level measures of how quickly issues close and how many originating issues reach the defined top-priority milestone. Reach is displayed as both an absolute count and a percentage with its denominator and reporting context.
 
+### github-issues
+
+Links an existing GitHub Issue into an IssueNumber.one product scope while
+leaving GitHub available as the work item's system of record. IssueNumber.one
+adds personal nomination, scarce positive support, ranking, and organizational
+bubble-up; GitHub reactions and backlog activity do not silently become votes.
+
 ## Feature Dependency Graph
 
 ```mermaid
@@ -59,6 +67,7 @@ graph LR
     STOR[storage]
     AI[ai-integration]
     MET[issue-metrics]
+    GHI[github-issues]
 
     ISS --> ORG
     VOT --> ISS
@@ -69,6 +78,9 @@ graph LR
     AI --> ISS
     MET --> ISS
     MET --> ORG
+    GHI --> ISS
+    GHI --> VOT
+    GHI --> ORG
 ```
 
 ## Open Questions

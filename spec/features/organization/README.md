@@ -18,10 +18,17 @@ IssueNumber.one models a company as a root team with nested department, project,
 | Directory | Description |
 |-----------|-------------|
 | [topic/](topic/README.md) | Public topics and their sub-topics — a parallel hierarchy for cross-org discussion |
+| [product](product/README.md) | Scopes IssueNumber.one to a product while keeping its internal and public issues in separate trust domains. |
 
 ### topic
 
 Topics are public discussion spaces not owned by any one org. Anyone can create a public topic or a sub-topic within one. Topic issues are always public and cannot be archived.
+
+### product
+
+A product can have an internal organizational issue scope and a public issue
+scope. They share product identity only: their issue sets, discussions,
+participants, votes, rankings, and current #1 remain in separate trust domains.
 
 ## Problem
 
@@ -129,6 +136,7 @@ Any member of an organization MUST be allowed to archive any team within that or
 | [voting](../voting/README.md) | Each scope has an eligible candidate set and ranking, while every vote stays attached to its issue and each member's 1–7 budget is shared across the organization |
 | [permissions](../permissions/README.md) | Membership determines visibility and action rights |
 | [storage](../storage/README.md) | Orgs choose where their data lives |
+| [organization/product](product/README.md) | Adds product-scoped internal and public rankings without merging their trust domains |
 | [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns organization creation and the universal creator-as-first-administrator default |
 
 ## Dependencies

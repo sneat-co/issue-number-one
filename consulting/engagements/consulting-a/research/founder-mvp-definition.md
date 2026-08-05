@@ -15,6 +15,8 @@ related_specs:
   - "../../../../spec/features/issue/README.md"
   - "../../../../spec/features/voting/README.md"
   - "../../../../spec/features/organization/README.md"
+  - "../../../../spec/features/organization/product/README.md"
+  - "../../../../spec/features/github-issues/README.md"
   - "https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md"
 promotion_target: "Confirmed behavior is recorded in the owning Feature Specs; founder evidence is not promoted as external validation"
 ---
@@ -38,7 +40,11 @@ issues rather than hierarchy levels, so the same issue keeps the same votes and
 score wherever it appears. These signals select one #1 at each organizational scope; that issue automatically
 enters the parent scope until a company-level view can show the most important
 issue from each department and allow drill-down to its source. Losing rank does
-not close an issue or reset its visible age.
+not close an issue or reset its visible age. The mechanism should also operate
+at product level, with separate internal and public issue domains. Existing
+GitHub Issues should be able to participate without forcing GitHub users to
+replace their issue tracker; IssueNumber.one supplies the scarce support and
+bubble-up layer.
 
 ## Method and Scope
 
@@ -74,6 +80,8 @@ have changed the described outcome.
 | E19 | Founder ecosystem requirement | An organization administrator may remove their own administrator status when at least one other current administrator remains. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; the last administrator's departure or account deletion remains unresolved in Spaceus |
 | E20 | Founder product requirement | Team and department views should show how quickly issues close and both the absolute number and percentage of their originating issues that reach the top. | Sponsor interview, 2026-08-05 | Product intent, not validation; calculation start, reporting statistic, cohort, period, and meaning of “reaches the top” remain unresolved in the Issue performance metrics Feature |
 | E21 | Founder product requirement with proposed design | Issues need comments and discussion. The proposed, not yet confirmed structure allows at most one top-level contribution per person, with a flat discussion beneath it. | Sponsor interview, 2026-08-05 | Product intent, not validation; contribution limits, response structure, authorship, editing, moderation, and notifications remain open in the Issue discussion Feature |
+| E22 | Founder product requirement | IssueNumber.one should support a product-level operating mode with public and internal issues kept separate. | Sponsor interview, 2026-08-05 | Product intent, not validation; product placement in the hierarchy, nomination and vote-budget scope, and deliberate internal-to-public publication remain open in the Product scope Feature |
+| E23 | Founder product requirement | Issues may originate in GitHub, while IssueNumber.one provides the framework for nominating, supporting, ranking, and bubbling the important GitHub Issues. | Sponsor interview, 2026-08-05 | Product intent, not validation; synchronization, lifecycle ownership, GitHub field ownership, authentication, and creation direction remain open in the GitHub Issues integration Feature |
 
 ## Findings
 
@@ -111,6 +119,10 @@ have changed the described outcome.
   metrics, with both count and percentage shown for reach (E20).
 - Issues need attached discussion, but the proposed one-top-level-contribution
   limit and flat response structure are not yet confirmed (E21).
+- Product-level prioritization needs separate internal and public issue domains
+  rather than one combined product ranking (E22).
+- GitHub can remain the origin of a work item while IssueNumber.one adds its
+  scarce-support and bubble-up signal (E23).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -154,7 +166,14 @@ department issue-performance metrics are required, but their calculation and
 the meaning of “reaches the top” remain open in the owning Feature. Issue
 discussion is required, while its participant permissions, authorship,
 conversation structure, edit history, moderation, and notification rules remain
-open in the Issue discussion Feature.
+open in the Issue discussion Feature. Product-scoped public and internal
+rankings are required to remain separate; how a product fits the organizational
+hierarchy, how budgets and personal nominations apply, and whether an internal
+issue can be deliberately published as a distinct linked public issue remain
+open in the Product scope Feature. GitHub-originated issues must be able to
+participate in IssueNumber.one, while synchronization direction, field and
+lifecycle ownership, linking permissions, and create-from-IssueNumber.one
+behavior remain open in the GitHub Issues integration Feature.
 
 ## Confidence
 
@@ -172,6 +191,9 @@ participant, usage, payment, or outcome evidence was added.
 - Test whether users understand nomination, issue-bound voting, automatic
   bubble-up, anonymity, ageing, and creator-controlled closure before any build
   authority is requested.
+- Test whether users correctly predict what is public and internal at product
+  level and understand that GitHub work-item state and IssueNumber.one priority
+  are related but distinct.
 
 ## Proposed Experiments
 
