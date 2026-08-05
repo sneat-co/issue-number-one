@@ -82,6 +82,7 @@ have changed the described outcome.
 | E21 | Founder product requirement with proposed design | Issues need comments and discussion. The proposed, not yet confirmed structure allows at most one top-level contribution per person, with a flat discussion beneath it. | Sponsor interview, 2026-08-05 | Product intent, not validation; contribution limits, response structure, authorship, editing, moderation, and notifications remain open in the Issue discussion Feature |
 | E22 | Founder product requirement | IssueNumber.one should support a product-level operating mode with public and internal issues kept separate. | Sponsor interview, 2026-08-05 | Product intent, not validation; product placement in the hierarchy, nomination and vote-budget scope, and deliberate internal-to-public publication remain open in the Product scope Feature |
 | E23 | Founder product requirement | Issues may originate in GitHub, while IssueNumber.one provides the framework for nominating, supporting, ranking, and bubbling the important GitHub Issues. | Sponsor interview, 2026-08-05 | Product intent, not validation; synchronization, lifecycle ownership, GitHub field ownership, authentication, and creation direction remain open in the GitHub Issues integration Feature |
+| E24 | Founder product requirement | An internal product issue may be deliberately published as a separate linked public issue while the original internal issue and its discussion remain private. | Sponsor interview, 2026-08-05 | Product intent, not validation; publishing authority, selected public content, authorship, and later synchronization remain open in the Product scope Feature |
 
 ## Findings
 
@@ -123,6 +124,8 @@ have changed the described outcome.
   rather than one combined product ranking (E22).
 - GitHub can remain the origin of a work item while IssueNumber.one adds its
   scarce-support and bubble-up signal (E23).
+- An authorized publication action may create a separate linked public issue;
+  it does not make the internal source or its discussion public (E24).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -167,10 +170,12 @@ the meaning of “reaches the top” remain open in the owning Feature. Issue
 discussion is required, while its participant permissions, authorship,
 conversation structure, edit history, moderation, and notification rules remain
 open in the Issue discussion Feature. Product-scoped public and internal
-rankings are required to remain separate; how a product fits the organizational
-hierarchy, how budgets and personal nominations apply, and whether an internal
-issue can be deliberately published as a distinct linked public issue remain
-open in the Product scope Feature. GitHub-originated issues must be able to
+rankings are required to remain separate. Deliberate publication creates a
+distinct linked public record and leaves its internal source private. How a
+product fits the organizational hierarchy, how budgets and personal nominations
+apply, who may publish, which content and authorship become public, and whether
+later changes synchronize remain open in the Product scope Feature.
+GitHub-originated issues must be able to
 participate in IssueNumber.one, while synchronization direction, field and
 lifecycle ownership, linking permissions, and create-from-IssueNumber.one
 behavior remain open in the GitHub Issues integration Feature.

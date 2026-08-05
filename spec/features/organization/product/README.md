@@ -63,6 +63,36 @@ An issue, vote, nomination, discussion entry, or lifecycle event in one product
 trust domain MUST NOT be copied, moved, counted, or applied in the other domain
 without a separately defined and explicitly authorized cross-domain action.
 
+### Internal issues can be deliberately published as separate public issues
+
+An internal issue can become the source of a public issue when someone with the
+required authority deliberately publishes it. Publication creates a new public
+record linked to the internal source; it does not change the internal issue's
+visibility or place the internal record into the public ranking.
+
+#### REQ: deliberate-publication-creates-linked-public-issue
+
+IssueNumber.one MUST allow an authorized person to publish an internal product
+issue as a separate linked issue in that product's public trust domain.
+
+#### REQ: published-issue-has-independent-public-state
+
+The linked public issue MUST have its own identity, content, nomination,
+support, rank, discussion, age, and lifecycle state. Subsequent activity on the
+public issue MUST NOT automatically alter the internal source issue.
+
+#### REQ: publication-does-not-expose-internal-record
+
+Publication MUST NOT expose the internal issue's record, discussion, votes,
+rank, age, author identity, voter identities, or other private metadata. Only
+content explicitly selected for the new public issue may cross the boundary.
+
+#### REQ: private-source-link-remains-private
+
+The link from the public issue to its internal source MUST be visible to
+authorized internal viewers, but MUST NOT reveal the existence or identity of
+the private source to unauthorized public viewers.
+
 ### Shared identity does not imply shared access
 
 A relationship between the public and internal product scopes can let an
@@ -115,6 +145,14 @@ to either scope or make their issues eligible in each other's ranking.
 - **When** either scope's ranking changes
 - **Then** the other scope's issue set, votes, and ranking remain unchanged
 
+### AC: deliberate-publication-creates-safe-public-copy
+
+- **Given** an authorized person can view an internal product issue
+- **When** they deliberately publish selected content from it to the product's public domain
+- **Then** IssueNumber.one creates a separate linked public issue with its own identity, ranking, votes, discussion, age, and lifecycle
+- **And** the internal issue remains private and unchanged
+- **And** public viewers cannot discover the internal record, discussion, votes, rank, age, author, voters, or private source link
+
 ## Open Questions
 
 - Is a product an organization hierarchy node, a specialized public topic, or a
@@ -124,8 +162,13 @@ to either scope or make their issues eligible in each other's ranking.
 - Is a person's personal-#1 nomination and support-vote budget separate per
   product domain, shared with their organization or public topic, or governed by
   another rule?
-- May an internal issue be deliberately published as a separate linked public
-  issue while its internal record and discussion remain private?
+- Which roles may publish an internal issue into the public product domain?
+- Which issue fields are selected for publication, and does later editing ever
+  synchronize between the two records?
+- Does the public issue's visible age start at publication, preserve the
+  internal issue's original age, or show both dates?
+- What public authorship should a published issue show when its internal source
+  was authored anonymously?
 - Who may create a public product scope and link it to an internal product?
 - How are public product issues moderated?
 
