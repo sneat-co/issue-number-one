@@ -104,6 +104,10 @@ The MVP MUST support designating one or more organization members as organizatio
 
 IssueNumber.one MUST create organizations through the shared Spaceus organization-creation behavior, which automatically designates the creator as the first administrator. IssueNumber.one MUST NOT define a conflicting product-local initial-administrator rule.
 
+#### REQ: administrator-appointment-inherits-spaceus
+
+IssueNumber.one MUST inherit the shared Spaceus behavior that allows any existing organization administrator to designate another existing member of that organization as an administrator. A non-administrator MUST NOT be allowed to grant organization-administrator status, and IssueNumber.one MUST NOT define a conflicting product-local appointment rule.
+
 #### REQ: admin-only-vote-budget-configuration
 
 Only an organization administrator MUST be allowed to change that organization's shared vote-budget size.
@@ -117,7 +121,7 @@ Administrator status MUST NOT grant extra votes, a manager promotion gate, acces
 | Feature | Interaction |
 |---------|-------------|
 | Every local feature performing an action | References the relevant `REQ:` in this document |
-| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns the universal creator-as-first-administrator rule inherited by IssueNumber.one |
+| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns the universal organization-administrator bootstrap and appointment rules inherited by IssueNumber.one |
 
 ## Dependencies
 
