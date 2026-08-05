@@ -72,8 +72,27 @@ visibility or place the internal record into the public ranking.
 
 #### REQ: deliberate-publication-creates-linked-public-issue
 
-IssueNumber.one MUST allow an authorized person to publish an internal product
-issue as a separate linked issue in that product's public trust domain.
+IssueNumber.one MUST allow an internal product issue to be published as a
+separate linked issue in that product's public trust domain only after the
+required organization-administrator approval.
+
+### Publication requires organization-administrator approval
+
+Moving selected content across the internal/public boundary is an
+organizational disclosure decision. Creating the internal issue does not by
+itself give its creator authority to make that disclosure.
+
+#### REQ: organization-admin-approves-publication
+
+A public issue derived from an internal product issue MUST NOT be created until
+a current administrator of the owning organization explicitly approves the
+publication and the content selected to become public.
+
+#### REQ: creator-cannot-publish-without-admin-approval
+
+The creator of an internal issue MUST NOT be able to publish it into the public
+product domain without organization-administrator approval, even when the
+creator is permitted to view, edit, nominate, or close the internal issue.
 
 #### REQ: published-issue-has-independent-public-state
 
@@ -147,11 +166,17 @@ to either scope or make their issues eligible in each other's ranking.
 
 ### AC: deliberate-publication-creates-safe-public-copy
 
-- **Given** an authorized person can view an internal product issue
-- **When** they deliberately publish selected content from it to the product's public domain
+- **Given** an organization administrator has explicitly approved selected content from an internal product issue for publication
+- **When** the approved publication is completed in the product's public domain
 - **Then** IssueNumber.one creates a separate linked public issue with its own identity, ranking, votes, discussion, age, and lifecycle
 - **And** the internal issue remains private and unchanged
 - **And** public viewers cannot discover the internal record, discussion, votes, rank, age, author, voters, or private source link
+
+### AC: creator-cannot-publish-without-admin-approval
+
+- **Given** the creator of an internal issue has not received organization-administrator approval to publish it
+- **When** the creator attempts to publish that issue into the public product domain
+- **Then** no public issue is created and no internal content or metadata crosses the trust boundary
 
 ## Open Questions
 
@@ -162,7 +187,12 @@ to either scope or make their issues eligible in each other's ranking.
 - Is a person's personal-#1 nomination and support-vote budget separate per
   product domain, shared with their organization or public topic, or governed by
   another rule?
-- Which roles may publish an internal issue into the public product domain?
+- Who may request publication: only the issue creator, any internal viewer, or
+  another defined role?
+- If the issue creator is also an organization administrator, may that person
+  approve their own publication request?
+- May one administrator approve publication alone, or can an organization
+  require more than one approval?
 - Which issue fields are selected for publication, and does later editing ever
   synchronize between the two records?
 - Does the public issue's visible age start at publication, preserve the
