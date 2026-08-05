@@ -68,8 +68,9 @@ have changed the described outcome.
 | E13 | Founder requirement | Voter identities are visible to eligible viewers by default unless the organization chooses to hide them. | Sponsor interview, 2026-08-05 | Product intent, not validation; governance of who may change the setting remains unresolved |
 | E14 | Founder requirement | In the MVP, every eligible member of an organization receives the same configured vote budget. | Sponsor interview, 2026-08-05 | Product intent, not validation; role-based budget differences may be reconsidered after MVP |
 | E15 | Founder requirement | Only organization administrators may change the shared vote-budget size. | Sponsor interview, 2026-08-05 | Product intent, not validation; first administrator assignment is confirmed separately in E16 |
-| E16 | Founder ecosystem requirement | The person who creates an organization automatically becomes its first administrator in every Sneat app for now. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; canonical owner is the Backstage Spaceus Feature, where later administrator lifecycle remains unresolved |
-| E17 | Founder ecosystem requirement | Any existing organization administrator may designate another current organization member as an administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; administrator removal and last-administrator behavior remain unresolved in Spaceus |
+| E16 | Founder ecosystem requirement | The person who creates an organization automatically becomes its first administrator in every Sneat app for now. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; canonical owner is the Backstage Spaceus Feature |
+| E17 | Founder ecosystem requirement | Any existing organization administrator may designate another current organization member as an administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; administrator removal is confirmed separately in E18 |
+| E18 | Founder ecosystem requirement | Any existing organization administrator may remove administrator status from another administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; self-removal and last-administrator departure remain unresolved in Spaceus |
 
 ## Findings
 
@@ -98,6 +99,9 @@ have changed the described outcome.
   automatically becomes its first administrator (E16).
 - Every Sneat app also inherits the Spaceus rule that any existing organization
   administrator may appoint another current member as an administrator (E17).
+- Every Sneat app inherits the Spaceus rule that any existing organization
+  administrator may remove administrator status from another administrator
+  (E18).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -133,9 +137,10 @@ vote total. Negative votes are excluded from the MVP, and older unresolved
 issues win equal-score ties. Voter identities are visible to eligible viewers
 by default, and hiding them does not hide the aggregate score. Every eligible
 member receives the same configured vote budget in the MVP. Existing
-administrators may appoint other current members as administrators. The next
-central governance unknown, owned by Spaceus rather than IssueNumber.one, is
-whether administrators may remove other administrators.
+administrators may appoint other current members as administrators and remove
+administrator status from another administrator. The next central governance
+unknown, owned by Spaceus rather than IssueNumber.one, is whether an
+administrator may remove their own administrator status.
 
 ## Confidence
 

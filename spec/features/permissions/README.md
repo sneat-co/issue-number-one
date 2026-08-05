@@ -108,6 +108,10 @@ IssueNumber.one MUST create organizations through the shared Spaceus organizatio
 
 IssueNumber.one MUST inherit the shared Spaceus behavior that allows any existing organization administrator to designate another existing member of that organization as an administrator. A non-administrator MUST NOT be allowed to grant organization-administrator status, and IssueNumber.one MUST NOT define a conflicting product-local appointment rule.
 
+#### REQ: administrator-removal-inherits-spaceus
+
+IssueNumber.one MUST inherit the shared Spaceus behavior that allows any existing organization administrator to remove administrator status from another administrator. A non-administrator MUST NOT be allowed to remove organization-administrator status, and IssueNumber.one MUST NOT define a conflicting product-local removal rule.
+
 #### REQ: admin-only-vote-budget-configuration
 
 Only an organization administrator MUST be allowed to change that organization's shared vote-budget size.
@@ -121,7 +125,7 @@ Administrator status MUST NOT grant extra votes, a manager promotion gate, acces
 | Feature | Interaction |
 |---------|-------------|
 | Every local feature performing an action | References the relevant `REQ:` in this document |
-| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns the universal organization-administrator bootstrap and appointment rules inherited by IssueNumber.one |
+| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns the universal organization-administrator bootstrap, appointment, and removal rules inherited by IssueNumber.one |
 
 ## Dependencies
 
