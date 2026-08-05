@@ -73,6 +73,7 @@ have changed the described outcome.
 | E18 | Founder ecosystem requirement | Any existing organization administrator may remove administrator status from another administrator in every Sneat app; non-administrators may not. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; self-removal and last-administrator departure remain unresolved in Spaceus |
 | E19 | Founder ecosystem requirement | An organization administrator may remove their own administrator status when at least one other current administrator remains. | Sponsor interview, 2026-08-05 | Shared platform intent, not validation; the last administrator's departure or account deletion remains unresolved in Spaceus |
 | E20 | Founder product requirement | Team and department views should show how quickly issues close and both the absolute number and percentage of their originating issues that reach the top. | Sponsor interview, 2026-08-05 | Product intent, not validation; calculation start, reporting statistic, cohort, period, and meaning of “reaches the top” remain unresolved in the Issue performance metrics Feature |
+| E21 | Founder product requirement with proposed design | Issues need comments and discussion. The proposed, not yet confirmed structure allows at most one top-level contribution per person, with a flat discussion beneath it. | Sponsor interview, 2026-08-05 | Product intent, not validation; contribution limits, response structure, authorship, editing, moderation, and notifications remain open in the Issue discussion Feature |
 
 ## Findings
 
@@ -108,6 +109,8 @@ have changed the described outcome.
   current administrator remains; the last administrator may not do so (E19).
 - Team and department views need issue closure-speed and escalation-reach
   metrics, with both count and percentage shown for reach (E20).
+- Issues need attached discussion, but the proposed one-top-level-contribution
+  limit and flat response structure are not yet confirmed (E21).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -148,7 +151,10 @@ administrator status from another administrator. They may also relinquish their
 own status when another administrator remains. The last administrator's
 departure or account deletion remains a Spaceus-owned unknown. Team and
 department issue-performance metrics are required, but their calculation and
-the meaning of “reaches the top” remain open in the owning Feature.
+the meaning of “reaches the top” remain open in the owning Feature. Issue
+discussion is required, while its participant permissions, authorship,
+conversation structure, edit history, moderation, and notification rules remain
+open in the Issue discussion Feature.
 
 ## Confidence
 

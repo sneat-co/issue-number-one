@@ -21,6 +21,7 @@ An issue is the atomic unit of IssueNumber.one — a raised priority item that a
 | [anonymity/](anonymity/README.md) | Anonymous versus authored issues and author-hiding rules |
 | [visibility/](visibility/README.md) | Team, org, and public visibility levels and bubble-up behavior |
 | [moderation/](moderation/README.md) | Archiving, banning, and who is allowed to moderate |
+| [discussion/](discussion/README.md) | Issue-attached conversation that does not change priority, lifecycle, or visible age |
 
 ### lifecycle
 
@@ -37,6 +38,10 @@ Every issue has a visibility level: `team/space`, `org`, or `public`. Each scope
 ### moderation
 
 Moderation handles abusive or policy-violating content without providing a way to suppress an inconvenient issue. A manager or ordinary member cannot archive an active issue merely to close it. A ban requires an authorized moderator, a visible reason, and notifications to the creator and supporters.
+
+### discussion
+
+Keeps evidence, disagreement, questions, and responses attached to an issue without treating conversation volume as support or allowing comments to close or rejuvenate the issue. The founder's proposed one-top-level-contribution-per-person and flat-response structure remains an open design decision.
 
 ## Problem
 
@@ -161,6 +166,7 @@ Removing votes from an issue, changing a nomination, or losing rank MUST NOT wit
 | [permissions](../permissions/README.md) | Permissions gate who can raise, see, vote, close, and moderate each issue |
 | [storage](../storage/README.md) | Issues are persisted in either cloud or git-backed storage |
 | [ai-integration](../ai-integration/README.md) | AI executive summaries analyze the current set of issues |
+| [issue/discussion](discussion/README.md) | Discussion remains attached to the issue while staying independent of votes, rank, lifecycle, and open age |
 
 ## Dependencies
 
