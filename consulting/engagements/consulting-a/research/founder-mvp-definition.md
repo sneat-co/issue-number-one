@@ -63,6 +63,7 @@ have changed the described outcome.
 | E9 | Founder requirement | Votes are assigned to issues, not hierarchy levels. When an issue becomes visible or ineligible at another level, its votes do not travel, split, reset, or receive a separate scope score. | Sponsor interview, 2026-08-04 | Product intent, not validation |
 | E10 | Founder requirement | MVP voting is positive support only, with no downvotes or opposing votes. | Sponsor interview, 2026-08-04 | Product intent, not validation; whether negative voting is permanently excluded remains open in the Rating Feature |
 | E11 | Founder requirement | When eligible issues have equal star totals, the older unresolved issue ranks higher. | Sponsor interview, 2026-08-05 | Product intent, not validation; exact timestamp ties use a stable deterministic fallback |
+| E12 | Founder requirement | When individual voter identities are hidden, the issue's total star count remains visible. | Sponsor interview, 2026-08-05 | Product intent, not validation; default attribution visibility remains unresolved |
 
 ## Findings
 
@@ -80,6 +81,7 @@ have changed the described outcome.
 - MVP votes express positive support only; a voter cannot subtract support from
   an issue (E10).
 - Age breaks equal-score ties: the older unresolved issue ranks higher (E11).
+- Hiding voter identities preserves the visible aggregate priority signal (E12).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -112,8 +114,9 @@ plus a separate support budget that defaults to one, is configurable from one
 to seven, and is shared across all levels within an organization. Votes are
 assigned directly to issues, so there is no separate lower-level or parent-level
 vote total. Negative votes are excluded from the MVP, and older unresolved
-issues win equal-score ties. The next central display unknown is whether an
-aggregate score remains visible when individual voter attribution is hidden.
+issues win equal-score ties. Hidden voter identities do not hide the aggregate
+score. The next central display unknown is whether individual vote attribution
+is public or private by default.
 
 ## Confidence
 

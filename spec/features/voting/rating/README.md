@@ -61,7 +61,7 @@ An issue's support score MUST be a non-negative integer.
 
 ### Public vs anonymous vote display
 
-By default, support allocations are publicly attributed. Teams may hide attribution without changing the total score.
+By default, support allocations are publicly attributed. Teams may hide voter identities without hiding or changing the aggregate support score.
 
 #### REQ: support-public-by-default
 
@@ -69,7 +69,11 @@ Support allocations MUST default to public attribution so eligible viewers can s
 
 #### REQ: vote-visibility-configurable
 
-Teams and orgs MUST be able to hide individual support attribution while retaining aggregate scores.
+Teams and orgs MUST be able to hide individual support attribution.
+
+#### REQ: hidden-attribution-retains-visible-total
+
+When individual voter attribution is hidden, every viewer permitted to see the issue or ranking MUST still see its aggregate support score. Hiding attribution MUST NOT change the score.
 
 ### Sort orders
 
@@ -117,6 +121,5 @@ Not defined yet.
 
 ## Open Questions
 
-- Should aggregate support totals remain visible when individual attribution is hidden?
 - Are negative/downvotes intentionally excluded from the product, or only from the MVP?
 - Acceptance criteria not yet defined for this feature.

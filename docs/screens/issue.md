@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The detail page for a single issue. Shows the issue's title, description, author (unless anonymous), status, continuously visible open age, personal-#1 nomination state and free creator star, assignee, deadline, progress, one issue-wide support score, and supporter allocations (subject to attribution rules). The same score is shown wherever the issue is visible. Management activity is shown separately from creator-confirmed or peer-voted closure.
+The detail page for a single issue. Shows the issue's title, description, author (unless anonymous), status, continuously visible open age, personal-#1 nomination state and free creator star, assignee, deadline, progress, one issue-wide support score, and supporter allocations (subject to attribution rules). The same total score is shown wherever the issue is visible, even when individual voter identities are hidden. Management activity is shown separately from creator-confirmed or peer-voted closure.
 
 ## Layout
 

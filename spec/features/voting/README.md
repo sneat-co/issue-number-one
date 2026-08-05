@@ -26,7 +26,7 @@ Budgeted votes are a limited resource. Members assign a small number of units di
 
 ### rating
 
-An issue's support display distinguishes the automatic creator star from budgeted support-vote units assigned to the issue. The issue has one score wherever it appears in the hierarchy. Vote attribution may be public or hidden. Issue lists sort by issue score, creation date, or last activity date.
+An issue's support display distinguishes the automatic creator star from budgeted support-vote units assigned to the issue. The issue has one score wherever it appears in the hierarchy. Individual vote attribution may be public or hidden, but the total star count remains visible. Issue lists sort by issue score, creation date, or last activity date.
 
 ## Problem
 
