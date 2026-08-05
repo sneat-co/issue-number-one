@@ -61,11 +61,11 @@ An issue's support score MUST be a non-negative integer.
 
 ### Public vs anonymous vote display
 
-By default, support allocations are publicly attributed. Teams may hide voter identities without hiding or changing the aggregate support score.
+By default, eligible viewers can see which member assigned each support vote. An organization may hide voter identities without hiding or changing the aggregate support score.
 
 #### REQ: support-public-by-default
 
-Support allocations MUST default to public attribution so eligible viewers can see who allocated support.
+Support allocations MUST show the voter's identity to eligible viewers by default. The identity MUST remain visible unless the organization enables hidden voter attribution.
 
 #### REQ: vote-visibility-configurable
 
