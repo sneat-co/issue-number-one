@@ -100,6 +100,10 @@ All ordinary participation permissions MUST derive from scope membership plus th
 
 The MVP MUST support designating one or more organization members as organization administrators.
 
+#### REQ: organization-creation-inherits-spaceus-admin-default
+
+IssueNumber.one MUST create organizations through the shared Spaceus organization-creation behavior, which automatically designates the creator as the first administrator. IssueNumber.one MUST NOT define a conflicting product-local initial-administrator rule.
+
 #### REQ: admin-only-vote-budget-configuration
 
 Only an organization administrator MUST be allowed to change that organization's shared vote-budget size.
@@ -110,7 +114,10 @@ Administrator status MUST NOT grant extra votes, a manager promotion gate, acces
 
 ## Interaction with Other Features
 
-Every feature that performs an action references the relevant `REQ:` in this document.
+| Feature | Interaction |
+|---------|-------------|
+| Every local feature performing an action | References the relevant `REQ:` in this document |
+| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns the universal creator-as-first-administrator rule inherited by IssueNumber.one |
 
 ## Dependencies
 
@@ -122,7 +129,6 @@ Not defined yet.
 
 ## Open Questions
 
-- How is the first organization administrator assigned, and how may administrators be added or removed?
 - Should the product later support team-level administrators in addition to organization administrators?
 - How are platform-level moderators (for ban actions) assigned, and by whom?
 - Should there be a "guest" or "observer" role that can read a team without being able to raise or vote?

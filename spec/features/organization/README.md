@@ -37,6 +37,10 @@ There is no separate "organization" entity. An organization is simply a team tha
 
 An organization MUST be modeled as a team with no parent. When an org joins another org as a sub-team, it becomes an ordinary team in that hierarchy.
 
+#### REQ: organization-creation-uses-spaceus-admin-default
+
+Creating a root organization in IssueNumber.one MUST use the shared Spaceus creation behavior, under which the authenticated creator becomes the first organization administrator. The universal administrator bootstrap is owned by Spaceus, not redefined by this product.
+
 ### Teams nest
 
 A team MAY have any number of sub-teams. A sub-team is itself a team and has its own issues, candidate set, ranking, and membership.
@@ -125,6 +129,7 @@ Any member of an organization MUST be allowed to archive any team within that or
 | [voting](../voting/README.md) | Each scope has an eligible candidate set and ranking, while every vote stays attached to its issue and each member's 1–7 budget is shared across the organization |
 | [permissions](../permissions/README.md) | Membership determines visibility and action rights |
 | [storage](../storage/README.md) | Orgs choose where their data lives |
+| [Spaceus platform Feature](https://github.com/sneat-co/backstage/blob/main/spec/features/spaceus/README.md) | Owns organization creation and the universal creator-as-first-administrator default |
 
 ## Dependencies
 
