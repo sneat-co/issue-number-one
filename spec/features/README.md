@@ -33,7 +33,7 @@ Everything in IssueNumber.one is scoped to a nested team node. A company is the 
 
 ### permissions
 
-Defines who can raise, see, vote, close, moderate, and create across teams, companies, topics, and issues. Members see their own issue list plus the top N issues at their department and company scopes. Any department member may vote in the department ranking; a manager cannot block automatic promotion or close an active issue merely to remove it from view.
+Defines who can raise, see, vote, close, moderate, administer settings, and create across teams, companies, topics, and issues. Members see their own issue list plus the top N issues at their department and company scopes. Any department member may vote in the department ranking. Only organization administrators may change the shared vote budget, but administrator status cannot block automatic promotion, add voting power, or close an active issue merely to remove it from view.
 
 ### storage
 

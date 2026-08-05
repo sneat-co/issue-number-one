@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Defines the access matrix for every action in IssueNumber.one: who can raise issues, see personal and ranked views, vote at each organizational scope, confirm closure, moderate content, and create or archive teams and topics. Permissions derive from membership and the issue's place in the #1 bubble-up path; a manager receives no special power to block promotion or close an inconvenient issue.
+Defines the access matrix for every action in IssueNumber.one: who can raise issues, see personal and ranked views, vote at each organizational scope, confirm closure, moderate content, administer organization-wide settings, and create or archive teams and topics. Most permissions derive from membership and the issue's place in the #1 bubble-up path. A constrained organization-administrator role controls settings such as the shared vote budget but receives no special power to block promotion, close an inconvenient issue, or cast extra votes.
 
 ## Problem
 
@@ -24,7 +24,7 @@ A product with several scopes (team, org, topic, public) and several actor class
 | Scope | Actors |
 |-------|--------|
 | Team / space | Team member, non-member org member, outsider |
-| Org | Org member, outsider |
+| Org | Org member, organization administrator, outsider |
 | Public topic | Any authenticated user, anonymous visitor |
 | Issue | Creator, supporter, anyone with read access to the enclosing scope |
 
@@ -35,6 +35,7 @@ A product with several scopes (team, org, topic, public) and several actor class
 | See issues | Creator sees all their own; eligible members see voting candidates and top N | Members see top N at each enclosing scope and the #1 from each direct child | Anyone |
 | Raise an issue | Only team members | Only team members (via their team) | Any authenticated user |
 | Vote on an issue | Any member eligible in that voting scope, subject to budget | Any member of the scope, including descendant-team members, subject to budget | Subject to topic rules |
+| Change the shared vote budget | — | Organization administrators only | — |
 | Withdraw an issue | Creator only | Creator only | Creator only |
 | Resolve an issue | Creator; eligible peers by vote only if creator unavailable | Same | Same |
 | Archive a raised issue | No one | No one | No one |
@@ -87,13 +88,25 @@ Any member of an organization MUST be allowed to create a team within it. See al
 
 Any authenticated user MUST be allowed to create a public top-level topic or a sub-topic within an existing public topic. See also [organization/topic#req-anyone-creates-topic](../organization/topic/README.md).
 
-### Derivation, not roles
+### Membership permissions and a constrained administrator role
 
-Permissions derive from scope membership, not from a named role system. There is no "admin" role in the base product. Explicit moderator roles are reserved for the `ban` action.
+Ordinary participation permissions derive from scope membership. The MVP also has an organization-administrator role for explicitly named organization-wide settings, including the shared vote budget. Administrator status does not change issue-ranking power or lifecycle authority. Moderator roles remain separate and are reserved for the `ban` action.
 
 #### REQ: permissions-derive-from-membership
 
-All permission checks MUST derive from scope membership plus the rules in this document. The base product MUST NOT require a named-role system.
+All ordinary participation permissions MUST derive from scope membership plus the rules in this document. A named organization-administrator role MAY grant only the organization-wide setting permissions explicitly assigned to it.
+
+#### REQ: organization-administrator-role
+
+The MVP MUST support designating one or more organization members as organization administrators.
+
+#### REQ: admin-only-vote-budget-configuration
+
+Only an organization administrator MUST be allowed to change that organization's shared vote-budget size.
+
+#### REQ: administrator-does-not-control-priority
+
+Administrator status MUST NOT grant extra votes, a manager promotion gate, access to unrelated non-candidate personal issues, or authority to withdraw, resolve, or archive another person's raised issue.
 
 ## Interaction with Other Features
 
@@ -109,7 +122,8 @@ Not defined yet.
 
 ## Open Questions
 
-- Should teams be allowed to promote explicit admin roles beyond what the base product defines?
+- How is the first organization administrator assigned, and how may administrators be added or removed?
+- Should the product later support team-level administrators in addition to organization administrators?
 - How are platform-level moderators (for ban actions) assigned, and by whom?
 - Should there be a "guest" or "observer" role that can read a team without being able to raise or vote?
 - Should permissions support per-team overrides of the defaults, or are the defaults inviolable?

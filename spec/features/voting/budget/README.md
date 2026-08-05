@@ -35,6 +35,14 @@ A new organization MUST give each eligible voter one budgeted support-vote unit 
 
 The MVP MUST give every eligible member of an organization the same configured vote-budget size. It MUST NOT grant additional voting power based on role, seniority, membership type, team, or individual identity.
 
+### Administrator-only configuration
+
+The vote-budget size is an organization-wide setting. Only an organization administrator may change it. Administrator status does not give that person a larger budget than other eligible members.
+
+#### REQ: only-org-admin-configures-budget
+
+Only a designated organization administrator MUST be allowed to change the organization's vote-budget size. The configured value MUST continue to apply equally to the administrator and every other eligible member.
+
 #### REQ: allocations-cannot-exceed-budget
 
 A voter MUST NOT have more budgeted support units assigned to issues in an organization than their shared budget. The automatic creator star MUST be excluded from this total.
@@ -94,12 +102,14 @@ A member of a descendant team MUST be eligible to spend their shared organizatio
 | [voting](../README.md) | Budget is the mechanism voting uses |
 | [issue](../../issue/README.md) | One personal #1 nomination is separate from vote-budget scarcity |
 | [organization](../../organization/README.md) | Defines team membership |
+| [permissions](../../permissions/README.md) | Only organization administrators may change the shared budget |
 
 ## Dependencies
 
 - voting
 - issue
 - organization
+- permissions
 
 ## Acceptance Criteria
 
@@ -107,7 +117,6 @@ Not defined yet.
 
 ## Open Questions
 
-- Who may configure the shared organization-wide budget?
 - After the MVP, may an organization vary the budget by role or membership type?
 - If a person belongs to multiple organizations, does each organization provide its own independent shared budget?
 - Is a minimum membership size required before collective ranking and bubble-up apply?
