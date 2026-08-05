@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Voting is the positive-support mechanism by which eligible members decide which issue is #1 at each scope. The MVP has no downvotes or opposing votes. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven and shared across all levels of an organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time.
+Voting is the positive-support mechanism by which eligible members decide which issue is #1 at each scope. The MVP has no downvotes or opposing votes. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven. In the MVP, every eligible member of an organization receives the same configured budget, shared across all levels of that organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time.
 
 ## Contents
 
@@ -61,6 +61,10 @@ The configured vote budget for an eligible voter MUST be an integer from 1 throu
 #### REQ: default-vote-budget-one
 
 A new organization MUST default each eligible voter to one budgeted support-vote unit.
+
+#### REQ: mvp-same-budget-for-all-org-members
+
+In the MVP, an organization MUST configure one vote-budget size that applies equally to every eligible member. The MVP MUST NOT assign different budget sizes by person, role, membership type, team, or hierarchy level.
 
 #### REQ: one-budget-shared-across-org-levels
 
@@ -146,5 +150,5 @@ Not defined yet.
 
 ## Open Questions
 
-- May an organization configure different budget sizes by membership type, or must every eligible voter receive the same number?
+- After the MVP, should organizations be allowed to vary vote budgets by role or membership type?
 - Acceptance criteria not yet defined for this feature.

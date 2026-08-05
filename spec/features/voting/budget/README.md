@@ -11,7 +11,7 @@ status: Conceptual
 
 ## Summary
 
-Every eligible voter has one budgeted support-vote unit by default, configurable from one to seven and shared across all levels of an organization. This budget is additional to the free automatic creator star on the voter's nominated personal #1. Budgeted units are assigned directly to issues and may be concentrated, distributed among issues, and reallocated at any time.
+Every eligible voter has one budgeted support-vote unit by default, configurable from one to seven and shared across all levels of an organization. The MVP applies the same configured budget size to every eligible member of that organization. This budget is additional to the free automatic creator star on the voter's nominated personal #1. Budgeted units are assigned directly to issues and may be concentrated, distributed among issues, and reallocated at any time.
 
 ## Problem
 
@@ -19,9 +19,9 @@ Unlimited voting devalues every vote. A one-to-seven-unit budget forces users to
 
 ## Behavior
 
-### One organization-wide one-to-seven budget
+### One equal organization-wide one-to-seven budget
 
-The budget defaults to one support-vote unit and is configurable from one through seven inclusive. Within one organization, every budgeted vote assigned through a team, project, department, or company view counts against the same personal budget. A view does not own the vote. The automatic creator star does not count against the budget.
+The budget defaults to one support-vote unit and is configurable from one through seven inclusive. The MVP uses one configured value for all eligible members of an organization. Within that organization, every budgeted vote assigned through a team, project, department, or company view counts against the same personal budget. A view does not own the vote. The automatic creator star does not count against the budget.
 
 #### REQ: configured-budget-range
 
@@ -30,6 +30,10 @@ The vote budget MUST be configurable as an integer from 1 through 7 inclusive.
 #### REQ: default-budget-one
 
 A new organization MUST give each eligible voter one budgeted support-vote unit by default.
+
+#### REQ: mvp-budget-equal-for-all-eligible-members
+
+The MVP MUST give every eligible member of an organization the same configured vote-budget size. It MUST NOT grant additional voting power based on role, seniority, membership type, team, or individual identity.
 
 #### REQ: allocations-cannot-exceed-budget
 
@@ -103,7 +107,8 @@ Not defined yet.
 
 ## Open Questions
 
-- Who configures the shared budget, and is the same value mandatory for every member of the organization?
+- Who may configure the shared organization-wide budget?
+- After the MVP, may an organization vary the budget by role or membership type?
 - If a person belongs to multiple organizations, does each organization provide its own independent shared budget?
 - Is a minimum membership size required before collective ranking and bubble-up apply?
 - Acceptance criteria not yet defined for this feature.

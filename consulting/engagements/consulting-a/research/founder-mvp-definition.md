@@ -65,6 +65,7 @@ have changed the described outcome.
 | E11 | Founder requirement | When eligible issues have equal star totals, the older unresolved issue ranks higher. | Sponsor interview, 2026-08-05 | Product intent, not validation; exact timestamp ties use a stable deterministic fallback |
 | E12 | Founder requirement | When individual voter identities are hidden, the issue's total star count remains visible. | Sponsor interview, 2026-08-05 | Product intent, not validation; default attribution is confirmed separately in E13 |
 | E13 | Founder requirement | Voter identities are visible to eligible viewers by default unless the organization chooses to hide them. | Sponsor interview, 2026-08-05 | Product intent, not validation; governance of who may change the setting remains unresolved |
+| E14 | Founder requirement | In the MVP, every eligible member of an organization receives the same configured vote budget. | Sponsor interview, 2026-08-05 | Product intent, not validation; role-based budget differences may be reconsidered after MVP |
 
 ## Findings
 
@@ -85,6 +86,8 @@ have changed the described outcome.
 - Hiding voter identities preserves the visible aggregate priority signal (E12).
 - Voter identity is visible by default, with an organization-controlled hidden
   attribution option (E13).
+- MVP voting power is equal: every eligible member in an organization receives
+  the same configured budget (E14).
 - Persistence is a product signal. An unresolved issue remaining open for, for
   example, 247 days is intended to be visible rather than administratively
   deferred or archived away (E7).
@@ -118,9 +121,9 @@ to seven, and is shared across all levels within an organization. Votes are
 assigned directly to issues, so there is no separate lower-level or parent-level
 vote total. Negative votes are excluded from the MVP, and older unresolved
 issues win equal-score ties. Voter identities are visible to eligible viewers
-by default, and hiding them does not hide the aggregate score. The next central
-voting unknown is whether every member of an organization receives the same
-configured vote budget.
+by default, and hiding them does not hide the aggregate score. Every eligible
+member receives the same configured vote budget in the MVP. The next central
+governance unknown is who may change that organization-wide budget.
 
 ## Confidence
 
