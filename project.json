@@ -15,6 +15,7 @@
         "browser": "./src/main.ts",
         "tsConfig": "tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+        "polyfills": [],
         "assets": [
           {
             "glob": "**/*",
@@ -74,7 +75,9 @@
     },
     "test": {
       "executor": "@angular/build:unit-test",
-      "options": {}
+      "options": {
+        "providersFile": "src/test-providers.ts"
+      }
     },
     "serve-static": {
       "continuous": true,

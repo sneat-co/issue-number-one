@@ -1,6 +1,7 @@
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
@@ -16,6 +17,7 @@ import { appRoutes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
     ...getStandardSneatProviders(in1AppEnvironmentConfig),
     // NOTE: 'in1app' is not yet in the SneatApp union type in @sneat/core@0.4.0;
     // follow-up: extend SneatApp in sneat-libs/libs/core/src/lib/app.service.ts and republish.

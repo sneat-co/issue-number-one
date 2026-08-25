@@ -140,3 +140,5 @@ vite.config.ts.timestamp-*
 .DS_Store
 specscore.local.yaml
 .nx/cache/
+.nx/workspace-data/
+.angular/
