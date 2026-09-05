@@ -6,8 +6,8 @@ status: Conceptual
 # Feature: Public questions and primary issues
 
 > [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=request-change) |
-> **Status:** Conceptual
-> **Source Ideas:** —
+**Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
