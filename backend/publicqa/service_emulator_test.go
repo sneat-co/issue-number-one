@@ -1,0 +1,469 @@
+package publicqa
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"github.com/sneat-co/issue-number-one/backend/translations"
+	"os"
+	"testing"
+	"time"
+
+	"cloud.google.com/go/firestore"
+)
+
+type questionTranslator struct{ err error }
+
+func (f *questionTranslator) Translate(_ context.Context, _, target string, values []string) ([]string, error) {
+	if f.err != nil {
+		return nil, f.err
+	}
+	return []string{target + ": " + values[0], target + ": " + values[1]}, nil
+}
+
+func withQuestionTranslations(t *testing.T, s *Service, translator translations.Translator) *Service {
+	t.Helper()
+	repository, err := translations.NewFirestoreRepository(s.db, s.spaceID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	translationService, err := translations.NewService(repository, translator, translations.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return NewService(s.db, s.spaceID, WithTranslations(translationService, repository))
+}
+
+func emulatorService(t *testing.T) *Service {
+	t.Helper()
+	if os.Getenv("FIRESTORE_EMULATOR_HOST") == "" {
+		t.Skip("FIRESTORE_EMULATOR_HOST is not set")
+	}
+	ctx := context.Background()
+	db, e := firestore.NewClient(ctx, "issuenumber-public-test")
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() { _ = db.Close() })
+	return NewService(db, fmt.Sprintf("test-%d", time.Now().UnixNano()))
+}
+func seedQuestion(t *testing.T, s *Service, qid, cat string, issues ...string) {
+	t.Helper()
+	ctx := context.Background()
+	q := Question{ID: qid, CategoryID: cat, Status: StatusPublished, AnswerTargetType: "issue", ChoiceSource: ChoiceSource{Kind: "free"}, AllowSuggestions: true}
+	if _, e := s.root().Collection("questions").Doc(qid).Set(ctx, q); e != nil {
+		t.Fatal(e)
+	}
+	for _, id := range issues {
+		i := Issue{ID: id, Slug: id, Title: id, Status: StatusPublished}
+		if _, e := s.root().Collection("questions").Doc(qid).Collection("issues").Doc(id).Set(ctx, i); e != nil {
+			t.Fatal(e)
+		}
+	}
+}
+func seedQuestionSlot(t *testing.T, s *Service, qid, cat, slot string, issues ...string) {
+	t.Helper()
+	ctx := context.Background()
+	q := Question{ID: qid, CategoryID: cat, PrioritySlotID: slot, Status: StatusPublished, AnswerTargetType: "issue", ChoiceSource: ChoiceSource{Kind: "free"}, AllowSuggestions: true}
+	if _, e := s.root().Collection("questions").Doc(qid).Set(ctx, q); e != nil {
+		t.Fatal(e)
+	}
+	for _, id := range issues {
+		if _, e := s.root().Collection("questions").Doc(qid).Collection("issues").Doc(id).Set(ctx, Issue{ID: id, Slug: id, Title: id, Status: StatusPublished}); e != nil {
+			t.Fatal(e)
+		}
+	}
+}
+func getIssue(t *testing.T, s *Service, q, i string) Issue {
+	t.Helper()
+	d, e := s.root().Collection("questions").Doc(q).Collection("issues").Doc(i).Get(context.Background())
+	if e != nil {
+		t.Fatal(e)
+	}
+	var out Issue
+	if e = d.DataTo(&out); e != nil {
+		t.Fatal(e)
+	}
+	return out
+}
+
+func TestAnswerQuestionUniquenessPersonalWeightAndClearing(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "ireland", "country", "housing", "cost")
+	seedQuestion(t, s, "france", "country", "health")
+	caller := Caller{UID: "u1", PhoneVerified: true}
+	r1, e := s.Answer(context.Background(), caller, AnswerRequest{QuestionID: "ireland", IssueID: "housing", OperationID: "op1"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if r1.Answer.Revision != 1 || r1.PersonalTop {
+		t.Fatalf("unexpected first response %+v", r1)
+	}
+	r2, e := s.Answer(context.Background(), caller, AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "ireland", IssueID: "housing", OperationID: "op2"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if !r2.PersonalTop {
+		t.Fatal("personal top not set")
+	}
+	i := getIssue(t, s, "ireland", "housing")
+	if i.Supporters != 1 || i.PersonalTopSupporters != 1 || i.WeightedScore != 10 {
+		t.Fatalf("weighted issue %+v", i)
+	}
+	r3, e := s.Answer(context.Background(), caller, AnswerRequest{QuestionID: "france", IssueID: "health", OperationID: "op3"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if r3.Answer.Revision != 1 || r3.PersonalTop {
+		t.Fatalf("unexpected independent answer %+v", r3)
+	}
+	old := getIssue(t, s, "ireland", "housing")
+	next := getIssue(t, s, "france", "health")
+	if old.Supporters != 1 || old.PersonalTopSupporters != 1 || old.WeightedScore != 10 || next.Supporters != 1 || next.WeightedScore != 1 {
+		t.Fatalf("old=%+v next=%+v", old, next)
+	}
+	r4, e := s.Answer(context.Background(), caller, AnswerRequest{QuestionID: "ireland", IssueID: "cost", OperationID: "op4"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if r4.PersonalTop || r4.Answer.Revision != 2 {
+		t.Fatalf("replacement=%+v", r4)
+	}
+	old = getIssue(t, s, "ireland", "housing")
+	replacement := getIssue(t, s, "ireland", "cost")
+	if old.Supporters != 0 || old.PersonalTopSupporters != 0 || old.WeightedScore != 0 || replacement.Supporters != 1 || replacement.WeightedScore != 1 {
+		t.Fatalf("old=%+v replacement=%+v", old, replacement)
+	}
+}
+
+func TestPersonalEnsuresCategoryChoiceAndIdempotency(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q1", "country", "a")
+	seedQuestion(t, s, "q2", "country", "b")
+	c := Caller{UID: "u", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q1", IssueID: "a", OperationID: "a1"}); e != nil {
+		t.Fatal(e)
+	}
+	req := AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "q2", IssueID: "b", OperationID: "a2"}
+	r, e := s.Answer(context.Background(), c, req)
+	if e != nil {
+		t.Fatal(e)
+	}
+	replay, e := s.Answer(context.Background(), c, req)
+	if e != nil || !replay.Replayed || replay.Answer.IssueID != "b" {
+		t.Fatalf("replay=%+v err=%v", replay, e)
+	}
+	if r.Changed || !r.PersonalTop {
+		t.Fatalf("response=%+v", r)
+	}
+	i := getIssue(t, s, "q2", "b")
+	if i.Supporters != 1 || i.PersonalTopSupporters != 1 || i.WeightedScore != 10 {
+		t.Fatalf("issue=%+v", i)
+	}
+	if first := getIssue(t, s, "q1", "a"); first.Supporters != 1 || first.WeightedScore != 1 {
+		t.Fatalf("first question answer was displaced: %+v", first)
+	}
+}
+
+func TestNestedGeographyUsesIndependentPrioritySlots(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestionSlot(t, s, "ireland", "geography", "country", "housing")
+	seedQuestionSlot(t, s, "dublin", "geography", "city", "transport")
+	c := Caller{UID: "u", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "ireland", IssueID: "housing", OperationID: "g1"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "dublin", IssueID: "transport", OperationID: "g2"}); e != nil {
+		t.Fatal(e)
+	}
+	if getIssue(t, s, "ireland", "housing").Supporters != 1 || getIssue(t, s, "dublin", "transport").Supporters != 1 {
+		t.Fatal("nested navigation incorrectly shared an answer slot")
+	}
+}
+
+func TestPaidEligibilityAndReceiptBinding(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "country", "a")
+	c := Caller{UID: "paid"}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", OperationID: "before"}); e != ErrVerificationRequired {
+		t.Fatalf("got %v", e)
+	}
+	if e := s.MarkPaid(context.Background(), "paid", "charge-1"); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MarkPaid(context.Background(), "paid", "charge-1"); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MarkPaid(context.Background(), "other", "charge-1"); e != ErrConflict {
+		t.Fatalf("got %v", e)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", OperationID: "after"}); e != nil {
+		t.Fatal(e)
+	}
+}
+
+func TestFreeformDuplicateUsesAlias(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "country")
+	c := Caller{UID: "u", PhoneVerified: true}
+	r1, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", Title: "Cost of living", OperationID: "f1"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	r2, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", Title: "  COST  of living ", OperationID: "f2"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if !r1.CreatedIssue || r2.CreatedIssue || r1.Issue.ID != r2.Issue.ID {
+		t.Fatalf("first=%+v second=%+v", r1, r2)
+	}
+}
+
+func TestAnswerOperationBindsAttribution(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "attribution", "topic")
+	caller := Caller{UID: "author", PhoneVerified: true, DisplayName: "Visible Author"}
+	request := AnswerRequest{QuestionID: "attribution", Title: "Safer crossings", OperationID: "attribution-operation", Attribution: "anonymous"}
+	if _, err := s.Answer(context.Background(), caller, request); err != nil {
+		t.Fatal(err)
+	}
+	request.Attribution = "authored"
+	if _, err := s.Answer(context.Background(), caller, request); err != ErrConflict {
+		t.Fatalf("operation attribution was not bound: %v", err)
+	}
+}
+
+func TestCreateQuestionPendingSlugIdempotencyAndCreatorPreview(t *testing.T) {
+	s := emulatorService(t)
+	c := Caller{UID: "author", PhoneVerified: true}
+	req := CreateQuestionRequest{Title: "What country is the number one issue for the free world?", Description: "Choose the country whose situation should receive attention first.", AnswerTargetType: "country", OperationID: "create-q-1"}
+	created, e := s.CreateQuestion(context.Background(), c, req)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if created.Question.Status != StatusPending || created.Question.Indexable || created.Question.CreatorUID != "author" {
+		t.Fatalf("created=%+v", created)
+	}
+	replay, e := s.CreateQuestion(context.Background(), c, req)
+	if e != nil || !replay.Replayed || replay.Question.ID != created.Question.ID {
+		t.Fatalf("replay=%+v err=%v", replay, e)
+	}
+	if _, e = s.QuestionBySlug(context.Background(), created.Question.Slug, ""); e != ErrNotFound {
+		t.Fatalf("anonymous preview got %v", e)
+	}
+	if _, e = s.QuestionBySlug(context.Background(), created.Question.Slug, "author"); e != nil {
+		t.Fatalf("creator preview: %v", e)
+	}
+}
+
+func TestCreateQuestionStoresTranslationAndLocalizedPreview(t *testing.T) {
+	s := withQuestionTranslations(t, emulatorService(t), &questionTranslator{})
+	caller := Caller{UID: "translated-author", PhoneVerified: true}
+	created, err := s.CreateQuestion(context.Background(), caller, CreateQuestionRequest{
+		Title: "What should our town improve first?", Description: "Choose the improvement that should receive the community's attention first.",
+		ChoiceSource: ChoiceSource{Kind: "free"}, OperationID: "translated-question", SourceLanguage: "en",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if created.Question.TranslationStatus != "ready" || !containsString(created.Question.AvailableLanguages, "ru") {
+		t.Fatalf("translation lifecycle = %+v", created.Question)
+	}
+	if _, err = s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, "", "ru"); err != ErrNotFound {
+		t.Fatalf("pending translation leaked anonymously: %v", err)
+	}
+	preview, err := s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if preview.Translation == nil || preview.Translation.Language != "ru" || !preview.Translation.MachineTranslated || preview.ContentLanguage != "ru" || preview.TranslationFallback {
+		t.Fatalf("localized preview = %+v", preview)
+	}
+	if preview.Question.Title != created.Question.Title || preview.Question.SourceLanguage != "en" {
+		t.Fatalf("canonical source was overwritten: %+v", preview.Question)
+	}
+}
+
+func TestTranslationFailureKeepsCanonicalQuestionAndCanRetry(t *testing.T) {
+	failing := &questionTranslator{err: errors.New("provider unavailable")}
+	s := withQuestionTranslations(t, emulatorService(t), failing)
+	caller := Caller{UID: "retry-author", PhoneVerified: true}
+	created, err := s.CreateQuestion(context.Background(), caller, CreateQuestionRequest{
+		Title: "What matters most in our district?", Description: "Describe the single issue that deserves attention across the district first.",
+		ChoiceSource: ChoiceSource{Kind: "free"}, OperationID: "failed-translation", SourceLanguage: "en",
+	})
+	if err != nil {
+		t.Fatalf("translation failure rolled back question: %v", err)
+	}
+	if created.Question.TranslationStatus != "failed" || created.Question.Status != StatusPending || created.Question.Indexable {
+		t.Fatalf("failed lifecycle = %+v", created.Question)
+	}
+	preview, err := s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil || !preview.TranslationFallback || preview.ContentLanguage != "en" || preview.Translation != nil {
+		t.Fatalf("safe source fallback = %+v err=%v", preview, err)
+	}
+	s = withQuestionTranslations(t, s, &questionTranslator{})
+	languages, err := s.TranslateAllQuestionLanguages(context.Background(), created.Question.ID, translations.Actor{UID: caller.UID})
+	if err != nil || !containsString(languages, "ru") {
+		t.Fatalf("retry languages=%v err=%v", languages, err)
+	}
+	preview, err = s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil || preview.Translation == nil || preview.Translation.SourceRevision != 1 {
+		t.Fatalf("retried preview = %+v err=%v", preview, err)
+	}
+}
+func TestCustomQuestionPublicationAndPredefinedPopulation(t *testing.T) {
+	s := emulatorService(t)
+	c := Caller{UID: "author", PhoneVerified: true}
+	custom, e := s.CreateQuestion(context.Background(), c, CreateQuestionRequest{Title: "What should our neighbourhood fix first?", Description: "Choose the single local improvement that should receive attention first.", ChoiceSource: ChoiceSource{Kind: "custom", Options: []ChoiceOption{{Title: "Street lighting"}, {Title: "Playground repairs"}}}, OperationID: "custom-q"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	preview, e := s.Question(context.Background(), custom.Question.ID, "author")
+	if e != nil || len(preview.Issues) != 2 {
+		t.Fatalf("preview issues=%d err=%v", len(preview.Issues), e)
+	}
+	if e = s.SetQuestionStatus(context.Background(), custom.Question.ID, StatusPublished); e != nil {
+		t.Fatal(e)
+	}
+	customDoc, e := s.root().Collection("questions").Doc(custom.Question.ID).Get(context.Background())
+	if e != nil {
+		t.Fatal(e)
+	}
+	var customStored Question
+	if e = customDoc.DataTo(&customStored); e != nil || customStored.Indexable {
+		t.Fatalf("thin custom question became indexable: %+v err=%v", customStored, e)
+	}
+	published, e := s.Question(context.Background(), custom.Question.ID, "")
+	if e != nil || len(published.Issues) != 2 {
+		t.Fatalf("published issues=%d err=%v", len(published.Issues), e)
+	}
+	pre, e := s.CreateQuestion(context.Background(), c, CreateQuestionRequest{Title: "What country needs our attention first?", Description: "Choose one country whose current situation deserves priority attention.", ChoiceSource: ChoiceSource{Kind: "predefined", EntityType: "country"}, OperationID: "country-q"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.PopulatePredefinedChoices(context.Background(), pre.Question.ID, "country", []PredefinedChoice{{ID: "IE", Title: "Ireland"}, {ID: "FR", Title: "France"}}); e != nil {
+		t.Fatal(e)
+	}
+	if e = s.SetQuestionStatus(context.Background(), pre.Question.ID, StatusPublished); e != nil {
+		t.Fatal(e)
+	}
+	q, e := s.Question(context.Background(), pre.Question.ID, "")
+	if e != nil || len(q.Issues) != 2 || q.Issues[0].TargetType != "country" {
+		t.Fatalf("country choices=%+v err=%v", q.Issues, e)
+	}
+}
+
+func TestQuestionIndexabilityTracksPublishedIssueThreshold(t *testing.T) {
+	s := emulatorService(t)
+	qref := s.root().Collection("questions").Doc("index-threshold")
+	if _, err := qref.Set(context.Background(), Question{ID: qref.ID, Status: StatusPending, Publication: StatusPending, ChoiceSource: ChoiceSource{Kind: "free"}}); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"one", "two", "three", "four", "five"} {
+		if _, err := qref.Collection("issues").Doc(id).Set(context.Background(), Issue{ID: id, Title: id, Status: StatusPublished}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := s.SetQuestionStatus(context.Background(), qref.ID, StatusPublished); err != nil {
+		t.Fatal(err)
+	}
+	read := func() Question {
+		doc, err := qref.Get(context.Background())
+		if err != nil {
+			t.Fatal(err)
+		}
+		var question Question
+		if err = doc.DataTo(&question); err != nil {
+			t.Fatal(err)
+		}
+		return question
+	}
+	if question := read(); !question.Indexable || question.Status != StatusPublished {
+		t.Fatalf("substantive published question = %+v", question)
+	}
+	if err := s.SetIssueStatus(context.Background(), qref.ID, "five", "hidden"); err != nil {
+		t.Fatal(err)
+	}
+	if question := read(); question.Indexable || question.Status != StatusPublished {
+		t.Fatalf("thin published question = %+v", question)
+	}
+	if err := s.SetIssueStatus(context.Background(), qref.ID, "five", StatusPublished); err != nil {
+		t.Fatal(err)
+	}
+	if question := read(); !question.Indexable {
+		t.Fatalf("restored substantive question = %+v", question)
+	}
+}
+
+func TestCountryTargetRejectsFreeformIssue(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "geo")
+	qref := s.root().Collection("questions").Doc("q")
+	if _, e := qref.Update(context.Background(), []firestore.Update{{Path: "answerTargetType", Value: "country"}, {Path: "choiceSource", Value: ChoiceSource{Kind: "predefined", EntityType: "country"}}, {Path: "allowSuggestions", Value: false}}); e != nil {
+		t.Fatal(e)
+	}
+	_, e := s.Answer(context.Background(), Caller{UID: "u", PhoneVerified: true}, AnswerRequest{QuestionID: "q", Title: "Ireland", OperationID: "country-freeform"})
+	if !errors.Is(e, ErrValidation) {
+		t.Fatalf("got %v", e)
+	}
+}
+
+func TestLanguageAttributionDoesNotCreateExtraVote(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "topic", "a", "b")
+	c := Caller{UID: "u", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", LanguageCode: "ru-RU", OperationID: "l1"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", LanguageCode: "en", OperationID: "l2"}); e != nil {
+		t.Fatal(e)
+	}
+	a := getIssue(t, s, "q", "a")
+	if a.Supporters != 1 || a.LanguageStats["ru"].Supporters != 1 || a.LanguageStats["en"].Supporters != 0 {
+		t.Fatalf("display language changed vote: %+v", a)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "q", IssueID: "a", LanguageCode: "en", OperationID: "l3"}); e != nil {
+		t.Fatal(e)
+	}
+	a = getIssue(t, s, "q", "a")
+	if a.LanguageStats["ru"].WeightedScore != 10 {
+		t.Fatalf("personal weight not attributed to answer language: %+v", a.LanguageStats)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "b", LanguageCode: "en", OperationID: "l4"}); e != nil {
+		t.Fatal(e)
+	}
+	a = getIssue(t, s, "q", "a")
+	b := getIssue(t, s, "q", "b")
+	if a.WeightedScore != 0 || a.LanguageStats["ru"].WeightedScore != 0 || b.LanguageStats["en"].Supporters != 1 {
+		t.Fatalf("a=%+v b=%+v", a, b)
+	}
+}
+
+func TestMergeIssueMigratesReferencesCountersAndIsResumable(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "topic", "source", "target")
+	c1 := Caller{UID: "u1", PhoneVerified: true}
+	c2 := Caller{UID: "u2", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c1, AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "q", IssueID: "source", LanguageCode: "ru", OperationID: "m1"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e := s.Answer(context.Background(), c2, AnswerRequest{QuestionID: "q", IssueID: "target", LanguageCode: "en", OperationID: "m2"}); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MergeIssue(context.Background(), "q", "source", "target", "merge-1"); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MergeIssue(context.Background(), "q", "source", "target", "merge-1"); e != nil {
+		t.Fatal(e)
+	}
+	source := getIssue(t, s, "q", "source")
+	target := getIssue(t, s, "q", "target")
+	if source.Status != "merged" || source.MergedIntoIssueID != "target" || source.Supporters != 0 || target.Supporters != 2 || target.PersonalTopSupporters != 1 || target.WeightedScore != 11 || target.LanguageStats["ru"].WeightedScore != 10 {
+		t.Fatalf("source=%+v target=%+v", source, target)
+	}
+	a, e := s.OwnAnswer(context.Background(), "u1", "q")
+	if e != nil || a.Answer.IssueID != "target" || !a.PersonalTop {
+		t.Fatalf("answer=%+v err=%v", a, e)
+	}
+}
