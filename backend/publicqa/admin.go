@@ -16,23 +16,36 @@ func (s *Service) SetQuestionStatus(ctx context.Context, questionID, statusValue
 	}
 	qref := s.root().Collection("questions").Doc(questionID)
 	if statusValue == StatusPublished {
-		it := qref.Collection("issues").Where("status", "==", StatusPending).Documents(ctx)
-		docs, e := it.GetAll()
-		it.Stop()
+		qd, e := qref.Get(ctx)
 		if e != nil {
 			return e
 		}
-		for start := 0; start < len(docs); start += 400 {
-			end := start + 400
-			if end > len(docs) {
-				end = len(docs)
-			}
-			b := s.db.Batch()
-			for _, d := range docs[start:end] {
-				b.Update(d.Ref, []firestore.Update{{Path: "status", Value: StatusPublished}, {Path: "updatedAt", Value: s.now().UTC()}})
-			}
-			if _, e = b.Commit(ctx); e != nil {
+		var q Question
+		if e = qd.DataTo(&q); e != nil {
+			return e
+		}
+		// Only the bounded options reviewed as part of a newly-created custom
+		// question are promoted with it. Re-publishing an existing question must
+		// never bulk-publish unrelated user suggestions.
+		if q.Status == StatusPending && q.ChoiceSource.Kind == "custom" {
+			it := qref.Collection("issues").Where("status", "==", StatusPending).Documents(ctx)
+			docs, e := it.GetAll()
+			it.Stop()
+			if e != nil {
 				return e
+			}
+			for start := 0; start < len(docs); start += 400 {
+				end := start + 400
+				if end > len(docs) {
+					end = len(docs)
+				}
+				b := s.db.Batch()
+				for _, d := range docs[start:end] {
+					b.Update(d.Ref, []firestore.Update{{Path: "status", Value: StatusPublished}, {Path: "updatedAt", Value: s.now().UTC()}})
+				}
+				if _, e = b.Commit(ctx); e != nil {
+					return e
+				}
 			}
 		}
 	}
