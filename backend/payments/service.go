@@ -20,11 +20,13 @@ const (
 	Currency            = "EUR"
 	MerchantDescription = "Support IssueNumber.one and verify participation"
 
-	metadataUserID     = "issueNumberUserID"
-	metadataPayerRef   = "sneatPayerRef"
-	metadataCategoryID = "categoryID"
-	metadataQuestionID = "questionID"
-	metadataActionID   = "actionID"
+	metadataUserID      = "issueNumberUserID"
+	metadataPayerRef    = "sneatPayerRef"
+	metadataCategoryID  = "categoryID"
+	metadataQuestionID  = "questionID"
+	metadataActionID    = "actionID"
+	metadataPaymentMode = "sneatPaymentMode"
+	requiredPaymentMode = "live"
 )
 
 var (
@@ -145,6 +147,7 @@ func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 		payer := event.Metadata[metadataPayerRef]
 		if event.ChargeRef == "" || event.Consumer != Consumer || event.Kind != payrail.SettlementPaid ||
 			event.Amount != AmountMinorUnits || !strings.EqualFold(event.Currency, Currency) ||
+			event.Metadata[metadataPaymentMode] != requiredPaymentMode ||
 			uid == "" || payer == "" || uid != payer {
 			return fmt.Errorf("%w: consumer=%q kind=%q amount=%d currency=%q", ErrInvalidSettlement, event.Consumer, event.Kind, event.Amount, event.Currency)
 		}

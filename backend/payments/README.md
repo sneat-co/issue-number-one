@@ -16,6 +16,12 @@ policy with the responsible owner. This package does not invent those policies
 or create a second payment authority. Automated tests use paymentus test doubles
 and never create a provider charge.
 
+The public eligibility path is live-mode only. sneat-go stamps the selected mode
+into provider-owned metadata and this consumer rejects a signed test-mode event,
+so a Stripe test Checkout cannot make an answer count in production. Emulator
+tests inject paymentus' mock provider directly and remain incapable of moving
+money.
+
 Each verification attempt has a browser-generated opaque `actionId`, retained
 across retries. The server combines it with the trusted Firebase user ID for the
 provider idempotency key. A cancelled or expired attempt can start again with a

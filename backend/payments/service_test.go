@@ -136,19 +136,20 @@ func TestCreateCheckoutRejectsAnonymousAndUnsafeAttribution(t *testing.T) {
 }
 
 func paidEvent() payrail.SettlementEvent {
-	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: "u1", metadataPayerRef: "u1"}}
+	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: "u1", metadataPayerRef: "u1", metadataPaymentMode: requiredPaymentMode}}
 }
 
 func TestSettlementRejectsForgedConsumerAmountAndUser(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
 	for name, mutate := range map[string]func(*payrail.SettlementEvent){
-		"consumer": func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" },
-		"amount":   func(e *payrail.SettlementEvent) { e.Amount = 99 },
-		"currency": func(e *payrail.SettlementEvent) { e.Currency = "USD" },
-		"outcome":  func(e *payrail.SettlementEvent) { e.Kind = payrail.SettlementRefunded },
-		"user":     func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" },
-		"charge":   func(e *payrail.SettlementEvent) { e.ChargeRef = "" },
+		"consumer":    func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" },
+		"amount":      func(e *payrail.SettlementEvent) { e.Amount = 99 },
+		"currency":    func(e *payrail.SettlementEvent) { e.Currency = "USD" },
+		"outcome":     func(e *payrail.SettlementEvent) { e.Kind = payrail.SettlementRefunded },
+		"user":        func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" },
+		"charge":      func(e *payrail.SettlementEvent) { e.ChargeRef = "" },
+		"test replay": func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" },
 	} {
 		t.Run(name, func(t *testing.T) {
 			e := paidEvent()
