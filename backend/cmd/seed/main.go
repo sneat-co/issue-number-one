@@ -1,0 +1,140 @@
+package main
+
+import (
+	"cloud.google.com/go/firestore"
+	"context"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"github.com/sneat-co/issue-number-one/backend/publicqa"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"os"
+	"time"
+)
+
+type catalog struct {
+	SchemaVersion int            `json:"schemaVersion"`
+	Categories    []seedCategory `json:"categories"`
+	Concepts      []seedConcept  `json:"concepts"`
+	Questions     []seedQuestion `json:"questions"`
+}
+type seedCategory struct {
+	publicqa.Category
+	Publication       string   `json:"publication"`
+	DefaultConceptIDs []string `json:"defaultConceptIds"`
+	ParentCategoryID  string   `json:"parentCategoryId"`
+}
+type seedConcept struct{ publicqa.Concept }
+type seedScope struct {
+	ID       string `json:"id"`
+	Type     string `json:"type"`
+	Name     string `json:"name"`
+	ParentID string `json:"parentId"`
+}
+type seedQuestion struct {
+	publicqa.Question
+	Publication string    `json:"publication"`
+	Scope       seedScope `json:"scope"`
+}
+
+func main() {
+	var file, project, confirm, space string
+	flag.StringVar(&file, "file", "../catalog/seed.json", "catalog seed JSON")
+	flag.StringVar(&project, "project", os.Getenv("GCLOUD_PROJECT"), "Google Cloud project")
+	flag.StringVar(&confirm, "confirm-production-project", "", "must exactly equal --project outside emulator")
+	flag.StringVar(&space, "space", publicqa.DefaultPublicSpaceID, "public Space id")
+	flag.Parse()
+	if project == "" {
+		fatal("--project or GCLOUD_PROJECT is required")
+	}
+	if os.Getenv("FIRESTORE_EMULATOR_HOST") == "" && confirm != project {
+		fatal("production seeding requires exact --confirm-production-project")
+	}
+	b, e := os.ReadFile(file)
+	if e != nil {
+		fatal(e.Error())
+	}
+	var c catalog
+	if e = json.Unmarshal(b, &c); e != nil {
+		fatal(e.Error())
+	}
+	if c.SchemaVersion != 1 {
+		fatal("unsupported schemaVersion")
+	}
+	concepts := map[string]publicqa.Concept{}
+	for _, v := range c.Concepts {
+		concepts[v.ID] = v.Concept
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+	db, e := firestore.NewClient(ctx, project)
+	if e != nil {
+		fatal(e.Error())
+	}
+	defer db.Close()
+	root := db.Collection("spaces").Doc(space).Collection("ext").Doc(publicqa.ExtensionID)
+	batch := db.Batch()
+	n := 0
+	flush := func() {
+		if n == 0 {
+			return
+		}
+		if _, e := batch.Commit(ctx); e != nil {
+			fatal(e.Error())
+		}
+		batch = db.Batch()
+		n = 0
+	}
+	set := func(ref *firestore.DocumentRef, v map[string]any) {
+		batch.Set(ref, v, firestore.MergeAll)
+		n++
+		if n == 400 {
+			flush()
+		}
+	}
+	for _, v := range c.Categories {
+		if v.ID == "" {
+			fatal("category id required")
+		}
+		set(root.Collection("categories").Doc(v.ID), map[string]any{"id": v.ID, "slug": v.Slug, "name": v.Name, "question": v.Question, "description": v.Description, "scopeType": v.ScopeType, "expectedChildScopeType": v.ExpectedChildScopeType, "intent": v.Intent, "seoTitle": v.SEOTitle, "seoDescription": v.SEODescription, "status": v.Publication, "indexable": v.Indexable, "conceptIds": v.DefaultConceptIDs, "prioritySlotId": v.ID, "parentCategoryId": v.ParentCategoryID})
+	}
+	for _, v := range c.Concepts {
+		if v.ID == "" {
+			fatal("concept id required")
+		}
+		set(root.Collection("concepts").Doc(v.ID), map[string]any{"id": v.ID, "slug": v.Slug, "title": v.Title, "description": v.Description, "aliases": v.Aliases, "status": publicqa.StatusPublished})
+	}
+	for _, q := range c.Questions {
+		if q.ID == "" {
+			fatal("question id required")
+		}
+		set(root.Collection("questions").Doc(q.ID), map[string]any{"id": q.ID, "slug": q.Slug, "title": q.Title, "description": q.Description, "categoryId": q.CategoryID, "prioritySlotId": q.ID, "scopeType": q.Scope.Type, "scopeId": q.Scope.ID, "scopeName": q.Scope.Name, "scopeParentId": q.Scope.ParentID, "parentQuestionId": q.ParentQuestionID, "conceptIds": q.ConceptIDs, "relatedQuestionIds": q.RelatedQuestionIDs, "status": q.Publication, "indexable": q.Indexable})
+		set(root.Collection("questionSlugs").Doc(q.Slug), map[string]any{"questionId": q.ID, "seeded": true})
+		for _, cid := range q.ConceptIDs {
+			v, ok := concepts[cid]
+			if !ok {
+				fatal("question references unknown concept " + cid)
+			}
+			iref := root.Collection("questions").Doc(q.ID).Collection("issues").Doc(cid)
+			fields := map[string]any{"id": cid, "slug": v.Slug, "title": v.Title, "description": v.Description, "conceptId": cid, "attribution": "anonymous"}
+			if _, e := iref.Get(ctx); status.Code(e) == codes.NotFound {
+				fields["status"] = publicqa.StatusPublished
+			} else if e != nil {
+				fatal(e.Error())
+			}
+			set(iref, fields)
+			for _, a := range append([]string{v.Title}, v.Aliases...) {
+				norm, e := publicqa.NormalizeTitle(a)
+				if e != nil {
+					fatal(e.Error())
+				}
+				set(root.Collection("questions").Doc(q.ID).Collection("aliases").Doc(hash(norm)), map[string]any{"issueId": cid, "normalized": norm})
+			}
+		}
+	}
+	flush()
+	fmt.Printf("seeded %d categories, %d concepts, %d questions; operational counts and moderation fields preserved\n", len(c.Categories), len(c.Concepts), len(c.Questions))
+}
+func hash(s string) string { return publicqa.NormalizedKey(s) }
+func fatal(s string)       { fmt.Fprintln(os.Stderr, s); os.Exit(1) }
