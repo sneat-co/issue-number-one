@@ -24,7 +24,7 @@ overrides:
   '@sneat/data': 0.27.11
   '@sneat/datagrid': 0.27.11
   '@sneat/dto': 0.27.11
-  '@sneat/extension-calendarius-contract': 0.27.4
+  '@sneat/extension-calendarius-contract': 0.27.6
   '@sneat/extension-calendarius-internal': 0.27.2
   '@sneat/extension-calendarius-shared': 0.27.2
   '@sneat/grid': 0.27.11
