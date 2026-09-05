@@ -42,9 +42,10 @@ type Identity interface {
 	UserID(ctx context.Context, bearerToken string) (string, bool)
 }
 
-// EligibilityMarker durably and idempotently records a paid verification.
+// EligibilityStore reads and durably records paid verification.
 // Repeating the same provider charge ID must not grant eligibility twice.
-type EligibilityMarker interface {
+type EligibilityStore interface {
+	HasPaid(ctx context.Context, userID string) (bool, error)
 	MarkPaid(ctx context.Context, userID, chargeID string) error
 }
 
@@ -52,10 +53,10 @@ type EligibilityMarker interface {
 type Service struct {
 	identity Identity
 	provider payrail.PaymentProvider
-	marker   EligibilityMarker
+	marker   EligibilityStore
 }
 
-func NewService(identity Identity, provider payrail.PaymentProvider, marker EligibilityMarker) (*Service, error) {
+func NewService(identity Identity, provider payrail.PaymentProvider, marker EligibilityStore) (*Service, error) {
 	if identity == nil || provider == nil || marker == nil {
 		return nil, fmt.Errorf("%w: identity, provider and marker are required", ErrUnavailable)
 	}
@@ -69,7 +70,7 @@ type CreateCheckoutRequest struct {
 }
 
 type CreateCheckoutResponse struct {
-	ChargeID    string `json:"chargeId"`
+	ChargeID    string `json:"chargeId,omitempty"`
 	CheckoutURL string `json:"checkoutUrl,omitempty"`
 	Settled     bool   `json:"settled"`
 }
@@ -88,6 +89,15 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 			http.Error(w, ErrUnauthorized.Error(), http.StatusUnauthorized)
 			return
 		}
+		paid, err := s.marker.HasPaid(r.Context(), uid)
+		if err != nil {
+			http.Error(w, ErrUnavailable.Error(), http.StatusServiceUnavailable)
+			return
+		}
+		if paid {
+			writeCheckoutResponse(w, http.StatusOK, CreateCheckoutResponse{Settled: true})
+			return
+		}
 		var input CreateCheckoutRequest
 		decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, 4096))
 		decoder.DisallowUnknownFields()
@@ -95,7 +105,7 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 			http.Error(w, ErrInvalidRequest.Error(), http.StatusBadRequest)
 			return
 		}
-		if !validOptionalID(input.CategoryID) || !validOptionalID(input.QuestionID) || !validOptionalID(input.ActionID) {
+		if !validOptionalID(input.CategoryID) || !validOptionalID(input.QuestionID) || !safeAttributionID.MatchString(input.ActionID) {
 			http.Error(w, ErrInvalidRequest.Error(), http.StatusBadRequest)
 			return
 		}
@@ -106,9 +116,13 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 		charge, err := s.provider.CreateCharge(r.Context(), payrail.ChargeRequest{
 			Consumer: Consumer, PayerRef: uid, Amount: AmountMinorUnits,
 			Currency: Currency, Description: MerchantDescription,
-			Metadata: metadata, IdempotencyKey: "issuenumber-verification:" + uid,
+			Metadata: metadata, IdempotencyKey: "issuenumber-verification:" + uid + ":" + input.ActionID,
 		})
 		if err != nil {
+			http.Error(w, ErrUnavailable.Error(), http.StatusServiceUnavailable)
+			return
+		}
+		if charge.ChargeRef == "" {
 			http.Error(w, ErrUnavailable.Error(), http.StatusServiceUnavailable)
 			return
 		}
@@ -118,9 +132,7 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 				return
 			}
 		}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
-		_ = json.NewEncoder(w).Encode(CreateCheckoutResponse{ChargeID: charge.ChargeRef, CheckoutURL: charge.CheckoutURL, Settled: charge.Settled})
+		writeCheckoutResponse(w, http.StatusCreated, CreateCheckoutResponse{ChargeID: charge.ChargeRef, CheckoutURL: charge.CheckoutURL, Settled: charge.Settled})
 	}
 }
 
@@ -131,13 +143,19 @@ func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 	return func(ctx context.Context, event payrail.SettlementEvent) error {
 		uid := event.Metadata[metadataUserID]
 		payer := event.Metadata[metadataPayerRef]
-		if event.Consumer != Consumer || event.Kind != payrail.SettlementPaid ||
+		if event.ChargeRef == "" || event.Consumer != Consumer || event.Kind != payrail.SettlementPaid ||
 			event.Amount != AmountMinorUnits || !strings.EqualFold(event.Currency, Currency) ||
 			uid == "" || payer == "" || uid != payer {
 			return fmt.Errorf("%w: consumer=%q kind=%q amount=%d currency=%q", ErrInvalidSettlement, event.Consumer, event.Kind, event.Amount, event.Currency)
 		}
 		return s.marker.MarkPaid(ctx, uid, event.ChargeRef)
 	}
+}
+
+func writeCheckoutResponse(w http.ResponseWriter, status int, response CreateCheckoutResponse) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(response)
 }
 
 func bearerToken(header string) string {
