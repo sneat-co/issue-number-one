@@ -10,6 +10,7 @@ Top-level features of IssueNumber.one — a communication tool that helps teams 
 
 | Feature | Status | Description |
 |---------|--------|-------------|
+| [Public questions and primary issues](public-questions/README.md) | Conceptual | IssueNumber.one helps a person state their most important issue in a real scope, understand the priorities of other participants, and invite people whose views matter to them. Issues persist as objects; this is not an arbitrary survey builder. The public acquisition surface leads naturally to Sneat.app relationships and Sneat.work audience-specific feedback, without claiming those products already provide private question workflows. |
 | [Issue](issue/README.md) | Conceptual | An issue is the atomic unit of IssueNumber.one — a raised priority item that a team, company, or public topic must identify and address. A person may keep multiple open issues, but may nominate at most one personal #1 issue within each organization and separately within each public topic. Only those context-specific nominations enter collective voting, so scarcity applies to attention rather than to recording problems. |
 | [Voting](voting/README.md) | Conceptual | Voting is the positive-support mechanism by which eligible members decide which issue is #1 at each scope. The MVP has no downvotes or opposing votes. A personal #1 automatically receives one free creator star. In addition, every person has one support-vote unit by default, configurable from one to seven. In the MVP, every eligible member of an organization receives the same configured budget, shared across all levels of that organization. Every budgeted vote is assigned directly to an issue, not to a team, department, company, or other hierarchy level. Members may assign several budgeted units to one issue, support their own nominated issue, and reassign their votes at any time. |
 | [Organization](organization/README.md) | Conceptual | IssueNumber.one models a company as a root team with nested department, project, and team nodes. Each node has its own candidate set and top-N ranking, and automatically contributes only its current #1 issue to its parent. Votes remain assigned to the issue as its visibility changes. Leaders may drill from the root through every node to the originating person and issue. Public topics live outside this hierarchy. |
@@ -55,6 +56,10 @@ Links an existing GitHub Issue into an IssueNumber.one product scope while
 leaving GitHub available as the work item's system of record. IssueNumber.one
 adds personal nomination, scarce positive support, ranking, and organizational
 bubble-up; GitHub reactions and backlog activity do not silently become votes.
+
+### public-questions
+
+IssueNumber.one helps a person state their most important issue in a real scope, understand the priorities of other participants, and invite people whose views matter to them. Issues persist as objects; this is not an arbitrary survey builder. The public acquisition surface leads naturally to Sneat.app relationships and Sneat.work audience-specific feedback, without claiming those products already provide private question workflows.
 
 ## Feature Dependency Graph
 
