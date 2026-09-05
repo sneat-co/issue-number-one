@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/sneat-co/issue-number-one/backend/publicqa"
+	"github.com/sneat-co/issue-number-one/backend/translations"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"os"
@@ -40,10 +41,12 @@ type seedQuestion struct {
 
 func main() {
 	var file, project, confirm, space string
+	var translateAll bool
 	flag.StringVar(&file, "file", "../catalog/seed.json", "catalog seed JSON")
 	flag.StringVar(&project, "project", os.Getenv("GCLOUD_PROJECT"), "Google Cloud project")
 	flag.StringVar(&confirm, "confirm-production-project", "", "must exactly equal --project outside emulator")
 	flag.StringVar(&space, "space", publicqa.DefaultPublicSpaceID, "public Space id")
+	flag.BoolVar(&translateAll, "translate-all", false, "translate every seeded question into the supported language set")
 	flag.Parse()
 	if project == "" {
 		fatal("--project or GCLOUD_PROJECT is required")
@@ -66,7 +69,11 @@ func main() {
 	for _, v := range c.Concepts {
 		concepts[v.ID] = v.Concept
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	timeout := 2 * time.Minute
+	if translateAll {
+		timeout = 15 * time.Minute
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	db, e := firestore.NewClient(ctx, project)
 	if e != nil {
@@ -152,6 +159,28 @@ func main() {
 	}
 	flush()
 	fmt.Printf("seeded %d categories, %d concepts, %d questions; operational counts and moderation fields preserved\n", len(c.Categories), len(c.Concepts), len(c.Questions))
+	if translateAll {
+		translationRepository, err := translations.NewFirestoreRepository(db, space)
+		if err != nil {
+			fatal(err.Error())
+		}
+		translator, err := translations.NewGoogleTranslator(ctx)
+		if err != nil {
+			fatal(err.Error())
+		}
+		defer translator.Close()
+		translationService, err := translations.NewService(translationRepository, translator, translations.Config{SupportedLanguages: translations.CanonicalSupportedLanguages()})
+		if err != nil {
+			fatal(err.Error())
+		}
+		questionService := publicqa.NewService(db, space, publicqa.WithTranslations(translationService, translationRepository))
+		for _, question := range c.Questions {
+			if _, err = questionService.TranslateAllQuestionLanguages(ctx, question.ID, translations.Actor{Trusted: true}); err != nil {
+				fatal(fmt.Sprintf("translate question %s: %v", question.ID, err))
+			}
+		}
+		fmt.Printf("translated %d questions into %d supported languages\n", len(c.Questions), len(translations.CanonicalSupportedLanguages()))
+	}
 }
 func hash(s string) string { return publicqa.NormalizedKey(s) }
 func fatal(s string)       { fmt.Fprintln(os.Stderr, s); os.Exit(1) }
