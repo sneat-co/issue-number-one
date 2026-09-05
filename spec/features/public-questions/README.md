@@ -6,8 +6,8 @@ status: Conceptual
 # Feature: Public questions and primary issues
 
 > [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=request-change) |
-**Status:** Conceptual
-**Source Ideas:** —
+> **Status:** Conceptual
+> **Source Ideas:** —
 
 ## Summary
 
@@ -88,7 +88,9 @@ The data model can add answerTargetType and targetRef to a distinct question fam
 its aggregation must not be mixed with issue-priority rankings. Scope hierarchy and
 answer target taxonomy are independent. The seed demonstrates this axis with the
 neutral question “Which country's government actions cause you the most concern
-globally?” backed by canonical country entities. Broader axis analysis remains a
+globally?” backed by canonical country entities at the canonical community URL
+`/questions/country-government-actions?`. It remains separate from the world issue
+category because its answers are countries rather than Issue concepts. Broader axis analysis remains a
 separate Feature and is not permission to turn the current MVP into an arbitrary
 poll builder.
 

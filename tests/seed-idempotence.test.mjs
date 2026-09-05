@@ -70,13 +70,17 @@ test(
           .doc('country-ie')
           .collection('issues')
           .doc('housing-affordability');
-        const [categories, concepts, questions, preserved, axis] =
+        const [categories, concepts, questions, preserved, axis, axisSlug] =
           await Promise.all([
             root.collection('categories').get(),
             root.collection('concepts').get(),
             root.collection('questions').get(),
             issue.get(),
             root.collection('questions').doc('world-country-actions').get(),
+            root
+              .collection('questionSlugs')
+              .doc('country-government-actions')
+              .get(),
           ]);
         assert.equal(categories.size, catalog.categories.length);
         assert.equal(concepts.size, catalog.concepts.length);
@@ -88,6 +92,8 @@ test(
           entityType: 'country',
         });
         assert.equal(axis.get('answerTargetType'), 'country');
+        assert.equal(axis.get('categoryId'), '');
+        assert.equal(axisSlug.get('questionId'), 'world-country-actions');
       });
     } finally {
       await environment.cleanup();

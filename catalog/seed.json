@@ -2055,7 +2055,6 @@
     {
       "id": "world-country-actions",
       "slug": "country-government-actions",
-      "categoryId": "world-global-issues",
       "title": "Which country's government actions cause you the most concern globally?",
       "description": "Choose a country based on the global effects of its government's actions, not on the identity of its people.",
       "scope": {

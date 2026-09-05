@@ -67,8 +67,12 @@ test('question references resolve and every category has a concrete question', (
   const representedCategories = new Set();
 
   for (const question of seed.questions) {
-    assert.ok(categoryIds.has(question.categoryId), question.id);
-    representedCategories.add(question.categoryId);
+    if (question.categoryId) {
+      assert.ok(categoryIds.has(question.categoryId), question.id);
+      representedCategories.add(question.categoryId);
+    } else {
+      assert.ok(question.slug, question.id);
+    }
     if (question.choiceSource?.kind === 'predefined') {
       assert.ok(
         ['country', 'city', 'currency'].includes(
@@ -105,6 +109,8 @@ test('country-axis example uses canonical entities rather than fake issue concep
   assert.equal(question.choiceSource.kind, 'predefined');
   assert.equal(question.choiceSource.entityType, 'country');
   assert.equal(question.answerTargetType, 'country');
+  assert.equal(question.categoryId, undefined);
+  assert.equal(question.slug, 'country-government-actions');
   assert.deepEqual(question.conceptIds, []);
   assert.match(question.description, /government/);
   assert.match(question.description, /not on the identity of its people/);
