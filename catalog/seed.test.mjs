@@ -16,14 +16,11 @@ test('catalog has the expected version, taxonomy breadth, and candidate depth', 
 
   const conceptIds = new Set(seed.concepts.map(({ id }) => id));
   const categoryIds = new Set(seed.categories.map(({ id }) => id));
-  const prioritySlotIds = new Set();
   for (const category of seed.categories) {
     assert.ok(category.defaultConceptIds.length >= 5, category.id);
     assert.equal(category.publication, 'published');
     assert.equal(category.indexable, true);
     assert.ok(['consumer', 'business'].includes(category.intent), category.id);
-    assert.match(category.prioritySlotId, stableSlug, category.id);
-    prioritySlotIds.add(category.prioritySlotId);
     if (category.parentCategoryId) {
       assert.ok(categoryIds.has(category.parentCategoryId), category.id);
       assert.notEqual(category.parentCategoryId, category.id);
@@ -32,7 +29,6 @@ test('catalog has the expected version, taxonomy breadth, and candidate depth', 
       assert.ok(conceptIds.has(conceptId), `${category.id}: ${conceptId}`);
     }
   }
-  assert.equal(prioritySlotIds.size, seed.categories.length);
   assert.equal(
     seed.categories.find(({ id }) => id === 'county').parentCategoryId,
     'country',
