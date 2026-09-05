@@ -101,8 +101,8 @@ separate Feature, not permission to turn the current MVP into an arbitrary poll 
 | `personalAnswers/{uid}` | One overall personal top referring to a current slot choice |
 | `verification/{uid}` | Private trusted payment eligibility; phone comes from identity authority |
 | `questions/{id}/aliases/{normalisedHash}` | Trusted normalized text to issue identity mapping |
-| `questions/{id}/operations/{operationId}` | Bounded-retention idempotency receipts scoped to actor |
-| `questions/{id}/events/{eventId}` | Private minimal answer transition for reconciliation/history |
+| `operations/{operationId}` | Private answer idempotency receipt bound to actor and payload |
+| `questionOperations/{operationId}` | Private question-creation idempotency receipt |
 
 IDs are immutable; editorial slugs are routes, not database authority. A concept can
 occur in many question memberships. New free-form candidates have no automatically
@@ -179,8 +179,9 @@ Equal counts are ties; stable editorial ordering only breaks display ties.
 A separate metric counts child scopes where each concept is joint first (positive
 counts only), labelled “Joint or sole #1 in N participating scopes”. It is never
 presented as respondent share. Equal-scope weighting and average rank remain future
-analyses with explicit missing-scope rules. Current snapshots plus timestamped private
-transitions allow future daily buckets; the MVP does not claim historical movement.
+analyses with explicit missing-scope rules. Current answers and timestamped operation
+receipts provide reconciliation input for future daily buckets; the MVP does not claim
+historical movement or retain an unbounded event log.
 
 ## Privacy and relationship bridge
 
@@ -231,8 +232,10 @@ Curated questions with explanatory text and at least five useful candidates can 
 indexed at zero participation, explicitly labelled candidate options. User-created
 thin pages remain noindex. Editorial approval plus substantive context is required
 for issue indexing; counts alone are not a quality or truth signal. Draft/hidden/private
-content is inaccessible publicly. Canonicals omit query parameters, redirects preserve
-approved aliases, sitemap includes only canonical indexable pages. Later partition by
+content is inaccessible publicly. Canonicals omit tracking and filter parameters; the
+founder-required empty `?` and explicit `?lang={code}` are the only question URL
+variants. Redirects preserve approved aliases, and the sitemap includes only canonical
+indexable pages. Later partition by
 category with a sitemap index rather than generating filter combinations.
 
 ## Performance and scale
