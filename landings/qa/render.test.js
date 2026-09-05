@@ -174,17 +174,13 @@ test('generated user question canonicals preserve founder-required trailing ques
 });
 
 test('translated questions use lang canonical and expose language alternatives', () => {
-  const translated = questionPage(
-    catalog,
-    cat,
-    {
-      question: { ...q, availableLanguages: ['en', 'ru'] },
-      issues,
-      totalRespondents: 6,
-      languageCode: 'ru',
-      languageRespondents: 2,
-    },
-  );
+  const translated = questionPage(catalog, cat, {
+    question: { ...q, availableLanguages: ['en', 'ru'] },
+    issues,
+    totalRespondents: 6,
+    languageCode: 'ru',
+    languageRespondents: 2,
+  });
   assert.ok(
     translated.includes(
       'rel="canonical" href="https://issuenumber.one/issues/country/ireland?lang=ru"',
@@ -193,6 +189,12 @@ test('translated questions use lang canonical and expose language alternatives',
   assert.ok(translated.includes('<html lang="ru">'));
   assert.ok(translated.includes('hreflang="en"'));
   assert.ok(translated.includes('hreflang="ru"'));
+  assert.ok(
+    translated.includes('6</strong> people have answered across all languages'),
+  );
+  assert.ok(translated.includes('2</strong> answered in Russian'));
+  assert.ok(translated.includes('answers in Russian'));
+  assert.ok(translated.includes('Russian priority points'));
 });
 
 test('community discovery only lists published user-created questions', () => {

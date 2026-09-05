@@ -11,6 +11,7 @@ import {
   savePending,
   PendingAnswer,
 } from './pending-answer';
+import { loadPendingQuestion } from './pending-question';
 
 interface AnswerResult {
   changed?: boolean;
@@ -125,6 +126,12 @@ export class AnswerPage {
   }
   constructor() {
     if (!this.pending) {
+      if (loadPendingQuestion()) {
+        void this.router.navigateByUrl('/questions/submit', {
+          replaceUrl: true,
+        });
+        return;
+      }
       this.status.set(
         'Choose an issue first. If your saved draft expired, return to the question to start again.',
       );

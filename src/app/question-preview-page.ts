@@ -224,7 +224,7 @@ export class QuestionPreviewPage implements OnInit, OnDestroy {
   }
 
   protected publicQuestionURL(slug: string): string {
-    return `/questions/${encodeURIComponent(slug)}`;
+    return `/questions/${encodeURIComponent(slug)}?`;
   }
 
   private load(): void {

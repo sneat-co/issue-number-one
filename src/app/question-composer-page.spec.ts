@@ -1,7 +1,10 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { QuestionComposerPage } from './question-composer-page';
+import {
+  browserLanguage,
+  QuestionComposerPage,
+} from './question-composer-page';
 import { clearPendingQuestion, loadPendingQuestion } from './pending-question';
 
 describe('QuestionComposerPage', () => {
@@ -34,7 +37,7 @@ describe('QuestionComposerPage', () => {
     expect(navigateByUrl).not.toHaveBeenCalled();
   });
 
-  it('normalizes the question and carries a constrained custom source to /answer', () => {
+  it('normalizes the question and carries a constrained custom source to submission', () => {
     const component =
       TestBed.createComponent(QuestionComposerPage).componentInstance;
     component.form.patchValue({
@@ -55,7 +58,7 @@ describe('QuestionComposerPage', () => {
       },
       allowSuggestions: true,
     });
-    expect(navigateByUrl).toHaveBeenCalledWith('/answer');
+    expect(navigateByUrl).toHaveBeenCalledWith('/questions/submit');
   });
 
   it('keeps an unfinished form when Cancel returns to the previous screen', () => {
@@ -76,5 +79,10 @@ describe('QuestionComposerPage', () => {
     expect(restored.form.controls.description.value).toBe(
       'Still writing this explanation',
     );
+  });
+
+  it('uses a supported browser language and safely falls back to English', () => {
+    expect(browserLanguage('ru-RU')).toBe('ru');
+    expect(browserLanguage('ja-JP')).toBe('en');
   });
 });

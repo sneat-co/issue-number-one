@@ -19,6 +19,10 @@ export interface PendingQuestion {
   readonly description: string;
   readonly choiceSource: PendingQuestionChoiceSource;
   readonly allowSuggestions: boolean;
+  readonly sourceLanguage?: string;
+  readonly requiredAuth?: boolean;
+  readonly verificationOrder?: readonly ('phone' | 'payment')[];
+  readonly verificationAttemptId?: string;
 }
 
 const pendingQuestionStorageKey = 'issuenumber.one.pending-question.v1';
@@ -52,12 +56,15 @@ export function clearPendingQuestion(
 function isPendingQuestion(value: unknown): value is PendingQuestion {
   if (!value || typeof value !== 'object') return false;
   const question = value as Partial<PendingQuestion>;
+  const createdAt = Date.parse(question.createdAt || '');
   return (
     typeof question.operationId === 'string' &&
     typeof question.createdAt === 'string' &&
     typeof question.title === 'string' &&
     typeof question.description === 'string' &&
     typeof question.allowSuggestions === 'boolean' &&
+    Number.isFinite(createdAt) &&
+    Date.now() - createdAt <= 24 * 60 * 60 * 1000 &&
     isChoiceSource(question.choiceSource)
   );
 }

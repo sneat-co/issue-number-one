@@ -184,7 +184,7 @@ type ChoiceKind = '' | PendingQuestionChoiceSource['kind'];
               (click)="cancel()"
               >Cancel</ion-button
             >
-            <ion-button type="submit">Continue to answer</ion-button>
+            <ion-button type="submit">Submit question</ion-button>
           </div>
         </form>
       </main>
@@ -310,9 +310,10 @@ export class QuestionComposerPage {
         source.kind === 'free'
           ? true
           : this.form.controls.allowSuggestions.value,
+      sourceLanguage: browserLanguage(),
     });
     sessionStorage.removeItem(composerDraftStorageKey);
-    void this.router.navigateByUrl('/answer');
+    void this.router.navigateByUrl('/questions/submit');
   }
 
   cancel(): void {
@@ -391,4 +392,23 @@ export function parseCustomOptions(value: string): { title: string }[] {
       return true;
     })
     .map((title) => ({ title }));
+}
+
+const supportedLanguages = new Set([
+  'de',
+  'en',
+  'es',
+  'fr',
+  'ga',
+  'it',
+  'nl',
+  'pl',
+  'pt',
+  'ru',
+  'uk',
+]);
+
+export function browserLanguage(language = navigator.language): string {
+  const code = language.split('-')[0].toLocaleLowerCase();
+  return supportedLanguages.has(code) ? code : 'en';
 }
