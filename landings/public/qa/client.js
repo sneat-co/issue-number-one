@@ -121,7 +121,7 @@ try {
     if (status)
       status.textContent = recent.personalTop
         ? 'Your personal #1 is saved.'
-        : 'Your category choice is saved.';
+        : 'Your choice for this question is saved.';
   }
 } catch {
   /* Public content works without session storage. */
