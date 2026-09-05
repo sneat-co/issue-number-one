@@ -78,6 +78,24 @@ test('empty candidates do not claim measured rank or winner', () => {
   assert.ok(html.includes('starting points, not measured rankings'));
   assert.ok(!html.includes('class="rank">#'));
 });
+test('question pages hide unset update timestamps and show real dates', () => {
+  const emptyDateHtml = questionPage(catalog, cat, {
+    question: q,
+    issues,
+    totalRespondents: 0,
+    updatedAt: '0001-01-01T00:00:00Z',
+  });
+  assert.ok(!emptyDateHtml.includes('Updated 1/1/1'));
+  assert.ok(!emptyDateHtml.includes(' · Updated '));
+
+  const realDateHtml = questionPage(catalog, cat, {
+    question: q,
+    issues,
+    totalRespondents: 6,
+    updatedAt: '2026-09-05T16:30:00Z',
+  });
+  assert.ok(realDateHtml.includes(' · Updated 5/9/2026'));
+});
 test('candidate issue pages are noindex and hidden text is not rendered', () => {
   const snapshot = {
     question: q,
