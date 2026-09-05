@@ -80,8 +80,10 @@ export default {
     ) {
       if (request.method !== 'GET' && request.method !== 'HEAD')
         return new Response('Method not allowed', { status: 405 });
+      // ASSETS canonicalizes .html URLs with a 307 redirect. Fetch its clean
+      // asset URL internally so the browser stays on /answer (or auth route).
       const shell = await env.ASSETS.fetch(
-        new Request(new URL('/index.app.html', url), request),
+        new Request(new URL('/index.app', url), request),
       );
       const headers = new Headers(shell.headers);
       headers.set('X-Robots-Tag', 'noindex, nofollow');
