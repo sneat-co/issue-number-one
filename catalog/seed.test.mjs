@@ -10,20 +10,37 @@ const stableSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 test('catalog has the expected version, taxonomy breadth, and candidate depth', () => {
   assert.equal(seed.schemaVersion, 1);
-  assert.equal(seed.categories.length, 22);
+  assert.equal(seed.categories.length, 23);
   assert.ok(seed.concepts.length > 100);
-  assert.ok(seed.questions.length >= 30);
+  assert.ok(seed.questions.length >= 34);
 
   const conceptIds = new Set(seed.concepts.map(({ id }) => id));
+  const categoryIds = new Set(seed.categories.map(({ id }) => id));
+  const prioritySlotIds = new Set();
   for (const category of seed.categories) {
     assert.ok(category.defaultConceptIds.length >= 5, category.id);
     assert.equal(category.publication, 'published');
     assert.equal(category.indexable, true);
     assert.ok(['consumer', 'business'].includes(category.intent), category.id);
+    assert.match(category.prioritySlotId, stableSlug, category.id);
+    prioritySlotIds.add(category.prioritySlotId);
+    if (category.parentCategoryId) {
+      assert.ok(categoryIds.has(category.parentCategoryId), category.id);
+      assert.notEqual(category.parentCategoryId, category.id);
+    }
     for (const conceptId of category.defaultConceptIds) {
       assert.ok(conceptIds.has(conceptId), `${category.id}: ${conceptId}`);
     }
   }
+  assert.equal(prioritySlotIds.size, seed.categories.length);
+  assert.equal(
+    seed.categories.find(({ id }) => id === 'county').parentCategoryId,
+    'country',
+  );
+  assert.equal(
+    seed.categories.find(({ id }) => id === 'city').parentCategoryId,
+    'county',
+  );
 });
 
 test('all identities and slugs are stable and unique', () => {
@@ -38,11 +55,12 @@ test('all identities and slugs are stable and unique', () => {
       assert.match(record.id, /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/, record.id);
       assert.match(record.slug, stableSlug, record.slug);
     }
-    assert.equal(
-      new Set(records.map(({ slug }) => slug)).size,
-      records.length,
-      `${name} slugs`,
+    const slugKeys = records.map((record) =>
+      name === 'questions'
+        ? `${record.categoryId}/${record.slug}`
+        : record.slug,
     );
+    assert.equal(new Set(slugKeys).size, records.length, `${name} slugs`);
   }
 });
 
@@ -72,7 +90,7 @@ test('question references resolve and every category has a concrete question', (
   assert.deepEqual(representedCategories, categoryIds);
 });
 
-test('required country and Irish city hierarchy is explicit without answer aggregation links', () => {
+test('required country, county, and city hierarchy keeps separate answer slots', () => {
   const questions = new Map(seed.questions.map((question) => [question.id, question]));
   for (const countryId of ['IE', 'GB', 'US', 'DE', 'FR', 'PL']) {
     assert.ok(
@@ -84,11 +102,26 @@ test('required country and Irish city hierarchy is explicit without answer aggre
     );
   }
 
-  for (const cityId of ['city-dublin', 'city-cork', 'city-limerick', 'city-galway']) {
+  const places = [
+    ['dublin', 'IE-D', 'IE-D-DUBLIN'],
+    ['cork', 'IE-C', 'IE-C-CORK'],
+    ['limerick', 'IE-LK', 'IE-LK-LIMERICK'],
+    ['galway', 'IE-G', 'IE-G-GALWAY'],
+  ];
+  for (const [place, countyScopeId, cityScopeId] of places) {
+    const county = questions.get(`county-${place}`);
+    assert.equal(county.categoryId, 'county');
+    assert.equal(county.scope.type, 'county');
+    assert.equal(county.scope.id, countyScopeId);
+    assert.equal(county.scope.parentId, 'IE');
+    assert.equal(county.parentQuestionId, undefined);
+
+    const cityId = `city-${place}`;
     const city = questions.get(cityId);
     assert.equal(city.categoryId, 'city');
     assert.equal(city.scope.type, 'city');
-    assert.equal(city.scope.parentId, 'IE');
+    assert.equal(city.scope.id, cityScopeId);
+    assert.equal(city.scope.parentId, countyScopeId);
     assert.equal(city.parentQuestionId, undefined);
   }
 });

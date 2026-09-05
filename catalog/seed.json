@@ -1,171 +1,2472 @@
 {
   "schemaVersion": 1,
   "categories": [
-    {"id":"country","slug":"country","name":"Country","question":"What is the top issue in your country?","description":"Compare the priorities people choose across countries.","scopeType":"country","expectedChildScopeType":"country","seoTitle":"Top issues by country | IssueNumber.one","seoDescription":"Explore the issues people choose as their number one priority in countries around the world.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"]},
-    {"id":"city","slug":"city","name":"City and local area","question":"What is the top issue in your city or local area?","description":"See which local issue residents want addressed first.","scopeType":"locality","expectedChildScopeType":"city","seoTitle":"Top issues in cities and local areas | IssueNumber.one","seoDescription":"Explore the biggest issues people identify in cities and local communities.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["public-transport-reliability","local-housing-supply","street-safety","traffic-congestion","clean-public-spaces"]},
-    {"id":"community","slug":"community","name":"Community","question":"What is the top issue in your community?","description":"Surface the shared priority that would most improve a community.","scopeType":"community","expectedChildScopeType":"community","seoTitle":"Top community issues | IssueNumber.one","seoDescription":"Discover the priorities that matter most to local and interest-based communities.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["community-safety","social-isolation","youth-activities","accessible-services","community-spaces"]},
-    {"id":"workplace","slug":"workplace","name":"Workplace","question":"What is the top issue at work?","description":"Identify the workplace concern employees most want improved.","scopeType":"workplace","expectedChildScopeType":"workplace","seoTitle":"Top workplace issues | IssueNumber.one","seoDescription":"See which workplace problems employees consider most important.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["workload-burnout","pay-fairness","career-progression","management-communication","flexible-working"]},
-    {"id":"company-organisation","slug":"company-organisation","name":"Company and organisation","question":"What is the top issue at your organisation?","description":"Prioritise the organisation-wide problem that deserves attention first.","scopeType":"organisation","expectedChildScopeType":"organisation","seoTitle":"Top company and organisation issues | IssueNumber.one","seoDescription":"Explore the issues people most want organisations to address.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["strategic-clarity","cross-team-coordination","decision-speed","customer-focus","operational-efficiency"]},
-    {"id":"team","slug":"team","name":"Team","question":"What is the top issue in your team?","description":"Find the single constraint a team most needs to resolve.","scopeType":"team","expectedChildScopeType":"team","seoTitle":"Top team issues | IssueNumber.one","seoDescription":"Identify the biggest blockers and improvement priorities for teams.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["unclear-priorities","too-many-meetings","ownership-gaps","slow-feedback","tooling-friction"]},
-    {"id":"industry","slug":"industry","name":"Industry","question":"What is the top issue in your industry?","description":"Compare the most pressing challenges across industries.","scopeType":"industry","expectedChildScopeType":"industry","seoTitle":"Top issues by industry | IssueNumber.one","seoDescription":"Explore the biggest challenges identified by people working across industries.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["skills-shortage","regulatory-complexity","supply-chain-resilience","digital-transformation","market-competition"]},
-    {"id":"profession","slug":"profession","name":"Profession","question":"What is the top issue in your profession?","description":"Show which challenge practitioners believe should be solved first.","scopeType":"profession","expectedChildScopeType":"profession","seoTitle":"Top issues by profession | IssueNumber.one","seoDescription":"Discover the leading concerns for professionals in different fields.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["professional-development","work-life-balance","recognition-respect","ethical-pressure","job-security"]},
-    {"id":"business-entrepreneurship","slug":"business-entrepreneurship","name":"Business and entrepreneurship","question":"What is the top issue for businesses and entrepreneurs?","description":"Prioritise the barriers holding back founders and growing businesses.","scopeType":"business-segment","expectedChildScopeType":"business-segment","seoTitle":"Top issues for businesses and entrepreneurs | IssueNumber.one","seoDescription":"See the challenges that founders and business owners want solved first.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["access-to-finance","customer-acquisition","cash-flow","hiring-talent","administrative-burden"]},
-    {"id":"education","slug":"education","name":"Education","question":"What is the top issue in education?","description":"Rank the changes students, families and educators consider most urgent.","scopeType":"topic","expectedChildScopeType":"education-sector","seoTitle":"Top issues in education | IssueNumber.one","seoDescription":"Explore the biggest issues facing schools, learners and educators.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["teacher-shortages","education-costs","student-mental-health","class-sizes","digital-access"]},
-    {"id":"healthcare","slug":"healthcare","name":"Healthcare","question":"What is the top issue in healthcare?","description":"Identify the health-system priority people want addressed first.","scopeType":"topic","expectedChildScopeType":"health-system","seoTitle":"Top issues in healthcare | IssueNumber.one","seoDescription":"See which healthcare challenges patients and professionals rank highest.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["waiting-times","primary-care-access","healthcare-staffing","mental-health-services","affordable-treatment"]},
-    {"id":"housing","slug":"housing","name":"Housing","question":"What is the top issue with housing?","description":"Surface the housing problem people believe needs the most urgent action.","scopeType":"topic","expectedChildScopeType":"housing-market","seoTitle":"Top housing issues | IssueNumber.one","seoDescription":"Explore the biggest housing problems, from affordability to security and supply.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["rent-affordability","home-supply","homelessness","tenant-security","home-energy-efficiency"]},
-    {"id":"personal-finances","slug":"personal-finances","name":"Personal finances","question":"What is the top issue with personal finances?","description":"Identify the financial pressure households most want relief from.","scopeType":"topic","expectedChildScopeType":"financial-situation","seoTitle":"Top personal finance issues | IssueNumber.one","seoDescription":"See which money concerns households identify as their biggest priority.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["everyday-expenses","saving-for-home","debt-repayment","retirement-security","financial-literacy"]},
-    {"id":"technology","slug":"technology","name":"Technology","question":"What is the top issue in technology?","description":"Rank the technology challenge society and the sector should tackle first.","scopeType":"topic","expectedChildScopeType":"technology-field","seoTitle":"Top issues in technology | IssueNumber.one","seoDescription":"Explore the technology concerns people consider most important.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["data-privacy","cybersecurity-threats","ai-accountability","digital-inclusion","platform-power"]},
-    {"id":"environment","slug":"environment","name":"Environment","question":"What is the top environmental issue?","description":"Choose the environmental priority that needs action most urgently.","scopeType":"topic","expectedChildScopeType":"environmental-domain","seoTitle":"Top environmental issues | IssueNumber.one","seoDescription":"Discover which environmental challenges people rank as most urgent.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["climate-action","biodiversity-loss","air-pollution","water-quality","waste-reduction"]},
-    {"id":"transport","slug":"transport","name":"Transport","question":"What is the top issue with transport?","description":"Find the transport improvement passengers and communities value most.","scopeType":"topic","expectedChildScopeType":"transport-mode","seoTitle":"Top transport issues | IssueNumber.one","seoDescription":"Explore the leading problems with public transport, roads and mobility.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["service-reliability","transport-affordability","rural-connectivity","safe-cycling","accessible-transport"]},
-    {"id":"government-public-services","slug":"government-public-services","name":"Government and public services","question":"What is the top issue with government and public services?","description":"Prioritise the public-service improvement people need most.","scopeType":"topic","expectedChildScopeType":"public-service","seoTitle":"Top government and public service issues | IssueNumber.one","seoDescription":"See which government and public service problems people want fixed first.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["service-delivery","government-transparency","tax-value","local-government-capacity","digital-public-services"]},
-    {"id":"family-parenting","slug":"family-parenting","name":"Family and parenting","question":"What is the top issue for families and parents?","description":"Identify the practical pressure families most want addressed.","scopeType":"life-stage","expectedChildScopeType":"family-group","seoTitle":"Top issues for families and parents | IssueNumber.one","seoDescription":"Explore the biggest challenges facing parents and families.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["childcare-affordability","family-housing","parental-time-pressure","school-support","child-online-safety"]},
-    {"id":"sport","slug":"sport","name":"Sport","question":"What is the top issue in sport?","description":"Rank the problem that most affects participation and healthy competition.","scopeType":"topic","expectedChildScopeType":"sport-community","seoTitle":"Top issues in sport | IssueNumber.one","seoDescription":"Discover the biggest issues facing participants, clubs and supporters in sport.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["grassroots-funding","participation-cost","safe-sport","facility-access","equal-opportunity-sport"]},
-    {"id":"media-information","slug":"media-information","name":"Media and information","question":"What is the top issue with media and information?","description":"Surface the challenge that most affects trustworthy public information.","scopeType":"topic","expectedChildScopeType":"media-domain","seoTitle":"Top media and information issues | IssueNumber.one","seoDescription":"Explore concerns about news, information quality and access.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["misinformation","local-journalism","media-trust","algorithmic-amplification","news-accessibility"]},
-    {"id":"consumer-products-services","slug":"consumer-products-services","name":"Consumer products and services","question":"What is the top issue with products and services?","description":"Identify the customer problem businesses should improve first.","scopeType":"market","expectedChildScopeType":"product-service-market","seoTitle":"Top consumer product and service issues | IssueNumber.one","seoDescription":"See which product and service problems matter most to customers.","publication":"published","indexable":true,"intent":"business","defaultConceptIds":["value-for-money","customer-support","product-durability","transparent-pricing","repairability"]},
-    {"id":"world-global-issues","slug":"world-global-issues","name":"World and global issues","question":"What is the top issue facing the world?","description":"Choose the global challenge humanity should prioritise.","scopeType":"global","expectedChildScopeType":"global-region","seoTitle":"Top issues facing the world | IssueNumber.one","seoDescription":"Explore the global challenges people believe deserve the highest priority.","publication":"published","indexable":true,"intent":"consumer","defaultConceptIds":["peace-conflict-prevention","global-poverty","pandemic-preparedness","human-rights","food-water-security"]}
+    {
+      "id": "country",
+      "slug": "country",
+      "name": "Country",
+      "question": "What is the top issue in your country?",
+      "description": "Compare the priorities people choose across countries.",
+      "scopeType": "country",
+      "expectedChildScopeType": "country",
+      "prioritySlotId": "country",
+      "seoTitle": "Top issues by country | IssueNumber.one",
+      "seoDescription": "Explore the issues people choose as their number one priority in countries around the world.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ]
+    },
+    {
+      "id": "county",
+      "slug": "county",
+      "name": "County",
+      "question": "What is the top issue in your county?",
+      "description": "See which county-wide issue residents want addressed first.",
+      "scopeType": "administrative-area",
+      "expectedChildScopeType": "county",
+      "prioritySlotId": "county",
+      "parentCategoryId": "country",
+      "seoTitle": "Top issues by county | IssueNumber.one",
+      "seoDescription": "Explore the biggest issues people identify across counties and equivalent administrative areas.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "public-transport-reliability",
+        "local-housing-supply",
+        "street-safety",
+        "healthcare-access",
+        "jobs-opportunity"
+      ]
+    },
+    {
+      "id": "city",
+      "slug": "city",
+      "name": "City and local area",
+      "question": "What is the top issue in your city or local area?",
+      "description": "See which local issue residents want addressed first.",
+      "scopeType": "locality",
+      "expectedChildScopeType": "city",
+      "prioritySlotId": "city",
+      "parentCategoryId": "county",
+      "seoTitle": "Top issues in cities and local areas | IssueNumber.one",
+      "seoDescription": "Explore the biggest issues people identify in cities and local communities.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "public-transport-reliability",
+        "local-housing-supply",
+        "street-safety",
+        "traffic-congestion",
+        "clean-public-spaces"
+      ]
+    },
+    {
+      "id": "community",
+      "slug": "community",
+      "name": "Community",
+      "question": "What is the top issue in your community?",
+      "description": "Surface the shared priority that would most improve a community.",
+      "scopeType": "community",
+      "expectedChildScopeType": "community",
+      "prioritySlotId": "community",
+      "seoTitle": "Top community issues | IssueNumber.one",
+      "seoDescription": "Discover the priorities that matter most to local and interest-based communities.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "community-safety",
+        "social-isolation",
+        "youth-activities",
+        "accessible-services",
+        "community-spaces"
+      ]
+    },
+    {
+      "id": "workplace",
+      "slug": "workplace",
+      "name": "Workplace",
+      "question": "What is the top issue at work?",
+      "description": "Identify the workplace concern employees most want improved.",
+      "scopeType": "workplace",
+      "expectedChildScopeType": "workplace",
+      "prioritySlotId": "workplace",
+      "seoTitle": "Top workplace issues | IssueNumber.one",
+      "seoDescription": "See which workplace problems employees consider most important.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "workload-burnout",
+        "pay-fairness",
+        "career-progression",
+        "management-communication",
+        "flexible-working"
+      ]
+    },
+    {
+      "id": "company-organisation",
+      "slug": "company-organisation",
+      "name": "Company and organisation",
+      "question": "What is the top issue at your organisation?",
+      "description": "Prioritise the organisation-wide problem that deserves attention first.",
+      "scopeType": "organisation",
+      "expectedChildScopeType": "organisation",
+      "prioritySlotId": "company-organisation",
+      "seoTitle": "Top company and organisation issues | IssueNumber.one",
+      "seoDescription": "Explore the issues people most want organisations to address.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "strategic-clarity",
+        "cross-team-coordination",
+        "decision-speed",
+        "customer-focus",
+        "operational-efficiency"
+      ]
+    },
+    {
+      "id": "team",
+      "slug": "team",
+      "name": "Team",
+      "question": "What is the top issue in your team?",
+      "description": "Find the single constraint a team most needs to resolve.",
+      "scopeType": "team",
+      "expectedChildScopeType": "team",
+      "prioritySlotId": "team",
+      "seoTitle": "Top team issues | IssueNumber.one",
+      "seoDescription": "Identify the biggest blockers and improvement priorities for teams.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "unclear-priorities",
+        "too-many-meetings",
+        "ownership-gaps",
+        "slow-feedback",
+        "tooling-friction"
+      ]
+    },
+    {
+      "id": "industry",
+      "slug": "industry",
+      "name": "Industry",
+      "question": "What is the top issue in your industry?",
+      "description": "Compare the most pressing challenges across industries.",
+      "scopeType": "industry",
+      "expectedChildScopeType": "industry",
+      "prioritySlotId": "industry",
+      "seoTitle": "Top issues by industry | IssueNumber.one",
+      "seoDescription": "Explore the biggest challenges identified by people working across industries.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "skills-shortage",
+        "regulatory-complexity",
+        "supply-chain-resilience",
+        "digital-transformation",
+        "market-competition"
+      ]
+    },
+    {
+      "id": "profession",
+      "slug": "profession",
+      "name": "Profession",
+      "question": "What is the top issue in your profession?",
+      "description": "Show which challenge practitioners believe should be solved first.",
+      "scopeType": "profession",
+      "expectedChildScopeType": "profession",
+      "prioritySlotId": "profession",
+      "seoTitle": "Top issues by profession | IssueNumber.one",
+      "seoDescription": "Discover the leading concerns for professionals in different fields.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "professional-development",
+        "work-life-balance",
+        "recognition-respect",
+        "ethical-pressure",
+        "job-security"
+      ]
+    },
+    {
+      "id": "business-entrepreneurship",
+      "slug": "business-entrepreneurship",
+      "name": "Business and entrepreneurship",
+      "question": "What is the top issue for businesses and entrepreneurs?",
+      "description": "Prioritise the barriers holding back founders and growing businesses.",
+      "scopeType": "business-segment",
+      "expectedChildScopeType": "business-segment",
+      "prioritySlotId": "business-entrepreneurship",
+      "seoTitle": "Top issues for businesses and entrepreneurs | IssueNumber.one",
+      "seoDescription": "See the challenges that founders and business owners want solved first.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "access-to-finance",
+        "customer-acquisition",
+        "cash-flow",
+        "hiring-talent",
+        "administrative-burden"
+      ]
+    },
+    {
+      "id": "education",
+      "slug": "education",
+      "name": "Education",
+      "question": "What is the top issue in education?",
+      "description": "Rank the changes students, families and educators consider most urgent.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "education-sector",
+      "prioritySlotId": "education",
+      "seoTitle": "Top issues in education | IssueNumber.one",
+      "seoDescription": "Explore the biggest issues facing schools, learners and educators.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "teacher-shortages",
+        "education-costs",
+        "student-mental-health",
+        "class-sizes",
+        "digital-access"
+      ]
+    },
+    {
+      "id": "healthcare",
+      "slug": "healthcare",
+      "name": "Healthcare",
+      "question": "What is the top issue in healthcare?",
+      "description": "Identify the health-system priority people want addressed first.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "health-system",
+      "prioritySlotId": "healthcare",
+      "seoTitle": "Top issues in healthcare | IssueNumber.one",
+      "seoDescription": "See which healthcare challenges patients and professionals rank highest.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "waiting-times",
+        "primary-care-access",
+        "healthcare-staffing",
+        "mental-health-services",
+        "affordable-treatment"
+      ]
+    },
+    {
+      "id": "housing",
+      "slug": "housing",
+      "name": "Housing",
+      "question": "What is the top issue with housing?",
+      "description": "Surface the housing problem people believe needs the most urgent action.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "housing-market",
+      "prioritySlotId": "housing",
+      "seoTitle": "Top housing issues | IssueNumber.one",
+      "seoDescription": "Explore the biggest housing problems, from affordability to security and supply.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "rent-affordability",
+        "home-supply",
+        "homelessness",
+        "tenant-security",
+        "home-energy-efficiency"
+      ]
+    },
+    {
+      "id": "personal-finances",
+      "slug": "personal-finances",
+      "name": "Personal finances",
+      "question": "What is the top issue with personal finances?",
+      "description": "Identify the financial pressure households most want relief from.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "financial-situation",
+      "prioritySlotId": "personal-finances",
+      "seoTitle": "Top personal finance issues | IssueNumber.one",
+      "seoDescription": "See which money concerns households identify as their biggest priority.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "everyday-expenses",
+        "saving-for-home",
+        "debt-repayment",
+        "retirement-security",
+        "financial-literacy"
+      ]
+    },
+    {
+      "id": "technology",
+      "slug": "technology",
+      "name": "Technology",
+      "question": "What is the top issue in technology?",
+      "description": "Rank the technology challenge society and the sector should tackle first.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "technology-field",
+      "prioritySlotId": "technology",
+      "seoTitle": "Top issues in technology | IssueNumber.one",
+      "seoDescription": "Explore the technology concerns people consider most important.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "data-privacy",
+        "cybersecurity-threats",
+        "ai-accountability",
+        "digital-inclusion",
+        "platform-power"
+      ]
+    },
+    {
+      "id": "environment",
+      "slug": "environment",
+      "name": "Environment",
+      "question": "What is the top environmental issue?",
+      "description": "Choose the environmental priority that needs action most urgently.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "environmental-domain",
+      "prioritySlotId": "environment",
+      "seoTitle": "Top environmental issues | IssueNumber.one",
+      "seoDescription": "Discover which environmental challenges people rank as most urgent.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "climate-action",
+        "biodiversity-loss",
+        "air-pollution",
+        "water-quality",
+        "waste-reduction"
+      ]
+    },
+    {
+      "id": "transport",
+      "slug": "transport",
+      "name": "Transport",
+      "question": "What is the top issue with transport?",
+      "description": "Find the transport improvement passengers and communities value most.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "transport-mode",
+      "prioritySlotId": "transport",
+      "seoTitle": "Top transport issues | IssueNumber.one",
+      "seoDescription": "Explore the leading problems with public transport, roads and mobility.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "service-reliability",
+        "transport-affordability",
+        "rural-connectivity",
+        "safe-cycling",
+        "accessible-transport"
+      ]
+    },
+    {
+      "id": "government-public-services",
+      "slug": "government-public-services",
+      "name": "Government and public services",
+      "question": "What is the top issue with government and public services?",
+      "description": "Prioritise the public-service improvement people need most.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "public-service",
+      "prioritySlotId": "government-public-services",
+      "seoTitle": "Top government and public service issues | IssueNumber.one",
+      "seoDescription": "See which government and public service problems people want fixed first.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "service-delivery",
+        "government-transparency",
+        "tax-value",
+        "local-government-capacity",
+        "digital-public-services"
+      ]
+    },
+    {
+      "id": "family-parenting",
+      "slug": "family-parenting",
+      "name": "Family and parenting",
+      "question": "What is the top issue for families and parents?",
+      "description": "Identify the practical pressure families most want addressed.",
+      "scopeType": "life-stage",
+      "expectedChildScopeType": "family-group",
+      "prioritySlotId": "family-parenting",
+      "seoTitle": "Top issues for families and parents | IssueNumber.one",
+      "seoDescription": "Explore the biggest challenges facing parents and families.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "childcare-affordability",
+        "family-housing",
+        "parental-time-pressure",
+        "school-support",
+        "child-online-safety"
+      ]
+    },
+    {
+      "id": "sport",
+      "slug": "sport",
+      "name": "Sport",
+      "question": "What is the top issue in sport?",
+      "description": "Rank the problem that most affects participation and healthy competition.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "sport-community",
+      "prioritySlotId": "sport",
+      "seoTitle": "Top issues in sport | IssueNumber.one",
+      "seoDescription": "Discover the biggest issues facing participants, clubs and supporters in sport.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "grassroots-funding",
+        "participation-cost",
+        "safe-sport",
+        "facility-access",
+        "equal-opportunity-sport"
+      ]
+    },
+    {
+      "id": "media-information",
+      "slug": "media-information",
+      "name": "Media and information",
+      "question": "What is the top issue with media and information?",
+      "description": "Surface the challenge that most affects trustworthy public information.",
+      "scopeType": "topic",
+      "expectedChildScopeType": "media-domain",
+      "prioritySlotId": "media-information",
+      "seoTitle": "Top media and information issues | IssueNumber.one",
+      "seoDescription": "Explore concerns about news, information quality and access.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "misinformation",
+        "local-journalism",
+        "media-trust",
+        "algorithmic-amplification",
+        "news-accessibility"
+      ]
+    },
+    {
+      "id": "consumer-products-services",
+      "slug": "consumer-products-services",
+      "name": "Consumer products and services",
+      "question": "What is the top issue with products and services?",
+      "description": "Identify the customer problem businesses should improve first.",
+      "scopeType": "market",
+      "expectedChildScopeType": "product-service-market",
+      "prioritySlotId": "consumer-products-services",
+      "seoTitle": "Top consumer product and service issues | IssueNumber.one",
+      "seoDescription": "See which product and service problems matter most to customers.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "business",
+      "defaultConceptIds": [
+        "value-for-money",
+        "customer-support",
+        "product-durability",
+        "transparent-pricing",
+        "repairability"
+      ]
+    },
+    {
+      "id": "world-global-issues",
+      "slug": "world-global-issues",
+      "name": "World and global issues",
+      "question": "What is the top issue facing the world?",
+      "description": "Choose the global challenge humanity should prioritise.",
+      "scopeType": "global",
+      "expectedChildScopeType": "global-region",
+      "prioritySlotId": "world-global-issues",
+      "seoTitle": "Top issues facing the world | IssueNumber.one",
+      "seoDescription": "Explore the global challenges people believe deserve the highest priority.",
+      "publication": "published",
+      "indexable": true,
+      "intent": "consumer",
+      "defaultConceptIds": [
+        "peace-conflict-prevention",
+        "global-poverty",
+        "pandemic-preparedness",
+        "human-rights",
+        "food-water-security"
+      ]
+    }
   ],
   "concepts": [
-    {"id":"cost-of-living","slug":"cost-of-living","title":"Cost of living","description":"The rising cost of essentials relative to household incomes.","aliases":["living costs","rising prices"]},
-    {"id":"housing-affordability","slug":"housing-affordability","title":"Housing affordability","description":"The ability to rent or buy a suitable home at a sustainable cost.","aliases":["affordable housing","housing costs"]},
-    {"id":"healthcare-access","slug":"healthcare-access","title":"Healthcare access","description":"Timely access to appropriate medical care.","aliases":["access to healthcare","medical access"]},
-    {"id":"jobs-opportunity","slug":"jobs-opportunity","title":"Jobs and economic opportunity","description":"Availability of secure work and routes to improve living standards.","aliases":["job opportunities","economic opportunity"]},
-    {"id":"crime-safety","slug":"crime-safety","title":"Crime and safety","description":"Personal and community safety and effective responses to crime.","aliases":["public safety","crime"]},
-    {"id":"public-transport-reliability","slug":"public-transport-reliability","title":"Reliable public transport","description":"Frequent services that arrive and connect as scheduled.","aliases":["transport reliability","reliable buses and trains"]},
-    {"id":"local-housing-supply","slug":"local-housing-supply","title":"Local housing supply","description":"Enough suitable homes in the places residents need them.","aliases":["housing supply","more local homes"]},
-    {"id":"street-safety","slug":"street-safety","title":"Safe streets","description":"Streets where people can walk, cycle and travel without avoidable danger.","aliases":["road safety","safer streets"]},
-    {"id":"traffic-congestion","slug":"traffic-congestion","title":"Traffic congestion","description":"Delays and disruption caused by overloaded roads.","aliases":["traffic","road congestion"]},
-    {"id":"clean-public-spaces","slug":"clean-public-spaces","title":"Clean public spaces","description":"Well-maintained streets, parks and shared places.","aliases":["street cleanliness","clean streets"]},
-    {"id":"community-safety","slug":"community-safety","title":"Community safety","description":"A shared sense of security in local daily life.","aliases":["neighbourhood safety","local safety"]},
-    {"id":"social-isolation","slug":"social-isolation","title":"Social isolation","description":"Lack of meaningful connection and opportunities to belong.","aliases":["loneliness","community isolation"]},
-    {"id":"youth-activities","slug":"youth-activities","title":"Activities for young people","description":"Accessible, positive activities for children and teenagers.","aliases":["youth facilities","things for young people to do"]},
-    {"id":"accessible-services","slug":"accessible-services","title":"Accessible local services","description":"Local support that people of different needs can reach and use.","aliases":["service accessibility","inclusive services"]},
-    {"id":"community-spaces","slug":"community-spaces","title":"Community spaces","description":"Welcoming shared places for events, support and connection.","aliases":["community centres","shared local spaces"]},
-    {"id":"workload-burnout","slug":"workload-burnout","title":"Workload and burnout","description":"Unsustainable demands that damage health and performance.","aliases":["burnout","excessive workload"]},
-    {"id":"pay-fairness","slug":"pay-fairness","title":"Fair pay","description":"Compensation that is equitable and reflects contribution.","aliases":["pay fairness","fair compensation"]},
-    {"id":"career-progression","slug":"career-progression","title":"Career progression","description":"Clear and fair opportunities to learn and advance.","aliases":["career growth","promotion opportunities"]},
-    {"id":"management-communication","slug":"management-communication","title":"Management communication","description":"Clear, timely and honest communication from leaders.","aliases":["leadership communication","communication from management"]},
-    {"id":"flexible-working","slug":"flexible-working","title":"Flexible working","description":"Practical choice over when and where work is done.","aliases":["work flexibility","flexible work"]},
-    {"id":"strategic-clarity","slug":"strategic-clarity","title":"Strategic clarity","description":"A shared understanding of direction and priorities.","aliases":["clear strategy","organisational direction"]},
-    {"id":"cross-team-coordination","slug":"cross-team-coordination","title":"Cross-team coordination","description":"Teams planning and delivering together without avoidable friction.","aliases":["team coordination","cross-functional alignment"]},
-    {"id":"decision-speed","slug":"decision-speed","title":"Decision speed","description":"Making sound decisions without costly organisational delay.","aliases":["slow decisions","decision making speed"]},
-    {"id":"customer-focus","slug":"customer-focus","title":"Customer focus","description":"Keeping real customer needs central to decisions.","aliases":["customer centricity","focus on customers"]},
-    {"id":"operational-efficiency","slug":"operational-efficiency","title":"Operational efficiency","description":"Removing waste and improving dependable delivery.","aliases":["efficient operations","process efficiency"]},
-    {"id":"unclear-priorities","slug":"unclear-priorities","title":"Unclear priorities","description":"Competing work without a shared order of importance.","aliases":["priority confusion","too many priorities"]},
-    {"id":"too-many-meetings","slug":"too-many-meetings","title":"Too many meetings","description":"Meeting load that crowds out focused work.","aliases":["meeting overload","excessive meetings"]},
-    {"id":"ownership-gaps","slug":"ownership-gaps","title":"Ownership gaps","description":"Important responsibilities without a clear accountable owner.","aliases":["unclear ownership","responsibility gaps"]},
-    {"id":"slow-feedback","slug":"slow-feedback","title":"Slow feedback","description":"Delays in review, learning and decisions that block progress.","aliases":["feedback delays","slow reviews"]},
-    {"id":"tooling-friction","slug":"tooling-friction","title":"Tooling friction","description":"Tools and workflows that make routine work harder.","aliases":["poor tooling","developer friction"]},
-    {"id":"skills-shortage","slug":"skills-shortage","title":"Skills shortage","description":"Insufficient access to people with needed capabilities.","aliases":["talent shortage","skills gap"]},
-    {"id":"regulatory-complexity","slug":"regulatory-complexity","title":"Regulatory complexity","description":"Rules whose complexity raises cost and uncertainty.","aliases":["regulatory burden","complex regulation"]},
-    {"id":"supply-chain-resilience","slug":"supply-chain-resilience","title":"Supply chain resilience","description":"Reliable access to inputs despite disruption.","aliases":["supply chain risk","resilient supply chains"]},
-    {"id":"digital-transformation","slug":"digital-transformation","title":"Digital transformation","description":"Modernising services and operations with effective technology.","aliases":["digitisation","technology modernisation"]},
-    {"id":"market-competition","slug":"market-competition","title":"Market competition","description":"Competing fairly while markets and customer expectations change.","aliases":["competitive pressure","competition"]},
-    {"id":"professional-development","slug":"professional-development","title":"Professional development","description":"Access to relevant learning and skill growth.","aliases":["continuing development","skills development"]},
-    {"id":"work-life-balance","slug":"work-life-balance","title":"Work-life balance","description":"A sustainable fit between work and the rest of life.","aliases":["life balance","work and life balance"]},
-    {"id":"recognition-respect","slug":"recognition-respect","title":"Recognition and respect","description":"Fair acknowledgement of professional contribution and expertise.","aliases":["professional respect","recognition"]},
-    {"id":"ethical-pressure","slug":"ethical-pressure","title":"Ethical pressure","description":"Pressure to act against professional standards or judgement.","aliases":["ethical concerns","professional ethics pressure"]},
-    {"id":"job-security","slug":"job-security","title":"Job security","description":"Confidence that suitable employment will remain available.","aliases":["employment security","secure jobs"]},
-    {"id":"access-to-finance","slug":"access-to-finance","title":"Access to finance","description":"Obtaining appropriate funding to start or grow a business.","aliases":["business funding","access to capital"]},
-    {"id":"customer-acquisition","slug":"customer-acquisition","title":"Customer acquisition","description":"Finding and winning customers at a sustainable cost.","aliases":["finding customers","customer growth"]},
-    {"id":"cash-flow","slug":"cash-flow","title":"Cash flow","description":"Maintaining enough working capital as payments and costs vary.","aliases":["business cash flow","working capital"]},
-    {"id":"hiring-talent","slug":"hiring-talent","title":"Hiring talent","description":"Recruiting people with the right skills and fit.","aliases":["recruitment","finding talent"]},
-    {"id":"administrative-burden","slug":"administrative-burden","title":"Administrative burden","description":"Time and cost spent on avoidable paperwork and processes.","aliases":["red tape","business administration"]},
-    {"id":"teacher-shortages","slug":"teacher-shortages","title":"Teacher shortages","description":"Insufficient qualified educators to meet learner needs.","aliases":["lack of teachers","teacher staffing"]},
-    {"id":"education-costs","slug":"education-costs","title":"Cost of education","description":"Fees and related costs that limit participation.","aliases":["education affordability","school costs"]},
-    {"id":"student-mental-health","slug":"student-mental-health","title":"Student mental health","description":"Timely wellbeing and mental health support for learners.","aliases":["learner wellbeing","student wellbeing"]},
-    {"id":"class-sizes","slug":"class-sizes","title":"Class sizes","description":"The effect of large classes on attention and learning.","aliases":["large classes","pupil teacher ratio"]},
-    {"id":"digital-access","slug":"digital-access","title":"Digital access for learning","description":"Reliable devices, connectivity and accessible learning tools.","aliases":["education digital divide","learning technology access"]},
-    {"id":"waiting-times","slug":"waiting-times","title":"Healthcare waiting times","description":"Delays before assessment, diagnosis or treatment.","aliases":["medical waiting lists","treatment delays"]},
-    {"id":"primary-care-access","slug":"primary-care-access","title":"Primary care access","description":"Timely access to general practice and community care.","aliases":["GP access","family doctor access"]},
-    {"id":"healthcare-staffing","slug":"healthcare-staffing","title":"Healthcare staffing","description":"Recruiting and retaining enough health professionals.","aliases":["medical staff shortages","health workforce"]},
-    {"id":"mental-health-services","slug":"mental-health-services","title":"Mental health services","description":"Accessible, timely and appropriate mental health care.","aliases":["mental healthcare","psychological support"]},
-    {"id":"affordable-treatment","slug":"affordable-treatment","title":"Affordable treatment","description":"Healthcare costs that do not prevent people getting care.","aliases":["medical affordability","treatment costs"]},
-    {"id":"rent-affordability","slug":"rent-affordability","title":"Rent affordability","description":"Rents that households can sustain without hardship.","aliases":["affordable rent","rental costs"]},
-    {"id":"home-supply","slug":"home-supply","title":"Supply of homes","description":"Enough suitable homes for changing household needs.","aliases":["housing supply","home availability"]},
-    {"id":"homelessness","slug":"homelessness","title":"Homelessness","description":"Preventing and ending the absence of safe, stable housing.","aliases":["housing insecurity","people without homes"]},
-    {"id":"tenant-security","slug":"tenant-security","title":"Tenant security","description":"Stable tenancies with fair rights and predictable conditions.","aliases":["renter security","secure tenancies"]},
-    {"id":"home-energy-efficiency","slug":"home-energy-efficiency","title":"Home energy efficiency","description":"Warm, efficient homes with manageable energy use.","aliases":["home insulation","energy efficient housing"]},
-    {"id":"everyday-expenses","slug":"everyday-expenses","title":"Everyday expenses","description":"Managing food, energy, transport and other routine costs.","aliases":["daily costs","household expenses"]},
-    {"id":"saving-for-home","slug":"saving-for-home","title":"Saving for a home","description":"Building a deposit while meeting current living costs.","aliases":["home deposit","saving a deposit"]},
-    {"id":"debt-repayment","slug":"debt-repayment","title":"Debt repayment","description":"Reducing costly or persistent personal debt.","aliases":["paying off debt","personal debt"]},
-    {"id":"retirement-security","slug":"retirement-security","title":"Retirement security","description":"Building reliable income for later life.","aliases":["pension security","retirement savings"]},
-    {"id":"financial-literacy","slug":"financial-literacy","title":"Financial literacy","description":"Understanding money choices, risks and available support.","aliases":["money education","financial education"]},
-    {"id":"data-privacy","slug":"data-privacy","title":"Data privacy","description":"Keeping personal data protected and under meaningful control.","aliases":["online privacy","personal data protection"]},
-    {"id":"cybersecurity-threats","slug":"cybersecurity-threats","title":"Cybersecurity threats","description":"Preventing and responding to attacks on digital systems.","aliases":["cyber threats","online security"]},
-    {"id":"ai-accountability","slug":"ai-accountability","title":"AI accountability","description":"Ensuring automated systems are safe, explainable and accountable.","aliases":["responsible AI","AI safety and accountability"]},
-    {"id":"digital-inclusion","slug":"digital-inclusion","title":"Digital inclusion","description":"Making technology usable and available to everyone.","aliases":["digital divide","inclusive technology"]},
-    {"id":"platform-power","slug":"platform-power","title":"Platform power","description":"Concentration of control in major digital platforms.","aliases":["big tech power","technology monopolies"]},
-    {"id":"climate-action","slug":"climate-action","title":"Climate action","description":"Reducing emissions and adapting to climate impacts.","aliases":["climate change","global warming action"]},
-    {"id":"biodiversity-loss","slug":"biodiversity-loss","title":"Biodiversity loss","description":"Protecting species, habitats and resilient ecosystems.","aliases":["nature loss","species decline"]},
-    {"id":"air-pollution","slug":"air-pollution","title":"Air pollution","description":"Reducing harmful pollutants in the air people breathe.","aliases":["air quality","dirty air"]},
-    {"id":"water-quality","slug":"water-quality","title":"Water quality","description":"Protecting safe water and healthy rivers, lakes and seas.","aliases":["clean water","water pollution"]},
-    {"id":"waste-reduction","slug":"waste-reduction","title":"Waste reduction","description":"Using fewer resources and keeping materials in circulation.","aliases":["reduce waste","recycling and reuse"]},
-    {"id":"service-reliability","slug":"service-reliability","title":"Reliable services","description":"Transport services that run consistently and on time.","aliases":["reliable transport","service punctuality"]},
-    {"id":"transport-affordability","slug":"transport-affordability","title":"Affordable transport","description":"Travel costs that do not exclude people from work or services.","aliases":["public transport cost","affordable fares"]},
-    {"id":"rural-connectivity","slug":"rural-connectivity","title":"Rural connectivity","description":"Practical transport options outside major urban areas.","aliases":["rural transport","connecting rural areas"]},
-    {"id":"safe-cycling","slug":"safe-cycling","title":"Safe cycling","description":"Connected routes where people can cycle with confidence.","aliases":["cycling safety","protected cycle routes"]},
-    {"id":"accessible-transport","slug":"accessible-transport","title":"Accessible transport","description":"Journeys that people with different mobility needs can use.","aliases":["disabled access transport","inclusive transport"]},
-    {"id":"service-delivery","slug":"service-delivery","title":"Public service delivery","description":"Public services that are timely, dependable and easy to use.","aliases":["government services","public service quality"]},
-    {"id":"government-transparency","slug":"government-transparency","title":"Government transparency","description":"Clear information about decisions, spending and outcomes.","aliases":["open government","public transparency"]},
-    {"id":"tax-value","slug":"tax-value","title":"Value for taxes","description":"Visible public value from taxes and government spending.","aliases":["value for tax","public spending value"]},
-    {"id":"local-government-capacity","slug":"local-government-capacity","title":"Local government capacity","description":"Resources and authority for effective local action.","aliases":["council capacity","local authority resources"]},
-    {"id":"digital-public-services","slug":"digital-public-services","title":"Digital public services","description":"Secure, inclusive online access to government services.","aliases":["online government services","digital government"]},
-    {"id":"childcare-affordability","slug":"childcare-affordability","title":"Affordable childcare","description":"Quality childcare that families can access and afford.","aliases":["childcare costs","affordable child care"]},
-    {"id":"family-housing","slug":"family-housing","title":"Suitable family housing","description":"Stable homes with enough space near everyday services.","aliases":["housing for families","family homes"]},
-    {"id":"parental-time-pressure","slug":"parental-time-pressure","title":"Time pressure on parents","description":"The strain of combining care, work and household responsibilities.","aliases":["parent burnout","family time pressure"]},
-    {"id":"school-support","slug":"school-support","title":"Support from schools","description":"Effective partnership and support for each child's learning needs.","aliases":["school family support","learning support"]},
-    {"id":"child-online-safety","slug":"child-online-safety","title":"Children's online safety","description":"Helping children use digital services safely and confidently.","aliases":["online child safety","kids internet safety"]},
-    {"id":"grassroots-funding","slug":"grassroots-funding","title":"Grassroots funding","description":"Stable resources for local clubs, coaches and programmes.","aliases":["community sport funding","local club funding"]},
-    {"id":"participation-cost","slug":"participation-cost","title":"Cost of participation","description":"Fees, equipment and travel costs that keep people out of sport.","aliases":["sport affordability","cost to play"]},
-    {"id":"safe-sport","slug":"safe-sport","title":"Safe sport","description":"Preventing abuse, injury and harmful cultures in sport.","aliases":["safeguarding in sport","athlete safety"]},
-    {"id":"facility-access","slug":"facility-access","title":"Access to facilities","description":"Enough affordable, suitable places to train and compete.","aliases":["sports facilities","places to play sport"]},
-    {"id":"equal-opportunity-sport","slug":"equal-opportunity-sport","title":"Equal opportunity in sport","description":"Fair access regardless of gender, disability, income or background.","aliases":["inclusive sport","equality in sport"]},
-    {"id":"misinformation","slug":"misinformation","title":"Misinformation","description":"False or misleading information that damages informed decisions.","aliases":["fake news","false information"]},
-    {"id":"local-journalism","slug":"local-journalism","title":"Local journalism","description":"Sustainable reporting that holds local institutions to account.","aliases":["local news","community journalism"]},
-    {"id":"media-trust","slug":"media-trust","title":"Trust in media","description":"Confidence that reporting is accurate, fair and accountable.","aliases":["news trust","trustworthy media"]},
-    {"id":"algorithmic-amplification","slug":"algorithmic-amplification","title":"Algorithmic amplification","description":"Recommendation systems that can reward harmful or polarising content.","aliases":["social algorithms","algorithmic feeds"]},
-    {"id":"news-accessibility","slug":"news-accessibility","title":"Accessible news","description":"Reliable information available across ability, language and income.","aliases":["news access","inclusive news"]},
-    {"id":"value-for-money","slug":"value-for-money","title":"Value for money","description":"Quality and usefulness that justify the full price paid.","aliases":["good value","price value"]},
-    {"id":"customer-support","slug":"customer-support","title":"Customer support","description":"Fast, effective help when a product or service goes wrong.","aliases":["customer service","support quality"]},
-    {"id":"product-durability","slug":"product-durability","title":"Product durability","description":"Products that remain useful and reliable for a reasonable life.","aliases":["product lifespan","long-lasting products"]},
-    {"id":"transparent-pricing","slug":"transparent-pricing","title":"Transparent pricing","description":"Clear total costs without hidden fees or confusing conditions.","aliases":["clear pricing","hidden fees"]},
-    {"id":"repairability","slug":"repairability","title":"Repairability","description":"Products designed so faults can be repaired affordably.","aliases":["right to repair","repairable products"]},
-    {"id":"peace-conflict-prevention","slug":"peace-conflict-prevention","title":"Peace and conflict prevention","description":"Preventing war and resolving conflict through durable cooperation.","aliases":["world peace","preventing conflict"]},
-    {"id":"global-poverty","slug":"global-poverty","title":"Global poverty","description":"Ensuring people can meet basic needs and build secure livelihoods.","aliases":["ending poverty","world poverty"]},
-    {"id":"pandemic-preparedness","slug":"pandemic-preparedness","title":"Pandemic preparedness","description":"Detecting and responding to major infectious disease threats.","aliases":["pandemic readiness","global health preparedness"]},
-    {"id":"human-rights","slug":"human-rights","title":"Human rights","description":"Protecting fundamental rights and dignity for every person.","aliases":["civil rights","fundamental rights"]},
-    {"id":"food-water-security","slug":"food-water-security","title":"Food and water security","description":"Reliable access to nutritious food and safe water.","aliases":["food security","water security"]}
+    {
+      "id": "cost-of-living",
+      "slug": "cost-of-living",
+      "title": "Cost of living",
+      "description": "The rising cost of essentials relative to household incomes.",
+      "aliases": [
+        "living costs",
+        "rising prices"
+      ]
+    },
+    {
+      "id": "housing-affordability",
+      "slug": "housing-affordability",
+      "title": "Housing affordability",
+      "description": "The ability to rent or buy a suitable home at a sustainable cost.",
+      "aliases": [
+        "affordable housing",
+        "housing costs"
+      ]
+    },
+    {
+      "id": "healthcare-access",
+      "slug": "healthcare-access",
+      "title": "Healthcare access",
+      "description": "Timely access to appropriate medical care.",
+      "aliases": [
+        "access to healthcare",
+        "medical access"
+      ]
+    },
+    {
+      "id": "jobs-opportunity",
+      "slug": "jobs-opportunity",
+      "title": "Jobs and economic opportunity",
+      "description": "Availability of secure work and routes to improve living standards.",
+      "aliases": [
+        "job opportunities",
+        "economic opportunity"
+      ]
+    },
+    {
+      "id": "crime-safety",
+      "slug": "crime-safety",
+      "title": "Crime and safety",
+      "description": "Personal and community safety and effective responses to crime.",
+      "aliases": [
+        "public safety",
+        "crime"
+      ]
+    },
+    {
+      "id": "public-transport-reliability",
+      "slug": "public-transport-reliability",
+      "title": "Reliable public transport",
+      "description": "Frequent services that arrive and connect as scheduled.",
+      "aliases": [
+        "transport reliability",
+        "reliable buses and trains"
+      ]
+    },
+    {
+      "id": "local-housing-supply",
+      "slug": "local-housing-supply",
+      "title": "Local housing supply",
+      "description": "Enough suitable homes in the places residents need them.",
+      "aliases": [
+        "housing supply",
+        "more local homes"
+      ]
+    },
+    {
+      "id": "street-safety",
+      "slug": "street-safety",
+      "title": "Safe streets",
+      "description": "Streets where people can walk, cycle and travel without avoidable danger.",
+      "aliases": [
+        "road safety",
+        "safer streets"
+      ]
+    },
+    {
+      "id": "traffic-congestion",
+      "slug": "traffic-congestion",
+      "title": "Traffic congestion",
+      "description": "Delays and disruption caused by overloaded roads.",
+      "aliases": [
+        "traffic",
+        "road congestion"
+      ]
+    },
+    {
+      "id": "clean-public-spaces",
+      "slug": "clean-public-spaces",
+      "title": "Clean public spaces",
+      "description": "Well-maintained streets, parks and shared places.",
+      "aliases": [
+        "street cleanliness",
+        "clean streets"
+      ]
+    },
+    {
+      "id": "community-safety",
+      "slug": "community-safety",
+      "title": "Community safety",
+      "description": "A shared sense of security in local daily life.",
+      "aliases": [
+        "neighbourhood safety",
+        "local safety"
+      ]
+    },
+    {
+      "id": "social-isolation",
+      "slug": "social-isolation",
+      "title": "Social isolation",
+      "description": "Lack of meaningful connection and opportunities to belong.",
+      "aliases": [
+        "loneliness",
+        "community isolation"
+      ]
+    },
+    {
+      "id": "youth-activities",
+      "slug": "youth-activities",
+      "title": "Activities for young people",
+      "description": "Accessible, positive activities for children and teenagers.",
+      "aliases": [
+        "youth facilities",
+        "things for young people to do"
+      ]
+    },
+    {
+      "id": "accessible-services",
+      "slug": "accessible-services",
+      "title": "Accessible local services",
+      "description": "Local support that people of different needs can reach and use.",
+      "aliases": [
+        "service accessibility",
+        "inclusive services"
+      ]
+    },
+    {
+      "id": "community-spaces",
+      "slug": "community-spaces",
+      "title": "Community spaces",
+      "description": "Welcoming shared places for events, support and connection.",
+      "aliases": [
+        "community centres",
+        "shared local spaces"
+      ]
+    },
+    {
+      "id": "workload-burnout",
+      "slug": "workload-burnout",
+      "title": "Workload and burnout",
+      "description": "Unsustainable demands that damage health and performance.",
+      "aliases": [
+        "burnout",
+        "excessive workload"
+      ]
+    },
+    {
+      "id": "pay-fairness",
+      "slug": "pay-fairness",
+      "title": "Fair pay",
+      "description": "Compensation that is equitable and reflects contribution.",
+      "aliases": [
+        "pay fairness",
+        "fair compensation"
+      ]
+    },
+    {
+      "id": "career-progression",
+      "slug": "career-progression",
+      "title": "Career progression",
+      "description": "Clear and fair opportunities to learn and advance.",
+      "aliases": [
+        "career growth",
+        "promotion opportunities"
+      ]
+    },
+    {
+      "id": "management-communication",
+      "slug": "management-communication",
+      "title": "Management communication",
+      "description": "Clear, timely and honest communication from leaders.",
+      "aliases": [
+        "leadership communication",
+        "communication from management"
+      ]
+    },
+    {
+      "id": "flexible-working",
+      "slug": "flexible-working",
+      "title": "Flexible working",
+      "description": "Practical choice over when and where work is done.",
+      "aliases": [
+        "work flexibility",
+        "flexible work"
+      ]
+    },
+    {
+      "id": "strategic-clarity",
+      "slug": "strategic-clarity",
+      "title": "Strategic clarity",
+      "description": "A shared understanding of direction and priorities.",
+      "aliases": [
+        "clear strategy",
+        "organisational direction"
+      ]
+    },
+    {
+      "id": "cross-team-coordination",
+      "slug": "cross-team-coordination",
+      "title": "Cross-team coordination",
+      "description": "Teams planning and delivering together without avoidable friction.",
+      "aliases": [
+        "team coordination",
+        "cross-functional alignment"
+      ]
+    },
+    {
+      "id": "decision-speed",
+      "slug": "decision-speed",
+      "title": "Decision speed",
+      "description": "Making sound decisions without costly organisational delay.",
+      "aliases": [
+        "slow decisions",
+        "decision making speed"
+      ]
+    },
+    {
+      "id": "customer-focus",
+      "slug": "customer-focus",
+      "title": "Customer focus",
+      "description": "Keeping real customer needs central to decisions.",
+      "aliases": [
+        "customer centricity",
+        "focus on customers"
+      ]
+    },
+    {
+      "id": "operational-efficiency",
+      "slug": "operational-efficiency",
+      "title": "Operational efficiency",
+      "description": "Removing waste and improving dependable delivery.",
+      "aliases": [
+        "efficient operations",
+        "process efficiency"
+      ]
+    },
+    {
+      "id": "unclear-priorities",
+      "slug": "unclear-priorities",
+      "title": "Unclear priorities",
+      "description": "Competing work without a shared order of importance.",
+      "aliases": [
+        "priority confusion",
+        "too many priorities"
+      ]
+    },
+    {
+      "id": "too-many-meetings",
+      "slug": "too-many-meetings",
+      "title": "Too many meetings",
+      "description": "Meeting load that crowds out focused work.",
+      "aliases": [
+        "meeting overload",
+        "excessive meetings"
+      ]
+    },
+    {
+      "id": "ownership-gaps",
+      "slug": "ownership-gaps",
+      "title": "Ownership gaps",
+      "description": "Important responsibilities without a clear accountable owner.",
+      "aliases": [
+        "unclear ownership",
+        "responsibility gaps"
+      ]
+    },
+    {
+      "id": "slow-feedback",
+      "slug": "slow-feedback",
+      "title": "Slow feedback",
+      "description": "Delays in review, learning and decisions that block progress.",
+      "aliases": [
+        "feedback delays",
+        "slow reviews"
+      ]
+    },
+    {
+      "id": "tooling-friction",
+      "slug": "tooling-friction",
+      "title": "Tooling friction",
+      "description": "Tools and workflows that make routine work harder.",
+      "aliases": [
+        "poor tooling",
+        "developer friction"
+      ]
+    },
+    {
+      "id": "skills-shortage",
+      "slug": "skills-shortage",
+      "title": "Skills shortage",
+      "description": "Insufficient access to people with needed capabilities.",
+      "aliases": [
+        "talent shortage",
+        "skills gap"
+      ]
+    },
+    {
+      "id": "regulatory-complexity",
+      "slug": "regulatory-complexity",
+      "title": "Regulatory complexity",
+      "description": "Rules whose complexity raises cost and uncertainty.",
+      "aliases": [
+        "regulatory burden",
+        "complex regulation"
+      ]
+    },
+    {
+      "id": "supply-chain-resilience",
+      "slug": "supply-chain-resilience",
+      "title": "Supply chain resilience",
+      "description": "Reliable access to inputs despite disruption.",
+      "aliases": [
+        "supply chain risk",
+        "resilient supply chains"
+      ]
+    },
+    {
+      "id": "digital-transformation",
+      "slug": "digital-transformation",
+      "title": "Digital transformation",
+      "description": "Modernising services and operations with effective technology.",
+      "aliases": [
+        "digitisation",
+        "technology modernisation"
+      ]
+    },
+    {
+      "id": "market-competition",
+      "slug": "market-competition",
+      "title": "Market competition",
+      "description": "Competing fairly while markets and customer expectations change.",
+      "aliases": [
+        "competitive pressure",
+        "competition"
+      ]
+    },
+    {
+      "id": "professional-development",
+      "slug": "professional-development",
+      "title": "Professional development",
+      "description": "Access to relevant learning and skill growth.",
+      "aliases": [
+        "continuing development",
+        "skills development"
+      ]
+    },
+    {
+      "id": "work-life-balance",
+      "slug": "work-life-balance",
+      "title": "Work-life balance",
+      "description": "A sustainable fit between work and the rest of life.",
+      "aliases": [
+        "life balance",
+        "work and life balance"
+      ]
+    },
+    {
+      "id": "recognition-respect",
+      "slug": "recognition-respect",
+      "title": "Recognition and respect",
+      "description": "Fair acknowledgement of professional contribution and expertise.",
+      "aliases": [
+        "professional respect",
+        "recognition"
+      ]
+    },
+    {
+      "id": "ethical-pressure",
+      "slug": "ethical-pressure",
+      "title": "Ethical pressure",
+      "description": "Pressure to act against professional standards or judgement.",
+      "aliases": [
+        "ethical concerns",
+        "professional ethics pressure"
+      ]
+    },
+    {
+      "id": "job-security",
+      "slug": "job-security",
+      "title": "Job security",
+      "description": "Confidence that suitable employment will remain available.",
+      "aliases": [
+        "employment security",
+        "secure jobs"
+      ]
+    },
+    {
+      "id": "access-to-finance",
+      "slug": "access-to-finance",
+      "title": "Access to finance",
+      "description": "Obtaining appropriate funding to start or grow a business.",
+      "aliases": [
+        "business funding",
+        "access to capital"
+      ]
+    },
+    {
+      "id": "customer-acquisition",
+      "slug": "customer-acquisition",
+      "title": "Customer acquisition",
+      "description": "Finding and winning customers at a sustainable cost.",
+      "aliases": [
+        "finding customers",
+        "customer growth"
+      ]
+    },
+    {
+      "id": "cash-flow",
+      "slug": "cash-flow",
+      "title": "Cash flow",
+      "description": "Maintaining enough working capital as payments and costs vary.",
+      "aliases": [
+        "business cash flow",
+        "working capital"
+      ]
+    },
+    {
+      "id": "hiring-talent",
+      "slug": "hiring-talent",
+      "title": "Hiring talent",
+      "description": "Recruiting people with the right skills and fit.",
+      "aliases": [
+        "recruitment",
+        "finding talent"
+      ]
+    },
+    {
+      "id": "administrative-burden",
+      "slug": "administrative-burden",
+      "title": "Administrative burden",
+      "description": "Time and cost spent on avoidable paperwork and processes.",
+      "aliases": [
+        "red tape",
+        "business administration"
+      ]
+    },
+    {
+      "id": "teacher-shortages",
+      "slug": "teacher-shortages",
+      "title": "Teacher shortages",
+      "description": "Insufficient qualified educators to meet learner needs.",
+      "aliases": [
+        "lack of teachers",
+        "teacher staffing"
+      ]
+    },
+    {
+      "id": "education-costs",
+      "slug": "education-costs",
+      "title": "Cost of education",
+      "description": "Fees and related costs that limit participation.",
+      "aliases": [
+        "education affordability",
+        "school costs"
+      ]
+    },
+    {
+      "id": "student-mental-health",
+      "slug": "student-mental-health",
+      "title": "Student mental health",
+      "description": "Timely wellbeing and mental health support for learners.",
+      "aliases": [
+        "learner wellbeing",
+        "student wellbeing"
+      ]
+    },
+    {
+      "id": "class-sizes",
+      "slug": "class-sizes",
+      "title": "Class sizes",
+      "description": "The effect of large classes on attention and learning.",
+      "aliases": [
+        "large classes",
+        "pupil teacher ratio"
+      ]
+    },
+    {
+      "id": "digital-access",
+      "slug": "digital-access",
+      "title": "Digital access for learning",
+      "description": "Reliable devices, connectivity and accessible learning tools.",
+      "aliases": [
+        "education digital divide",
+        "learning technology access"
+      ]
+    },
+    {
+      "id": "waiting-times",
+      "slug": "waiting-times",
+      "title": "Healthcare waiting times",
+      "description": "Delays before assessment, diagnosis or treatment.",
+      "aliases": [
+        "medical waiting lists",
+        "treatment delays"
+      ]
+    },
+    {
+      "id": "primary-care-access",
+      "slug": "primary-care-access",
+      "title": "Primary care access",
+      "description": "Timely access to general practice and community care.",
+      "aliases": [
+        "GP access",
+        "family doctor access"
+      ]
+    },
+    {
+      "id": "healthcare-staffing",
+      "slug": "healthcare-staffing",
+      "title": "Healthcare staffing",
+      "description": "Recruiting and retaining enough health professionals.",
+      "aliases": [
+        "medical staff shortages",
+        "health workforce"
+      ]
+    },
+    {
+      "id": "mental-health-services",
+      "slug": "mental-health-services",
+      "title": "Mental health services",
+      "description": "Accessible, timely and appropriate mental health care.",
+      "aliases": [
+        "mental healthcare",
+        "psychological support"
+      ]
+    },
+    {
+      "id": "affordable-treatment",
+      "slug": "affordable-treatment",
+      "title": "Affordable treatment",
+      "description": "Healthcare costs that do not prevent people getting care.",
+      "aliases": [
+        "medical affordability",
+        "treatment costs"
+      ]
+    },
+    {
+      "id": "rent-affordability",
+      "slug": "rent-affordability",
+      "title": "Rent affordability",
+      "description": "Rents that households can sustain without hardship.",
+      "aliases": [
+        "affordable rent",
+        "rental costs"
+      ]
+    },
+    {
+      "id": "home-supply",
+      "slug": "home-supply",
+      "title": "Supply of homes",
+      "description": "Enough suitable homes for changing household needs.",
+      "aliases": [
+        "housing supply",
+        "home availability"
+      ]
+    },
+    {
+      "id": "homelessness",
+      "slug": "homelessness",
+      "title": "Homelessness",
+      "description": "Preventing and ending the absence of safe, stable housing.",
+      "aliases": [
+        "housing insecurity",
+        "people without homes"
+      ]
+    },
+    {
+      "id": "tenant-security",
+      "slug": "tenant-security",
+      "title": "Tenant security",
+      "description": "Stable tenancies with fair rights and predictable conditions.",
+      "aliases": [
+        "renter security",
+        "secure tenancies"
+      ]
+    },
+    {
+      "id": "home-energy-efficiency",
+      "slug": "home-energy-efficiency",
+      "title": "Home energy efficiency",
+      "description": "Warm, efficient homes with manageable energy use.",
+      "aliases": [
+        "home insulation",
+        "energy efficient housing"
+      ]
+    },
+    {
+      "id": "everyday-expenses",
+      "slug": "everyday-expenses",
+      "title": "Everyday expenses",
+      "description": "Managing food, energy, transport and other routine costs.",
+      "aliases": [
+        "daily costs",
+        "household expenses"
+      ]
+    },
+    {
+      "id": "saving-for-home",
+      "slug": "saving-for-home",
+      "title": "Saving for a home",
+      "description": "Building a deposit while meeting current living costs.",
+      "aliases": [
+        "home deposit",
+        "saving a deposit"
+      ]
+    },
+    {
+      "id": "debt-repayment",
+      "slug": "debt-repayment",
+      "title": "Debt repayment",
+      "description": "Reducing costly or persistent personal debt.",
+      "aliases": [
+        "paying off debt",
+        "personal debt"
+      ]
+    },
+    {
+      "id": "retirement-security",
+      "slug": "retirement-security",
+      "title": "Retirement security",
+      "description": "Building reliable income for later life.",
+      "aliases": [
+        "pension security",
+        "retirement savings"
+      ]
+    },
+    {
+      "id": "financial-literacy",
+      "slug": "financial-literacy",
+      "title": "Financial literacy",
+      "description": "Understanding money choices, risks and available support.",
+      "aliases": [
+        "money education",
+        "financial education"
+      ]
+    },
+    {
+      "id": "data-privacy",
+      "slug": "data-privacy",
+      "title": "Data privacy",
+      "description": "Keeping personal data protected and under meaningful control.",
+      "aliases": [
+        "online privacy",
+        "personal data protection"
+      ]
+    },
+    {
+      "id": "cybersecurity-threats",
+      "slug": "cybersecurity-threats",
+      "title": "Cybersecurity threats",
+      "description": "Preventing and responding to attacks on digital systems.",
+      "aliases": [
+        "cyber threats",
+        "online security"
+      ]
+    },
+    {
+      "id": "ai-accountability",
+      "slug": "ai-accountability",
+      "title": "AI accountability",
+      "description": "Ensuring automated systems are safe, explainable and accountable.",
+      "aliases": [
+        "responsible AI",
+        "AI safety and accountability"
+      ]
+    },
+    {
+      "id": "digital-inclusion",
+      "slug": "digital-inclusion",
+      "title": "Digital inclusion",
+      "description": "Making technology usable and available to everyone.",
+      "aliases": [
+        "digital divide",
+        "inclusive technology"
+      ]
+    },
+    {
+      "id": "platform-power",
+      "slug": "platform-power",
+      "title": "Platform power",
+      "description": "Concentration of control in major digital platforms.",
+      "aliases": [
+        "big tech power",
+        "technology monopolies"
+      ]
+    },
+    {
+      "id": "climate-action",
+      "slug": "climate-action",
+      "title": "Climate action",
+      "description": "Reducing emissions and adapting to climate impacts.",
+      "aliases": [
+        "climate change",
+        "global warming action"
+      ]
+    },
+    {
+      "id": "biodiversity-loss",
+      "slug": "biodiversity-loss",
+      "title": "Biodiversity loss",
+      "description": "Protecting species, habitats and resilient ecosystems.",
+      "aliases": [
+        "nature loss",
+        "species decline"
+      ]
+    },
+    {
+      "id": "air-pollution",
+      "slug": "air-pollution",
+      "title": "Air pollution",
+      "description": "Reducing harmful pollutants in the air people breathe.",
+      "aliases": [
+        "air quality",
+        "dirty air"
+      ]
+    },
+    {
+      "id": "water-quality",
+      "slug": "water-quality",
+      "title": "Water quality",
+      "description": "Protecting safe water and healthy rivers, lakes and seas.",
+      "aliases": [
+        "clean water",
+        "water pollution"
+      ]
+    },
+    {
+      "id": "waste-reduction",
+      "slug": "waste-reduction",
+      "title": "Waste reduction",
+      "description": "Using fewer resources and keeping materials in circulation.",
+      "aliases": [
+        "reduce waste",
+        "recycling and reuse"
+      ]
+    },
+    {
+      "id": "service-reliability",
+      "slug": "service-reliability",
+      "title": "Reliable services",
+      "description": "Transport services that run consistently and on time.",
+      "aliases": [
+        "reliable transport",
+        "service punctuality"
+      ]
+    },
+    {
+      "id": "transport-affordability",
+      "slug": "transport-affordability",
+      "title": "Affordable transport",
+      "description": "Travel costs that do not exclude people from work or services.",
+      "aliases": [
+        "public transport cost",
+        "affordable fares"
+      ]
+    },
+    {
+      "id": "rural-connectivity",
+      "slug": "rural-connectivity",
+      "title": "Rural connectivity",
+      "description": "Practical transport options outside major urban areas.",
+      "aliases": [
+        "rural transport",
+        "connecting rural areas"
+      ]
+    },
+    {
+      "id": "safe-cycling",
+      "slug": "safe-cycling",
+      "title": "Safe cycling",
+      "description": "Connected routes where people can cycle with confidence.",
+      "aliases": [
+        "cycling safety",
+        "protected cycle routes"
+      ]
+    },
+    {
+      "id": "accessible-transport",
+      "slug": "accessible-transport",
+      "title": "Accessible transport",
+      "description": "Journeys that people with different mobility needs can use.",
+      "aliases": [
+        "disabled access transport",
+        "inclusive transport"
+      ]
+    },
+    {
+      "id": "service-delivery",
+      "slug": "service-delivery",
+      "title": "Public service delivery",
+      "description": "Public services that are timely, dependable and easy to use.",
+      "aliases": [
+        "government services",
+        "public service quality"
+      ]
+    },
+    {
+      "id": "government-transparency",
+      "slug": "government-transparency",
+      "title": "Government transparency",
+      "description": "Clear information about decisions, spending and outcomes.",
+      "aliases": [
+        "open government",
+        "public transparency"
+      ]
+    },
+    {
+      "id": "tax-value",
+      "slug": "tax-value",
+      "title": "Value for taxes",
+      "description": "Visible public value from taxes and government spending.",
+      "aliases": [
+        "value for tax",
+        "public spending value"
+      ]
+    },
+    {
+      "id": "local-government-capacity",
+      "slug": "local-government-capacity",
+      "title": "Local government capacity",
+      "description": "Resources and authority for effective local action.",
+      "aliases": [
+        "council capacity",
+        "local authority resources"
+      ]
+    },
+    {
+      "id": "digital-public-services",
+      "slug": "digital-public-services",
+      "title": "Digital public services",
+      "description": "Secure, inclusive online access to government services.",
+      "aliases": [
+        "online government services",
+        "digital government"
+      ]
+    },
+    {
+      "id": "childcare-affordability",
+      "slug": "childcare-affordability",
+      "title": "Affordable childcare",
+      "description": "Quality childcare that families can access and afford.",
+      "aliases": [
+        "childcare costs",
+        "affordable child care"
+      ]
+    },
+    {
+      "id": "family-housing",
+      "slug": "family-housing",
+      "title": "Suitable family housing",
+      "description": "Stable homes with enough space near everyday services.",
+      "aliases": [
+        "housing for families",
+        "family homes"
+      ]
+    },
+    {
+      "id": "parental-time-pressure",
+      "slug": "parental-time-pressure",
+      "title": "Time pressure on parents",
+      "description": "The strain of combining care, work and household responsibilities.",
+      "aliases": [
+        "parent burnout",
+        "family time pressure"
+      ]
+    },
+    {
+      "id": "school-support",
+      "slug": "school-support",
+      "title": "Support from schools",
+      "description": "Effective partnership and support for each child's learning needs.",
+      "aliases": [
+        "school family support",
+        "learning support"
+      ]
+    },
+    {
+      "id": "child-online-safety",
+      "slug": "child-online-safety",
+      "title": "Children's online safety",
+      "description": "Helping children use digital services safely and confidently.",
+      "aliases": [
+        "online child safety",
+        "kids internet safety"
+      ]
+    },
+    {
+      "id": "grassroots-funding",
+      "slug": "grassroots-funding",
+      "title": "Grassroots funding",
+      "description": "Stable resources for local clubs, coaches and programmes.",
+      "aliases": [
+        "community sport funding",
+        "local club funding"
+      ]
+    },
+    {
+      "id": "participation-cost",
+      "slug": "participation-cost",
+      "title": "Cost of participation",
+      "description": "Fees, equipment and travel costs that keep people out of sport.",
+      "aliases": [
+        "sport affordability",
+        "cost to play"
+      ]
+    },
+    {
+      "id": "safe-sport",
+      "slug": "safe-sport",
+      "title": "Safe sport",
+      "description": "Preventing abuse, injury and harmful cultures in sport.",
+      "aliases": [
+        "safeguarding in sport",
+        "athlete safety"
+      ]
+    },
+    {
+      "id": "facility-access",
+      "slug": "facility-access",
+      "title": "Access to facilities",
+      "description": "Enough affordable, suitable places to train and compete.",
+      "aliases": [
+        "sports facilities",
+        "places to play sport"
+      ]
+    },
+    {
+      "id": "equal-opportunity-sport",
+      "slug": "equal-opportunity-sport",
+      "title": "Equal opportunity in sport",
+      "description": "Fair access regardless of gender, disability, income or background.",
+      "aliases": [
+        "inclusive sport",
+        "equality in sport"
+      ]
+    },
+    {
+      "id": "misinformation",
+      "slug": "misinformation",
+      "title": "Misinformation",
+      "description": "False or misleading information that damages informed decisions.",
+      "aliases": [
+        "fake news",
+        "false information"
+      ]
+    },
+    {
+      "id": "local-journalism",
+      "slug": "local-journalism",
+      "title": "Local journalism",
+      "description": "Sustainable reporting that holds local institutions to account.",
+      "aliases": [
+        "local news",
+        "community journalism"
+      ]
+    },
+    {
+      "id": "media-trust",
+      "slug": "media-trust",
+      "title": "Trust in media",
+      "description": "Confidence that reporting is accurate, fair and accountable.",
+      "aliases": [
+        "news trust",
+        "trustworthy media"
+      ]
+    },
+    {
+      "id": "algorithmic-amplification",
+      "slug": "algorithmic-amplification",
+      "title": "Algorithmic amplification",
+      "description": "Recommendation systems that can reward harmful or polarising content.",
+      "aliases": [
+        "social algorithms",
+        "algorithmic feeds"
+      ]
+    },
+    {
+      "id": "news-accessibility",
+      "slug": "news-accessibility",
+      "title": "Accessible news",
+      "description": "Reliable information available across ability, language and income.",
+      "aliases": [
+        "news access",
+        "inclusive news"
+      ]
+    },
+    {
+      "id": "value-for-money",
+      "slug": "value-for-money",
+      "title": "Value for money",
+      "description": "Quality and usefulness that justify the full price paid.",
+      "aliases": [
+        "good value",
+        "price value"
+      ]
+    },
+    {
+      "id": "customer-support",
+      "slug": "customer-support",
+      "title": "Customer support",
+      "description": "Fast, effective help when a product or service goes wrong.",
+      "aliases": [
+        "customer service",
+        "support quality"
+      ]
+    },
+    {
+      "id": "product-durability",
+      "slug": "product-durability",
+      "title": "Product durability",
+      "description": "Products that remain useful and reliable for a reasonable life.",
+      "aliases": [
+        "product lifespan",
+        "long-lasting products"
+      ]
+    },
+    {
+      "id": "transparent-pricing",
+      "slug": "transparent-pricing",
+      "title": "Transparent pricing",
+      "description": "Clear total costs without hidden fees or confusing conditions.",
+      "aliases": [
+        "clear pricing",
+        "hidden fees"
+      ]
+    },
+    {
+      "id": "repairability",
+      "slug": "repairability",
+      "title": "Repairability",
+      "description": "Products designed so faults can be repaired affordably.",
+      "aliases": [
+        "right to repair",
+        "repairable products"
+      ]
+    },
+    {
+      "id": "peace-conflict-prevention",
+      "slug": "peace-conflict-prevention",
+      "title": "Peace and conflict prevention",
+      "description": "Preventing war and resolving conflict through durable cooperation.",
+      "aliases": [
+        "world peace",
+        "preventing conflict"
+      ]
+    },
+    {
+      "id": "global-poverty",
+      "slug": "global-poverty",
+      "title": "Global poverty",
+      "description": "Ensuring people can meet basic needs and build secure livelihoods.",
+      "aliases": [
+        "ending poverty",
+        "world poverty"
+      ]
+    },
+    {
+      "id": "pandemic-preparedness",
+      "slug": "pandemic-preparedness",
+      "title": "Pandemic preparedness",
+      "description": "Detecting and responding to major infectious disease threats.",
+      "aliases": [
+        "pandemic readiness",
+        "global health preparedness"
+      ]
+    },
+    {
+      "id": "human-rights",
+      "slug": "human-rights",
+      "title": "Human rights",
+      "description": "Protecting fundamental rights and dignity for every person.",
+      "aliases": [
+        "civil rights",
+        "fundamental rights"
+      ]
+    },
+    {
+      "id": "food-water-security",
+      "slug": "food-water-security",
+      "title": "Food and water security",
+      "description": "Reliable access to nutritious food and safe water.",
+      "aliases": [
+        "food security",
+        "water security"
+      ]
+    }
   ],
   "questions": [
-    {"id":"country-ie","slug":"ireland","categoryId":"country","title":"What is the top issue in Ireland?","description":"Choose the issue Ireland should address first.","scope":{"id":"IE","type":"country","name":"Ireland"},"relatedQuestionIds":["city-dublin","city-cork","city-limerick","city-galway"],"conceptIds":["housing-affordability","cost-of-living","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"country-gb","slug":"united-kingdom","categoryId":"country","title":"What is the top issue in the United Kingdom?","description":"Choose the issue the United Kingdom should address first.","scope":{"id":"GB","type":"country","name":"United Kingdom"},"relatedQuestionIds":["country-ie","country-fr"],"conceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"country-us","slug":"united-states","categoryId":"country","title":"What is the top issue in the United States?","description":"Choose the issue the United States should address first.","scope":{"id":"US","type":"country","name":"United States"},"relatedQuestionIds":["country-gb","country-de"],"conceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"country-de","slug":"germany","categoryId":"country","title":"What is the top issue in Germany?","description":"Choose the issue Germany should address first.","scope":{"id":"DE","type":"country","name":"Germany"},"relatedQuestionIds":["country-fr","country-pl"],"conceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"country-fr","slug":"france","categoryId":"country","title":"What is the top issue in France?","description":"Choose the issue France should address first.","scope":{"id":"FR","type":"country","name":"France"},"relatedQuestionIds":["country-de","country-gb"],"conceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"country-pl","slug":"poland","categoryId":"country","title":"What is the top issue in Poland?","description":"Choose the issue Poland should address first.","scope":{"id":"PL","type":"country","name":"Poland"},"relatedQuestionIds":["country-de","country-ie"],"conceptIds":["cost-of-living","housing-affordability","healthcare-access","jobs-opportunity","crime-safety"],"publication":"published","indexable":true},
-    {"id":"city-dublin","slug":"dublin","categoryId":"city","title":"What is the top issue in Dublin?","description":"Choose the local issue Dublin should address first.","scope":{"id":"IE-D","type":"city","name":"Dublin","parentId":"IE"},"relatedQuestionIds":["country-ie","city-cork","city-limerick","city-galway"],"conceptIds":["local-housing-supply","public-transport-reliability","traffic-congestion","street-safety","clean-public-spaces"],"publication":"published","indexable":true},
-    {"id":"city-cork","slug":"cork","categoryId":"city","title":"What is the top issue in Cork?","description":"Choose the local issue Cork should address first.","scope":{"id":"IE-CO","type":"city","name":"Cork","parentId":"IE"},"relatedQuestionIds":["country-ie","city-dublin","city-limerick"],"conceptIds":["public-transport-reliability","local-housing-supply","traffic-congestion","clean-public-spaces","street-safety"],"publication":"published","indexable":true},
-    {"id":"city-limerick","slug":"limerick","categoryId":"city","title":"What is the top issue in Limerick?","description":"Choose the local issue Limerick should address first.","scope":{"id":"IE-LK","type":"city","name":"Limerick","parentId":"IE"},"relatedQuestionIds":["country-ie","city-dublin","city-galway"],"conceptIds":["public-transport-reliability","clean-public-spaces","local-housing-supply","street-safety","traffic-congestion"],"publication":"published","indexable":true},
-    {"id":"city-galway","slug":"galway","categoryId":"city","title":"What is the top issue in Galway?","description":"Choose the local issue Galway should address first.","scope":{"id":"IE-G","type":"city","name":"Galway","parentId":"IE"},"relatedQuestionIds":["country-ie","city-dublin","city-limerick"],"conceptIds":["traffic-congestion","local-housing-supply","public-transport-reliability","street-safety","clean-public-spaces"],"publication":"published","indexable":true},
-    {"id":"community-local","slug":"local-community","categoryId":"community","title":"What is the top issue in your local community?","description":"Choose the shared local priority that should be addressed first.","scope":{"id":"local-community","type":"community","name":"Local communities"},"relatedQuestionIds":["city-dublin","family-parents"],"conceptIds":["community-safety","social-isolation","youth-activities","accessible-services","community-spaces"],"publication":"published","indexable":true},
-    {"id":"workplace-remote-workers","slug":"remote-workers","categoryId":"workplace","title":"What is the top issue for remote workers?","description":"Choose the workplace issue that most affects remote workers.","scope":{"id":"remote-workers","type":"workplace","name":"Remote workers"},"relatedQuestionIds":["profession-software-developers","team-engineering"],"conceptIds":["workload-burnout","flexible-working","management-communication","career-progression","pay-fairness"],"publication":"published","indexable":true},
-    {"id":"organisation-growing-companies","slug":"growing-companies","categoryId":"company-organisation","title":"What is the top issue in growing companies?","description":"Choose the organisation-wide constraint a growing company should fix first.","scope":{"id":"growing-companies","type":"organisation","name":"Growing companies"},"relatedQuestionIds":["business-small-businesses","team-engineering"],"conceptIds":["strategic-clarity","cross-team-coordination","decision-speed","customer-focus","operational-efficiency"],"publication":"published","indexable":true},
-    {"id":"team-engineering","slug":"engineering-teams","categoryId":"team","title":"What is the top issue in engineering teams?","description":"Choose the team constraint that most needs attention.","scope":{"id":"engineering-teams","type":"team","name":"Engineering teams"},"relatedQuestionIds":["profession-software-developers","workplace-remote-workers"],"conceptIds":["unclear-priorities","too-many-meetings","ownership-gaps","slow-feedback","tooling-friction"],"publication":"published","indexable":true},
-    {"id":"industry-technology","slug":"technology-industry","categoryId":"industry","title":"What is the top issue in the technology industry?","description":"Choose the industry challenge technology organisations should tackle first.","scope":{"id":"technology","type":"industry","name":"Technology industry"},"relatedQuestionIds":["profession-software-developers","technology-general"],"conceptIds":["skills-shortage","regulatory-complexity","digital-transformation","market-competition","supply-chain-resilience"],"publication":"published","indexable":true},
-    {"id":"profession-software-developers","slug":"software-developers","categoryId":"profession","title":"What is the top issue for software developers?","description":"Choose the professional challenge software developers most need solved.","scope":{"id":"software-developer","type":"profession","name":"Software developers"},"relatedQuestionIds":["team-engineering","workplace-remote-workers","technology-general"],"conceptIds":["professional-development","work-life-balance","recognition-respect","ethical-pressure","job-security"],"publication":"published","indexable":true},
-    {"id":"business-small-businesses","slug":"small-businesses","categoryId":"business-entrepreneurship","title":"What is the top issue for small businesses?","description":"Choose the barrier small businesses most need removed.","scope":{"id":"small-business","type":"business-segment","name":"Small businesses"},"relatedQuestionIds":["organisation-growing-companies","consumer-small-business-services"],"conceptIds":["access-to-finance","customer-acquisition","cash-flow","hiring-talent","administrative-burden"],"publication":"published","indexable":true},
-    {"id":"education-general","slug":"education-system","categoryId":"education","title":"What is the top issue in education?","description":"Choose the education challenge that should be addressed first.","scope":{"id":"education-system","type":"education-sector","name":"Education systems"},"relatedQuestionIds":["family-parents","government-public-services"],"conceptIds":["teacher-shortages","education-costs","student-mental-health","class-sizes","digital-access"],"publication":"published","indexable":true},
-    {"id":"healthcare-general","slug":"healthcare-system","categoryId":"healthcare","title":"What is the top issue in healthcare?","description":"Choose the healthcare challenge that should be addressed first.","scope":{"id":"healthcare-system","type":"health-system","name":"Healthcare systems"},"relatedQuestionIds":["government-public-services","country-ie"],"conceptIds":["waiting-times","primary-care-access","healthcare-staffing","mental-health-services","affordable-treatment"],"publication":"published","indexable":true},
-    {"id":"housing-rental-market","slug":"rental-housing","categoryId":"housing","title":"What is the top issue with rental housing?","description":"Choose the rental housing issue that most needs action.","scope":{"id":"rental-housing","type":"housing-market","name":"Rental housing"},"relatedQuestionIds":["personal-finances-households","country-ie"],"conceptIds":["rent-affordability","home-supply","homelessness","tenant-security","home-energy-efficiency"],"publication":"published","indexable":true},
-    {"id":"personal-finances-households","slug":"household-finances","categoryId":"personal-finances","title":"What is the top issue with household finances?","description":"Choose the financial pressure households most need relieved.","scope":{"id":"household-finances","type":"financial-situation","name":"Household finances"},"relatedQuestionIds":["housing-rental-market","family-parents"],"conceptIds":["everyday-expenses","saving-for-home","debt-repayment","retirement-security","financial-literacy"],"publication":"published","indexable":true},
-    {"id":"technology-general","slug":"digital-technology","categoryId":"technology","title":"What is the top issue in digital technology?","description":"Choose the technology challenge that deserves priority.","scope":{"id":"digital-technology","type":"technology-field","name":"Digital technology"},"relatedQuestionIds":["industry-technology","media-online-information"],"conceptIds":["data-privacy","cybersecurity-threats","ai-accountability","digital-inclusion","platform-power"],"publication":"published","indexable":true},
-    {"id":"environment-natural-world","slug":"natural-environment","categoryId":"environment","title":"What is the top issue for the natural environment?","description":"Choose the environmental challenge that needs the most urgent action.","scope":{"id":"natural-environment","type":"environmental-domain","name":"Natural environment"},"relatedQuestionIds":["world-global","transport-public"],"conceptIds":["climate-action","biodiversity-loss","air-pollution","water-quality","waste-reduction"],"publication":"published","indexable":true},
-    {"id":"transport-public","slug":"public-transport","categoryId":"transport","title":"What is the top issue with public transport?","description":"Choose the public transport problem that should be fixed first.","scope":{"id":"public-transport","type":"transport-mode","name":"Public transport"},"relatedQuestionIds":["city-dublin","environment-natural-world"],"conceptIds":["service-reliability","transport-affordability","rural-connectivity","safe-cycling","accessible-transport"],"publication":"published","indexable":true},
-    {"id":"government-public-services","slug":"public-services","categoryId":"government-public-services","title":"What is the top issue with public services?","description":"Choose the public service improvement that matters most.","scope":{"id":"public-services","type":"public-service","name":"Public services"},"relatedQuestionIds":["healthcare-general","education-general"],"conceptIds":["service-delivery","government-transparency","tax-value","local-government-capacity","digital-public-services"],"publication":"published","indexable":true},
-    {"id":"family-parents","slug":"parents","categoryId":"family-parenting","title":"What is the top issue for parents?","description":"Choose the challenge families most need addressed.","scope":{"id":"parents","type":"family-group","name":"Parents"},"relatedQuestionIds":["education-general","personal-finances-households"],"conceptIds":["childcare-affordability","family-housing","parental-time-pressure","school-support","child-online-safety"],"publication":"published","indexable":true},
-    {"id":"sport-grassroots","slug":"grassroots-sport","categoryId":"sport","title":"What is the top issue in grassroots sport?","description":"Choose the issue that most limits healthy local participation.","scope":{"id":"grassroots-sport","type":"sport-community","name":"Grassroots sport"},"relatedQuestionIds":["community-local","family-parents"],"conceptIds":["grassroots-funding","participation-cost","safe-sport","facility-access","equal-opportunity-sport"],"publication":"published","indexable":true},
-    {"id":"media-online-information","slug":"online-information","categoryId":"media-information","title":"What is the top issue with online information?","description":"Choose the information problem that most needs attention.","scope":{"id":"online-information","type":"media-domain","name":"Online information"},"relatedQuestionIds":["technology-general","community-local"],"conceptIds":["misinformation","local-journalism","media-trust","algorithmic-amplification","news-accessibility"],"publication":"published","indexable":true},
-    {"id":"consumer-small-business-services","slug":"small-business-services","categoryId":"consumer-products-services","title":"What is the top issue with services from small businesses?","description":"Choose the customer experience problem small businesses should improve first.","scope":{"id":"small-business-services","type":"product-service-market","name":"Small business services"},"relatedQuestionIds":["business-small-businesses","personal-finances-households"],"conceptIds":["value-for-money","customer-support","product-durability","transparent-pricing","repairability"],"publication":"published","indexable":true},
-    {"id":"world-global","slug":"world","categoryId":"world-global-issues","title":"What is the top issue facing the world?","description":"Choose the global challenge humanity should prioritise.","scope":{"id":"WORLD","type":"global-region","name":"World"},"relatedQuestionIds":["environment-natural-world","country-ie","country-us"],"conceptIds":["peace-conflict-prevention","global-poverty","pandemic-preparedness","human-rights","food-water-security"],"publication":"published","indexable":true}
+    {
+      "id": "country-ie",
+      "slug": "ireland",
+      "categoryId": "country",
+      "title": "What is the top issue in Ireland?",
+      "description": "Choose the issue Ireland should address first.",
+      "scope": {
+        "id": "IE",
+        "type": "country",
+        "name": "Ireland"
+      },
+      "relatedQuestionIds": [
+        "city-dublin",
+        "city-cork",
+        "city-limerick",
+        "city-galway"
+      ],
+      "conceptIds": [
+        "housing-affordability",
+        "cost-of-living",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "country-gb",
+      "slug": "united-kingdom",
+      "categoryId": "country",
+      "title": "What is the top issue in the United Kingdom?",
+      "description": "Choose the issue the United Kingdom should address first.",
+      "scope": {
+        "id": "GB",
+        "type": "country",
+        "name": "United Kingdom"
+      },
+      "relatedQuestionIds": [
+        "country-ie",
+        "country-fr"
+      ],
+      "conceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "country-us",
+      "slug": "united-states",
+      "categoryId": "country",
+      "title": "What is the top issue in the United States?",
+      "description": "Choose the issue the United States should address first.",
+      "scope": {
+        "id": "US",
+        "type": "country",
+        "name": "United States"
+      },
+      "relatedQuestionIds": [
+        "country-gb",
+        "country-de"
+      ],
+      "conceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "country-de",
+      "slug": "germany",
+      "categoryId": "country",
+      "title": "What is the top issue in Germany?",
+      "description": "Choose the issue Germany should address first.",
+      "scope": {
+        "id": "DE",
+        "type": "country",
+        "name": "Germany"
+      },
+      "relatedQuestionIds": [
+        "country-fr",
+        "country-pl"
+      ],
+      "conceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "country-fr",
+      "slug": "france",
+      "categoryId": "country",
+      "title": "What is the top issue in France?",
+      "description": "Choose the issue France should address first.",
+      "scope": {
+        "id": "FR",
+        "type": "country",
+        "name": "France"
+      },
+      "relatedQuestionIds": [
+        "country-de",
+        "country-gb"
+      ],
+      "conceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "country-pl",
+      "slug": "poland",
+      "categoryId": "country",
+      "title": "What is the top issue in Poland?",
+      "description": "Choose the issue Poland should address first.",
+      "scope": {
+        "id": "PL",
+        "type": "country",
+        "name": "Poland"
+      },
+      "relatedQuestionIds": [
+        "country-de",
+        "country-ie"
+      ],
+      "conceptIds": [
+        "cost-of-living",
+        "housing-affordability",
+        "healthcare-access",
+        "jobs-opportunity",
+        "crime-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "county-dublin",
+      "slug": "dublin",
+      "categoryId": "county",
+      "title": "What is the top issue in County Dublin?",
+      "description": "Choose the county-wide issue Dublin should address first.",
+      "scope": {
+        "id": "IE-D",
+        "type": "county",
+        "name": "Dublin",
+        "parentId": "IE"
+      },
+      "relatedQuestionIds": ["country-ie", "city-dublin", "county-cork"],
+      "conceptIds": [
+        "local-housing-supply",
+        "public-transport-reliability",
+        "traffic-congestion",
+        "healthcare-access",
+        "street-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "county-cork",
+      "slug": "cork",
+      "categoryId": "county",
+      "title": "What is the top issue in County Cork?",
+      "description": "Choose the county-wide issue Cork should address first.",
+      "scope": {
+        "id": "IE-C",
+        "type": "county",
+        "name": "Cork",
+        "parentId": "IE"
+      },
+      "relatedQuestionIds": ["country-ie", "city-cork", "county-limerick"],
+      "conceptIds": [
+        "public-transport-reliability",
+        "jobs-opportunity",
+        "local-housing-supply",
+        "healthcare-access",
+        "street-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "county-limerick",
+      "slug": "limerick",
+      "categoryId": "county",
+      "title": "What is the top issue in County Limerick?",
+      "description": "Choose the county-wide issue Limerick should address first.",
+      "scope": {
+        "id": "IE-LK",
+        "type": "county",
+        "name": "Limerick",
+        "parentId": "IE"
+      },
+      "relatedQuestionIds": ["country-ie", "city-limerick", "county-galway"],
+      "conceptIds": [
+        "jobs-opportunity",
+        "public-transport-reliability",
+        "healthcare-access",
+        "local-housing-supply",
+        "street-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "county-galway",
+      "slug": "galway",
+      "categoryId": "county",
+      "title": "What is the top issue in County Galway?",
+      "description": "Choose the county-wide issue Galway should address first.",
+      "scope": {
+        "id": "IE-G",
+        "type": "county",
+        "name": "Galway",
+        "parentId": "IE"
+      },
+      "relatedQuestionIds": ["country-ie", "city-galway", "county-limerick"],
+      "conceptIds": [
+        "public-transport-reliability",
+        "local-housing-supply",
+        "healthcare-access",
+        "jobs-opportunity",
+        "street-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "city-dublin",
+      "slug": "dublin",
+      "categoryId": "city",
+      "title": "What is the top issue in Dublin?",
+      "description": "Choose the local issue Dublin should address first.",
+      "scope": {
+        "id": "IE-D-DUBLIN",
+        "type": "city",
+        "name": "Dublin",
+        "parentId": "IE-D"
+      },
+      "relatedQuestionIds": [
+        "country-ie",
+        "city-cork",
+        "city-limerick",
+        "city-galway"
+      ],
+      "conceptIds": [
+        "local-housing-supply",
+        "public-transport-reliability",
+        "traffic-congestion",
+        "street-safety",
+        "clean-public-spaces"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "city-cork",
+      "slug": "cork",
+      "categoryId": "city",
+      "title": "What is the top issue in Cork?",
+      "description": "Choose the local issue Cork should address first.",
+      "scope": {
+        "id": "IE-C-CORK",
+        "type": "city",
+        "name": "Cork",
+        "parentId": "IE-C"
+      },
+      "relatedQuestionIds": [
+        "country-ie",
+        "city-dublin",
+        "city-limerick"
+      ],
+      "conceptIds": [
+        "public-transport-reliability",
+        "local-housing-supply",
+        "traffic-congestion",
+        "clean-public-spaces",
+        "street-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "city-limerick",
+      "slug": "limerick",
+      "categoryId": "city",
+      "title": "What is the top issue in Limerick?",
+      "description": "Choose the local issue Limerick should address first.",
+      "scope": {
+        "id": "IE-LK-LIMERICK",
+        "type": "city",
+        "name": "Limerick",
+        "parentId": "IE-LK"
+      },
+      "relatedQuestionIds": [
+        "country-ie",
+        "city-dublin",
+        "city-galway"
+      ],
+      "conceptIds": [
+        "public-transport-reliability",
+        "clean-public-spaces",
+        "local-housing-supply",
+        "street-safety",
+        "traffic-congestion"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "city-galway",
+      "slug": "galway",
+      "categoryId": "city",
+      "title": "What is the top issue in Galway?",
+      "description": "Choose the local issue Galway should address first.",
+      "scope": {
+        "id": "IE-G-GALWAY",
+        "type": "city",
+        "name": "Galway",
+        "parentId": "IE-G"
+      },
+      "relatedQuestionIds": [
+        "country-ie",
+        "city-dublin",
+        "city-limerick"
+      ],
+      "conceptIds": [
+        "traffic-congestion",
+        "local-housing-supply",
+        "public-transport-reliability",
+        "street-safety",
+        "clean-public-spaces"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "community-local",
+      "slug": "local-community",
+      "categoryId": "community",
+      "title": "What is the top issue in your local community?",
+      "description": "Choose the shared local priority that should be addressed first.",
+      "scope": {
+        "id": "local-community",
+        "type": "community",
+        "name": "Local communities"
+      },
+      "relatedQuestionIds": [
+        "city-dublin",
+        "family-parents"
+      ],
+      "conceptIds": [
+        "community-safety",
+        "social-isolation",
+        "youth-activities",
+        "accessible-services",
+        "community-spaces"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "workplace-remote-workers",
+      "slug": "remote-workers",
+      "categoryId": "workplace",
+      "title": "What is the top issue for remote workers?",
+      "description": "Choose the workplace issue that most affects remote workers.",
+      "scope": {
+        "id": "remote-workers",
+        "type": "workplace",
+        "name": "Remote workers"
+      },
+      "relatedQuestionIds": [
+        "profession-software-developers",
+        "team-engineering"
+      ],
+      "conceptIds": [
+        "workload-burnout",
+        "flexible-working",
+        "management-communication",
+        "career-progression",
+        "pay-fairness"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "organisation-growing-companies",
+      "slug": "growing-companies",
+      "categoryId": "company-organisation",
+      "title": "What is the top issue in growing companies?",
+      "description": "Choose the organisation-wide constraint a growing company should fix first.",
+      "scope": {
+        "id": "growing-companies",
+        "type": "organisation",
+        "name": "Growing companies"
+      },
+      "relatedQuestionIds": [
+        "business-small-businesses",
+        "team-engineering"
+      ],
+      "conceptIds": [
+        "strategic-clarity",
+        "cross-team-coordination",
+        "decision-speed",
+        "customer-focus",
+        "operational-efficiency"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "team-engineering",
+      "slug": "engineering-teams",
+      "categoryId": "team",
+      "title": "What is the top issue in engineering teams?",
+      "description": "Choose the team constraint that most needs attention.",
+      "scope": {
+        "id": "engineering-teams",
+        "type": "team",
+        "name": "Engineering teams"
+      },
+      "relatedQuestionIds": [
+        "profession-software-developers",
+        "workplace-remote-workers"
+      ],
+      "conceptIds": [
+        "unclear-priorities",
+        "too-many-meetings",
+        "ownership-gaps",
+        "slow-feedback",
+        "tooling-friction"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "industry-technology",
+      "slug": "technology-industry",
+      "categoryId": "industry",
+      "title": "What is the top issue in the technology industry?",
+      "description": "Choose the industry challenge technology organisations should tackle first.",
+      "scope": {
+        "id": "technology",
+        "type": "industry",
+        "name": "Technology industry"
+      },
+      "relatedQuestionIds": [
+        "profession-software-developers",
+        "technology-general"
+      ],
+      "conceptIds": [
+        "skills-shortage",
+        "regulatory-complexity",
+        "digital-transformation",
+        "market-competition",
+        "supply-chain-resilience"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "profession-software-developers",
+      "slug": "software-developers",
+      "categoryId": "profession",
+      "title": "What is the top issue for software developers?",
+      "description": "Choose the professional challenge software developers most need solved.",
+      "scope": {
+        "id": "software-developer",
+        "type": "profession",
+        "name": "Software developers"
+      },
+      "relatedQuestionIds": [
+        "team-engineering",
+        "workplace-remote-workers",
+        "technology-general"
+      ],
+      "conceptIds": [
+        "professional-development",
+        "work-life-balance",
+        "recognition-respect",
+        "ethical-pressure",
+        "job-security"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "business-small-businesses",
+      "slug": "small-businesses",
+      "categoryId": "business-entrepreneurship",
+      "title": "What is the top issue for small businesses?",
+      "description": "Choose the barrier small businesses most need removed.",
+      "scope": {
+        "id": "small-business",
+        "type": "business-segment",
+        "name": "Small businesses"
+      },
+      "relatedQuestionIds": [
+        "organisation-growing-companies",
+        "consumer-small-business-services"
+      ],
+      "conceptIds": [
+        "access-to-finance",
+        "customer-acquisition",
+        "cash-flow",
+        "hiring-talent",
+        "administrative-burden"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "education-general",
+      "slug": "education-system",
+      "categoryId": "education",
+      "title": "What is the top issue in education?",
+      "description": "Choose the education challenge that should be addressed first.",
+      "scope": {
+        "id": "education-system",
+        "type": "education-sector",
+        "name": "Education systems"
+      },
+      "relatedQuestionIds": [
+        "family-parents",
+        "government-public-services"
+      ],
+      "conceptIds": [
+        "teacher-shortages",
+        "education-costs",
+        "student-mental-health",
+        "class-sizes",
+        "digital-access"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "healthcare-general",
+      "slug": "healthcare-system",
+      "categoryId": "healthcare",
+      "title": "What is the top issue in healthcare?",
+      "description": "Choose the healthcare challenge that should be addressed first.",
+      "scope": {
+        "id": "healthcare-system",
+        "type": "health-system",
+        "name": "Healthcare systems"
+      },
+      "relatedQuestionIds": [
+        "government-public-services",
+        "country-ie"
+      ],
+      "conceptIds": [
+        "waiting-times",
+        "primary-care-access",
+        "healthcare-staffing",
+        "mental-health-services",
+        "affordable-treatment"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "housing-rental-market",
+      "slug": "rental-housing",
+      "categoryId": "housing",
+      "title": "What is the top issue with rental housing?",
+      "description": "Choose the rental housing issue that most needs action.",
+      "scope": {
+        "id": "rental-housing",
+        "type": "housing-market",
+        "name": "Rental housing"
+      },
+      "relatedQuestionIds": [
+        "personal-finances-households",
+        "country-ie"
+      ],
+      "conceptIds": [
+        "rent-affordability",
+        "home-supply",
+        "homelessness",
+        "tenant-security",
+        "home-energy-efficiency"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "personal-finances-households",
+      "slug": "household-finances",
+      "categoryId": "personal-finances",
+      "title": "What is the top issue with household finances?",
+      "description": "Choose the financial pressure households most need relieved.",
+      "scope": {
+        "id": "household-finances",
+        "type": "financial-situation",
+        "name": "Household finances"
+      },
+      "relatedQuestionIds": [
+        "housing-rental-market",
+        "family-parents"
+      ],
+      "conceptIds": [
+        "everyday-expenses",
+        "saving-for-home",
+        "debt-repayment",
+        "retirement-security",
+        "financial-literacy"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "technology-general",
+      "slug": "digital-technology",
+      "categoryId": "technology",
+      "title": "What is the top issue in digital technology?",
+      "description": "Choose the technology challenge that deserves priority.",
+      "scope": {
+        "id": "digital-technology",
+        "type": "technology-field",
+        "name": "Digital technology"
+      },
+      "relatedQuestionIds": [
+        "industry-technology",
+        "media-online-information"
+      ],
+      "conceptIds": [
+        "data-privacy",
+        "cybersecurity-threats",
+        "ai-accountability",
+        "digital-inclusion",
+        "platform-power"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "environment-natural-world",
+      "slug": "natural-environment",
+      "categoryId": "environment",
+      "title": "What is the top issue for the natural environment?",
+      "description": "Choose the environmental challenge that needs the most urgent action.",
+      "scope": {
+        "id": "natural-environment",
+        "type": "environmental-domain",
+        "name": "Natural environment"
+      },
+      "relatedQuestionIds": [
+        "world-global",
+        "transport-public"
+      ],
+      "conceptIds": [
+        "climate-action",
+        "biodiversity-loss",
+        "air-pollution",
+        "water-quality",
+        "waste-reduction"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "transport-public",
+      "slug": "public-transport",
+      "categoryId": "transport",
+      "title": "What is the top issue with public transport?",
+      "description": "Choose the public transport problem that should be fixed first.",
+      "scope": {
+        "id": "public-transport",
+        "type": "transport-mode",
+        "name": "Public transport"
+      },
+      "relatedQuestionIds": [
+        "city-dublin",
+        "environment-natural-world"
+      ],
+      "conceptIds": [
+        "service-reliability",
+        "transport-affordability",
+        "rural-connectivity",
+        "safe-cycling",
+        "accessible-transport"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "government-public-services",
+      "slug": "public-services",
+      "categoryId": "government-public-services",
+      "title": "What is the top issue with public services?",
+      "description": "Choose the public service improvement that matters most.",
+      "scope": {
+        "id": "public-services",
+        "type": "public-service",
+        "name": "Public services"
+      },
+      "relatedQuestionIds": [
+        "healthcare-general",
+        "education-general"
+      ],
+      "conceptIds": [
+        "service-delivery",
+        "government-transparency",
+        "tax-value",
+        "local-government-capacity",
+        "digital-public-services"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "family-parents",
+      "slug": "parents",
+      "categoryId": "family-parenting",
+      "title": "What is the top issue for parents?",
+      "description": "Choose the challenge families most need addressed.",
+      "scope": {
+        "id": "parents",
+        "type": "family-group",
+        "name": "Parents"
+      },
+      "relatedQuestionIds": [
+        "education-general",
+        "personal-finances-households"
+      ],
+      "conceptIds": [
+        "childcare-affordability",
+        "family-housing",
+        "parental-time-pressure",
+        "school-support",
+        "child-online-safety"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "sport-grassroots",
+      "slug": "grassroots-sport",
+      "categoryId": "sport",
+      "title": "What is the top issue in grassroots sport?",
+      "description": "Choose the issue that most limits healthy local participation.",
+      "scope": {
+        "id": "grassroots-sport",
+        "type": "sport-community",
+        "name": "Grassroots sport"
+      },
+      "relatedQuestionIds": [
+        "community-local",
+        "family-parents"
+      ],
+      "conceptIds": [
+        "grassroots-funding",
+        "participation-cost",
+        "safe-sport",
+        "facility-access",
+        "equal-opportunity-sport"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "media-online-information",
+      "slug": "online-information",
+      "categoryId": "media-information",
+      "title": "What is the top issue with online information?",
+      "description": "Choose the information problem that most needs attention.",
+      "scope": {
+        "id": "online-information",
+        "type": "media-domain",
+        "name": "Online information"
+      },
+      "relatedQuestionIds": [
+        "technology-general",
+        "community-local"
+      ],
+      "conceptIds": [
+        "misinformation",
+        "local-journalism",
+        "media-trust",
+        "algorithmic-amplification",
+        "news-accessibility"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "consumer-small-business-services",
+      "slug": "small-business-services",
+      "categoryId": "consumer-products-services",
+      "title": "What is the top issue with services from small businesses?",
+      "description": "Choose the customer experience problem small businesses should improve first.",
+      "scope": {
+        "id": "small-business-services",
+        "type": "product-service-market",
+        "name": "Small business services"
+      },
+      "relatedQuestionIds": [
+        "business-small-businesses",
+        "personal-finances-households"
+      ],
+      "conceptIds": [
+        "value-for-money",
+        "customer-support",
+        "product-durability",
+        "transparent-pricing",
+        "repairability"
+      ],
+      "publication": "published",
+      "indexable": true
+    },
+    {
+      "id": "world-global",
+      "slug": "world",
+      "categoryId": "world-global-issues",
+      "title": "What is the top issue facing the world?",
+      "description": "Choose the global challenge humanity should prioritise.",
+      "scope": {
+        "id": "WORLD",
+        "type": "global-region",
+        "name": "World"
+      },
+      "relatedQuestionIds": [
+        "environment-natural-world",
+        "country-ie",
+        "country-us"
+      ],
+      "conceptIds": [
+        "peace-conflict-prevention",
+        "global-poverty",
+        "pandemic-preparedness",
+        "human-rights",
+        "food-water-security"
+      ],
+      "publication": "published",
+      "indexable": true
+    }
   ]
 }
