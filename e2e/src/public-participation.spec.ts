@@ -24,7 +24,7 @@ test('question author can fill before auth and keeps the draft at sign-in', asyn
   await page
     .locator('ion-textarea[formcontrolname="customOptions"] textarea')
     .fill('Safer crossings\nMore frequent buses\nSafer crossings');
-  await page.getByRole('button', { name: 'Submit question' }).click();
+  await page.getByRole('button', { name: 'Submit question' }).press('Enter');
 
   await expect(page).toHaveURL(/\/login/);
   const stored = await page.evaluate(() =>
@@ -45,8 +45,8 @@ test('question author can fill before auth and keeps the draft at sign-in', asyn
 test('verification has no default and keeps one random order for the attempt', async ({
   page,
 }) => {
-  await page.goto('/');
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem('issuenumber.pending')) return;
     sessionStorage.setItem(
       'issuenumber.pending',
       JSON.stringify({
