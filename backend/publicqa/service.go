@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"github.com/sneat-co/issue-number-one/backend/translations"
 	"google.golang.org/api/iterator"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -60,11 +61,22 @@ func WithPersonalWeight(weight int64) Option {
 	}
 }
 
+// WithTranslations enables revision-aware stored question translations. Reads
+// never invoke the external translator; they use the repository only.
+func WithTranslations(service *translations.Service, repository translations.Repository) Option {
+	return func(s *Service) {
+		s.translationService = service
+		s.translationRepository = repository
+	}
+}
+
 type Service struct {
-	db             *firestore.Client
-	spaceID        string
-	now            func() time.Time
-	personalWeight int64
+	db                    *firestore.Client
+	spaceID               string
+	now                   func() time.Time
+	personalWeight        int64
+	translationService    *translations.Service
+	translationRepository translations.Repository
 }
 
 func NewService(db *firestore.Client, spaceID string, opts ...Option) *Service {
@@ -210,6 +222,20 @@ func (s *Service) QuestionLocalized(ctx context.Context, qid, uid, language stri
 	o.TotalRespondents = o.Question.TotalRespondents
 	o.LanguageRespondents = o.Question.RespondentsByLanguage[language]
 	o.UpdatedAt = o.Question.UpdatedAt
+	o.ContentLanguage = o.Question.SourceLanguage
+	if o.ContentLanguage == "" {
+		o.ContentLanguage = "en"
+	}
+	if language != o.ContentLanguage {
+		o.TranslationFallback = true
+		if s.translationRepository != nil {
+			if translated, x := s.translationRepository.GetTranslation(ctx, qid, language); x == nil && translationIsFresh(o.Question, translated) && strings.TrimSpace(translated.Title) != "" {
+				o.Translation = &translated
+				o.ContentLanguage = language
+				o.TranslationFallback = false
+			}
+		}
+	}
 	var it *firestore.DocumentIterator
 	if o.Question.Status == StatusPending && o.Question.CreatorUID == uid {
 		it = qref.Collection("issues").Documents(ctx)
@@ -633,6 +659,11 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 	if caller.UID == "" || req.OperationID == "" || len(req.OperationID) > 100 || strings.Contains(req.OperationID, "/") {
 		return out, fmt.Errorf("%w: invalid question request", ErrValidation)
 	}
+	sourceLanguage, e := normalizeLanguage(req.SourceLanguage)
+	if e != nil || (s.translationService != nil && !containsString(s.translationService.SupportedLanguages(), sourceLanguage)) {
+		return out, fmt.Errorf("%w: sourceLanguage is not enabled for translation", ErrValidation)
+	}
+	req.SourceLanguage = sourceLanguage
 	if e := validateChoiceSource(req.ChoiceSource); e != nil {
 		return out, e
 	}
@@ -652,7 +683,7 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 		return out, fmt.Errorf("%w: question must be 10-180 characters ending in ?, with a 20-1000 character description", ErrValidation)
 	}
 	slug := Slugify(strings.TrimSuffix(title, "?"))
-	raw := title + "\x00" + description + "\x00" + req.ChoiceSource.Kind + "\x00" + req.ChoiceSource.EntityType + fmt.Sprint(req.ChoiceSource.Options, req.AllowSuggestions)
+	raw := title + "\x00" + description + "\x00" + req.SourceLanguage + "\x00" + req.ChoiceSource.Kind + "\x00" + req.ChoiceSource.EntityType + fmt.Sprint(req.ChoiceSource.Options, req.AllowSuggestions)
 	sum := sha256.Sum256([]byte(raw))
 	ph := hex.EncodeToString(sum[:])
 	now := s.now().UTC()
@@ -694,7 +725,7 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 			return ErrRateLimited
 		}
 		qref := s.root().Collection("questions").NewDoc()
-		q := Question{ID: qref.ID, Slug: slug, Title: title, Description: description, Status: StatusPending, Publication: StatusPending, Indexable: false, AnswerTargetType: req.AnswerTargetType, ChoiceSource: req.ChoiceSource, AllowSuggestions: req.AllowSuggestions, ContentRevision: 1, CreatorUID: caller.UID, UpdatedAt: now}
+		q := Question{ID: qref.ID, Slug: slug, Title: title, Description: description, Status: StatusPending, Publication: StatusPending, Indexable: false, AnswerTargetType: req.AnswerTargetType, ChoiceSource: req.ChoiceSource, AllowSuggestions: req.AllowSuggestions, ContentRevision: 1, SourceLanguage: sourceLanguage, TranslationStatus: "pending", AvailableLanguages: []string{sourceLanguage}, CreatorUID: caller.UID, UpdatedAt: now}
 		out = CreateQuestionResponse{Question: q}
 		limit.Count++
 		if e := tx.Set(qref, q); e != nil {
@@ -719,7 +750,64 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 		}
 		return tx.Set(opref, questionOperation{UID: caller.UID, PayloadHash: ph, Response: out, CreatedAt: now})
 	})
-	return out, err
+	if err != nil || s.translationService == nil {
+		return out, err
+	}
+	// Translation is intentionally outside the canonical creation transaction.
+	// A provider failure cannot erase a valid question and is durably retryable.
+	translated, translationErr := s.TranslateAllQuestionLanguages(ctx, out.Question.ID, translations.Actor{UID: caller.UID})
+	if translationErr != nil {
+		out.Question.TranslationStatus = "failed"
+		return out, nil
+	}
+	out.Question.TranslationStatus = "ready"
+	out.Question.AvailableLanguages = translated
+	return out, nil
+}
+
+// TranslateAllQuestionLanguages is the trusted retry/backfill boundary. The
+// translation package makes writes idempotent by content revision and hash.
+func (s *Service) TranslateAllQuestionLanguages(ctx context.Context, questionID string, actor translations.Actor) ([]string, error) {
+	if s.translationService == nil {
+		return nil, errors.New("question translation is not configured")
+	}
+	values, err := s.translationService.TranslateEnabledQuestion(ctx, questionID, actor)
+	statusValue := "ready"
+	if err != nil {
+		statusValue = "failed"
+	}
+	languages := make([]string, 0, len(values))
+	for _, value := range values {
+		if value.Language != "" && strings.TrimSpace(value.Title) != "" {
+			languages = append(languages, value.Language)
+		}
+	}
+	update := map[string]any{"translationStatus": statusValue, "translationUpdatedAt": s.now().UTC()}
+	if err == nil {
+		update["availableLanguages"] = languages
+	}
+	if _, updateErr := s.root().Collection("questions").Doc(questionID).Set(ctx, update, firestore.MergeAll); updateErr != nil {
+		return languages, updateErr
+	}
+	return languages, err
+}
+
+func translationIsFresh(question Question, value translations.Translation) bool {
+	sourceLanguage := question.SourceLanguage
+	if sourceLanguage == "" {
+		sourceLanguage = "en"
+	}
+	source := translations.QuestionSource{ID: question.ID, Title: question.Title, Description: question.Description, SourceLanguage: sourceLanguage, ContentRevision: question.ContentRevision, Publication: question.Publication, CreatorUID: question.CreatorUID}
+	return value.SourceRevision == question.ContentRevision && value.SourceHash == translations.SourceHash(source, sourceLanguage)
+}
+
+func containsString(values []string, expected string) bool {
+	for _, value := range values {
+		if value == expected {
+			return true
+		}
+	}
+	return false
 }
 func validateChoiceSource(source ChoiceSource) error {
 	switch source.Kind {

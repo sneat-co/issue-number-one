@@ -1,6 +1,9 @@
 package publicqa
 
-import "time"
+import (
+	"github.com/sneat-co/issue-number-one/backend/translations"
+	"time"
+)
 
 const (
 	DefaultPublicSpaceID = "issuenumber-public"
@@ -63,6 +66,9 @@ type Question struct {
 	ChoiceSource          ChoiceSource     `json:"choiceSource" firestore:"choiceSource"`
 	AllowSuggestions      bool             `json:"allowSuggestions" firestore:"allowSuggestions"`
 	ContentRevision       int64            `json:"contentRevision" firestore:"contentRevision"`
+	SourceLanguage        string           `json:"sourceLanguage" firestore:"sourceLanguage"`
+	TranslationStatus     string           `json:"translationStatus,omitempty" firestore:"translationStatus,omitempty"`
+	AvailableLanguages    []string         `json:"availableLanguages,omitempty" firestore:"availableLanguages,omitempty"`
 }
 type Scope struct {
 	ID       string `json:"id" firestore:"id"`
@@ -131,12 +137,15 @@ type CatalogResponse struct {
 	Questions  []Question `json:"questions"`
 }
 type QuestionResponse struct {
-	Question            Question  `json:"question"`
-	Issues              []Issue   `json:"issues"`
-	TotalRespondents    int64     `json:"totalRespondents"`
-	UpdatedAt           time.Time `json:"updatedAt,omitempty"`
-	LanguageCode        string    `json:"languageCode,omitempty"`
-	LanguageRespondents int64     `json:"languageRespondents,omitempty"`
+	Question            Question                  `json:"question"`
+	Issues              []Issue                   `json:"issues"`
+	TotalRespondents    int64                     `json:"totalRespondents"`
+	UpdatedAt           time.Time                 `json:"updatedAt,omitempty"`
+	LanguageCode        string                    `json:"languageCode,omitempty"`
+	LanguageRespondents int64                     `json:"languageRespondents,omitempty"`
+	ContentLanguage     string                    `json:"contentLanguage"`
+	TranslationFallback bool                      `json:"translationFallback,omitempty"`
+	Translation         *translations.Translation `json:"translation,omitempty"`
 }
 type AnswerRequest struct {
 	AnswerKind   string `json:"answerKind,omitempty"`
@@ -167,6 +176,7 @@ type CreateQuestionRequest struct {
 	OperationID      string       `json:"operationId"`
 	ChoiceSource     ChoiceSource `json:"choiceSource"`
 	AllowSuggestions bool         `json:"allowSuggestions,omitempty"`
+	SourceLanguage   string       `json:"sourceLanguage,omitempty"`
 }
 type CreateQuestionResponse struct {
 	Question Question `json:"question"`

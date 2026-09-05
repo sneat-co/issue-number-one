@@ -4,12 +4,35 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/sneat-co/issue-number-one/backend/translations"
 	"os"
 	"testing"
 	"time"
 
 	"cloud.google.com/go/firestore"
 )
+
+type questionTranslator struct{ err error }
+
+func (f *questionTranslator) Translate(_ context.Context, _, target string, values []string) ([]string, error) {
+	if f.err != nil {
+		return nil, f.err
+	}
+	return []string{target + ": " + values[0], target + ": " + values[1]}, nil
+}
+
+func withQuestionTranslations(t *testing.T, s *Service, translator translations.Translator) *Service {
+	t.Helper()
+	repository, err := translations.NewFirestoreRepository(s.db, s.spaceID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	translationService, err := translations.NewService(repository, translator, translations.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return NewService(s.db, s.spaceID, WithTranslations(translationService, repository))
+}
 
 func emulatorService(t *testing.T) *Service {
 	t.Helper()
@@ -216,6 +239,63 @@ func TestCreateQuestionPendingSlugIdempotencyAndCreatorPreview(t *testing.T) {
 	}
 	if _, e = s.QuestionBySlug(context.Background(), created.Question.Slug, "author"); e != nil {
 		t.Fatalf("creator preview: %v", e)
+	}
+}
+
+func TestCreateQuestionStoresTranslationAndLocalizedPreview(t *testing.T) {
+	s := withQuestionTranslations(t, emulatorService(t), &questionTranslator{})
+	caller := Caller{UID: "translated-author", PhoneVerified: true}
+	created, err := s.CreateQuestion(context.Background(), caller, CreateQuestionRequest{
+		Title: "What should our town improve first?", Description: "Choose the improvement that should receive the community's attention first.",
+		ChoiceSource: ChoiceSource{Kind: "free"}, OperationID: "translated-question", SourceLanguage: "en",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if created.Question.TranslationStatus != "ready" || !containsString(created.Question.AvailableLanguages, "ru") {
+		t.Fatalf("translation lifecycle = %+v", created.Question)
+	}
+	if _, err = s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, "", "ru"); err != ErrNotFound {
+		t.Fatalf("pending translation leaked anonymously: %v", err)
+	}
+	preview, err := s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if preview.Translation == nil || preview.Translation.Language != "ru" || !preview.Translation.MachineTranslated || preview.ContentLanguage != "ru" || preview.TranslationFallback {
+		t.Fatalf("localized preview = %+v", preview)
+	}
+	if preview.Question.Title != created.Question.Title || preview.Question.SourceLanguage != "en" {
+		t.Fatalf("canonical source was overwritten: %+v", preview.Question)
+	}
+}
+
+func TestTranslationFailureKeepsCanonicalQuestionAndCanRetry(t *testing.T) {
+	failing := &questionTranslator{err: errors.New("provider unavailable")}
+	s := withQuestionTranslations(t, emulatorService(t), failing)
+	caller := Caller{UID: "retry-author", PhoneVerified: true}
+	created, err := s.CreateQuestion(context.Background(), caller, CreateQuestionRequest{
+		Title: "What matters most in our district?", Description: "Describe the single issue that deserves attention across the district first.",
+		ChoiceSource: ChoiceSource{Kind: "free"}, OperationID: "failed-translation", SourceLanguage: "en",
+	})
+	if err != nil {
+		t.Fatalf("translation failure rolled back question: %v", err)
+	}
+	if created.Question.TranslationStatus != "failed" || created.Question.Status != StatusPending || created.Question.Indexable {
+		t.Fatalf("failed lifecycle = %+v", created.Question)
+	}
+	preview, err := s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil || !preview.TranslationFallback || preview.ContentLanguage != "en" || preview.Translation != nil {
+		t.Fatalf("safe source fallback = %+v err=%v", preview, err)
+	}
+	s = withQuestionTranslations(t, s, &questionTranslator{})
+	languages, err := s.TranslateAllQuestionLanguages(context.Background(), created.Question.ID, translations.Actor{UID: caller.UID})
+	if err != nil || !containsString(languages, "ru") {
+		t.Fatalf("retry languages=%v err=%v", languages, err)
+	}
+	preview, err = s.QuestionBySlugLocalized(context.Background(), created.Question.Slug, caller.UID, "ru")
+	if err != nil || preview.Translation == nil || preview.Translation.SourceRevision != 1 {
+		t.Fatalf("retried preview = %+v err=%v", preview, err)
 	}
 }
 func TestCustomQuestionPublicationAndPredefinedPopulation(t *testing.T) {

@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/sneat-co/issue-number-one/backend/publicqa"
+	"github.com/sneat-co/issue-number-one/backend/translations"
 	"os"
 	"sort"
 	"time"
@@ -21,7 +22,7 @@ type countryFile struct {
 
 func main() {
 	var action, project, confirm, space, qid, iid, target, op, file string
-	flag.StringVar(&action, "action", "", "publish-question|hide-question|publish-issue|hide-issue|reject-issue|populate-countries|merge-issue")
+	flag.StringVar(&action, "action", "", "publish-question|hide-question|publish-issue|hide-issue|reject-issue|populate-countries|merge-issue|translate-question")
 	flag.StringVar(&project, "project", os.Getenv("GCLOUD_PROJECT"), "Google Cloud project")
 	flag.StringVar(&confirm, "confirm-production-project", "", "must exactly equal project outside emulator")
 	flag.StringVar(&space, "space", publicqa.DefaultPublicSpaceID, "public Space")
@@ -81,6 +82,22 @@ func main() {
 			choices = append(choices, publicqa.PredefinedChoice{ID: c.ID, Title: c.Title})
 		}
 		e = s.PopulatePredefinedChoices(ctx, qid, "country", choices)
+	case "translate-question":
+		repository, x := translations.NewFirestoreRepository(db, space)
+		if x != nil {
+			fatal(x.Error())
+		}
+		translator, x := translations.NewGoogleTranslator(ctx)
+		if x != nil {
+			fatal(x.Error())
+		}
+		defer translator.Close()
+		translationService, x := translations.NewService(repository, translator, translations.Config{})
+		if x != nil {
+			fatal(x.Error())
+		}
+		s = publicqa.NewService(db, space, publicqa.WithTranslations(translationService, repository))
+		_, e = s.TranslateAllQuestionLanguages(ctx, qid, translations.Actor{Trusted: true})
 	default:
 		fatal("invalid --action")
 	}

@@ -12,6 +12,10 @@ Clients cannot write Firestore.
 - `GET /v0/issuenumber/question?questionId=...` (or `?slug=...`) returns the published question,
   genuine unweighted respondent total, and bounded issue ranking fields:
   `supporters`, `personalTopSupporters`, and `weightedScore`.
+  `?lang=ru` adds a fresh stored translation when one exists and identifies
+  `contentLanguage`, `translationFallback`, source revision/hash, and whether
+  the returned copy was machine translated. The canonical question fields stay
+  in their source language.
 - `GET /v0/issuenumber/answer?questionId=...` returns the caller's current
   answer for that concrete question and whether it is their personal top issue.
 - `GET /v0/issuenumber/eligibility` returns private phone/payment eligibility.
@@ -64,6 +68,15 @@ Question creation accepts a discriminated `choiceSource`: `predefined`
 (`country`, `city`, or `currency`), `custom` (2-30 normalized distinct
 options), or `free`, plus a separate `allowSuggestions` flag. Closed
 predefined/custom questions reject arbitrary free-form submissions.
+It also accepts `sourceLanguage`. A valid canonical pending/noindex question is
+committed before translation begins. When `WithTranslations` is configured,
+all configured languages are translated synchronously after that commit and
+stored below `questions/{id}/translations/{language}`. Provider failure records
+`translationStatus=failed`, still returns the canonical question, and can be
+retried safely with `Service.TranslateAllQuestionLanguages` or
+`cmd/admin -action translate-question`. Translation writes are idempotent by
+canonical content revision and source hash. Public reads never call the
+translation provider and never return stale or empty translated copy.
 
 An answer records one supported `languageCode` when the choice changes. Merely
 viewing or retrying in another language never creates a vote or reattributes an
@@ -74,6 +87,8 @@ counters for supporters, personal-top supporters, and weighted score. Public
 `cmd/admin` provides production-confirmed publish/hide/reject operations,
 canonical country-choice population, and retry-safe issue merging. Country
 population reads Sneat Libs' `countries.json`; it contains no copied country
-list. A merge locks the question against answers, migrates answer and personal
+list. No complete canonical currency or city directory currently exists in the
+inspected Sneat Libs assets, so this backend deliberately does not publish an
+incomplete replacement. A merge locks the question against answers, migrates answer and personal
 references in bounded batches, transfers total and language counters, retains
 the source as `merged`, and records a resumable merge job before unlocking.
