@@ -38,6 +38,8 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir landings install --frozen-lockfile
+      - run: node --test landings/qa/*.test.js catalog/seed.test.mjs
       - run: pnpm exec playwright install --with-deps
 
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
