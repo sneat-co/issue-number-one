@@ -99,12 +99,13 @@ export async function serveQA(request, env) {
             ? path.slice(canonical.length + 1)
             : '';
           if (path === canonical || (tail && !tail.includes('/'))) {
+            const language = url.searchParams.get('lang') || 'en';
             html = questionPage(
               catalog,
               c,
               await api(
                 env,
-                'question?questionId=' + encodeURIComponent(question.id),
+                `question?questionId=${encodeURIComponent(question.id)}&lang=${encodeURIComponent(language)}`,
               ),
               tail || undefined,
             );

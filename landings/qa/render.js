@@ -42,7 +42,7 @@ export function questionPath(category, question, catalog, visited = new Set()) {
   if (visited.has(question.id)) throw new Error('Cyclic scope hierarchy');
   visited.add(question.id);
   const parent = catalog?.questions.find(
-    (q) => q.scope.id === question.scope.parentId,
+    (q) => q.scope?.id === question.scope.parentId,
   );
   const parentCategory =
     parent && catalog.categories.find((c) => c.id === parent.categoryId);
