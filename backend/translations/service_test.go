@@ -107,8 +107,26 @@ func TestPendingQuestionRequiresCreator(t *testing.T) {
 
 func TestUnsupportedLanguageNeverFallsBack(t *testing.T) {
 	service, _ := testService(t, QuestionSource{ID: "q", Title: "Question", SourceLanguage: "en", ContentRevision: 1, Publication: "published"}, &fakeTranslator{})
-	if _, err := service.TranslateQuestion(context.Background(), TranslateQuestionRequest{QuestionID: "q", Language: "fr"}); !errors.Is(err, ErrUnsupportedLanguage) {
+	if _, err := service.TranslateQuestion(context.Background(), TranslateQuestionRequest{QuestionID: "q", Language: "ja"}); !errors.Is(err, ErrUnsupportedLanguage) {
 		t.Fatalf("got %v", err)
+	}
+}
+
+func TestDefaultServiceUsesCanonicalSupportedLanguages(t *testing.T) {
+	service, _ := testService(t, QuestionSource{ID: "q", Title: "Question", SourceLanguage: "en", ContentRevision: 1, Publication: "published"}, &fakeTranslator{})
+	got := service.SupportedLanguages()
+	want := CanonicalSupportedLanguages()
+	if len(got) != 11 || len(got) != len(want) {
+		t.Fatalf("got %v want %v", got, want)
+	}
+	for index := range want {
+		if got[index] != want[index] {
+			t.Fatalf("got %v want %v", got, want)
+		}
+	}
+	got[0] = "changed"
+	if CanonicalSupportedLanguages()[0] != "en" {
+		t.Fatal("caller mutated canonical language set")
 	}
 }
 

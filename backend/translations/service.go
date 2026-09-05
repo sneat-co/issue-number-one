@@ -28,13 +28,21 @@ type translationCall struct {
 	err   error
 }
 
+var canonicalSupportedLanguages = []string{"en", "ru", "uk", "pl", "de", "fr", "es", "it", "pt", "nl", "ga"}
+
+// CanonicalSupportedLanguages returns the product-wide bounded translation
+// language set. Returning a copy prevents callers from mutating shared config.
+func CanonicalSupportedLanguages() []string {
+	return append([]string(nil), canonicalSupportedLanguages...)
+}
+
 func NewService(repository Repository, translator Translator, config Config) (*Service, error) {
 	if repository == nil || translator == nil {
 		return nil, errors.New("translation repository and translator are required")
 	}
 	languages := config.SupportedLanguages
 	if len(languages) == 0 {
-		languages = []string{"en", "ru"}
+		languages = CanonicalSupportedLanguages()
 	}
 	supported := make(map[string]struct{}, len(languages))
 	ordered := make([]string, 0, len(languages))

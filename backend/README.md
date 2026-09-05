@@ -77,6 +77,9 @@ retried safely with `Service.TranslateAllQuestionLanguages` or
 `cmd/admin -action translate-question`. Translation writes are idempotent by
 canonical content revision and source hash. Public reads never call the
 translation provider and never return stale or empty translated copy.
+`translations.CanonicalSupportedLanguages` is the single bounded language set
+used by default service construction, the public request validator, and admin
+backfills, preventing partial language backfills when configuration is omitted.
 
 An answer records one supported `languageCode` when the choice changes. Merely
 viewing or retrying in another language never creates a vote or reattributes an
@@ -92,3 +95,9 @@ inspected Sneat Libs assets, so this backend deliberately does not publish an
 incomplete replacement. A merge locks the question against answers, migrates answer and personal
 references in bounded batches, transfers total and language counters, retains
 the source as `merged`, and records a resumable merge job before unlocking.
+
+Publication and SEO indexability are separate. A published question remains
+publicly readable but becomes indexable only while it has at least five
+published issues. Publishing, hiding, or rejecting an issue and trusted
+predefined-choice population recompute this projection; pending custom options
+are still bulk-published with their reviewed parent question.

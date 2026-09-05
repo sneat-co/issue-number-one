@@ -92,7 +92,7 @@ func main() {
 			fatal(x.Error())
 		}
 		defer translator.Close()
-		translationService, x := translations.NewService(repository, translator, translations.Config{})
+		translationService, x := translations.NewService(repository, translator, translations.Config{SupportedLanguages: translations.CanonicalSupportedLanguages()})
 		if x != nil {
 			fatal(x.Error())
 		}

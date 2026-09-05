@@ -10,6 +10,31 @@ import (
 
 type PredefinedChoice struct{ ID, Title, Description string }
 
+const minimumIndexablePublishedIssues = 5
+
+func (s *Service) recomputeQuestionIndexable(ctx context.Context, qref *firestore.DocumentRef) error {
+	qd, err := qref.Get(ctx)
+	if err != nil {
+		return err
+	}
+	var question Question
+	if err = qd.DataTo(&question); err != nil {
+		return err
+	}
+	indexable := false
+	if question.Status == StatusPublished {
+		it := qref.Collection("issues").Where("status", "==", StatusPublished).Limit(minimumIndexablePublishedIssues).Documents(ctx)
+		docs, readErr := it.GetAll()
+		it.Stop()
+		if readErr != nil {
+			return readErr
+		}
+		indexable = len(docs) >= minimumIndexablePublishedIssues
+	}
+	_, err = qref.Update(ctx, []firestore.Update{{Path: "indexable", Value: indexable}, {Path: "updatedAt", Value: s.now().UTC()}})
+	return err
+}
+
 func (s *Service) SetQuestionStatus(ctx context.Context, questionID, statusValue string) error {
 	if statusValue != StatusPublished && statusValue != "hidden" && statusValue != "archived" {
 		return fmt.Errorf("%w: invalid question status", ErrValidation)
@@ -49,15 +74,22 @@ func (s *Service) SetQuestionStatus(ctx context.Context, questionID, statusValue
 			}
 		}
 	}
-	_, e := qref.Update(ctx, []firestore.Update{{Path: "status", Value: statusValue}, {Path: "publication", Value: statusValue}, {Path: "indexable", Value: statusValue == StatusPublished}, {Path: "updatedAt", Value: s.now().UTC()}})
-	return e
+	_, e := qref.Update(ctx, []firestore.Update{{Path: "status", Value: statusValue}, {Path: "publication", Value: statusValue}, {Path: "indexable", Value: false}, {Path: "updatedAt", Value: s.now().UTC()}})
+	if e != nil {
+		return e
+	}
+	return s.recomputeQuestionIndexable(ctx, qref)
 }
 func (s *Service) SetIssueStatus(ctx context.Context, questionID, issueID, statusValue string) error {
 	if statusValue != StatusPublished && statusValue != "hidden" && statusValue != "rejected" {
 		return fmt.Errorf("%w: invalid issue status", ErrValidation)
 	}
-	_, e := s.root().Collection("questions").Doc(questionID).Collection("issues").Doc(issueID).Update(ctx, []firestore.Update{{Path: "status", Value: statusValue}, {Path: "updatedAt", Value: s.now().UTC()}})
-	return e
+	qref := s.root().Collection("questions").Doc(questionID)
+	_, e := qref.Collection("issues").Doc(issueID).Update(ctx, []firestore.Update{{Path: "status", Value: statusValue}, {Path: "updatedAt", Value: s.now().UTC()}})
+	if e != nil {
+		return e
+	}
+	return s.recomputeQuestionIndexable(ctx, qref)
 }
 
 // PopulatePredefinedChoices is an idempotent trusted administration operation.
@@ -94,7 +126,10 @@ func (s *Service) PopulatePredefinedChoices(ctx context.Context, questionID, ent
 		}
 	}
 	_, e := qref.Update(ctx, []firestore.Update{{Path: "answerTargetType", Value: entityType}, {Path: "choiceSource", Value: ChoiceSource{Kind: "predefined", EntityType: entityType}}, {Path: "allowSuggestions", Value: false}, {Path: "updatedAt", Value: s.now().UTC()}})
-	return e
+	if e != nil {
+		return e
+	}
+	return s.recomputeQuestionIndexable(ctx, qref)
 }
 
 type mergeJob struct {
@@ -186,7 +221,7 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 			return e
 		}
 	}
-	return s.db.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
+	if err := s.db.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
 		sd, e := tx.Get(qref.Collection("issues").Doc(sourceID))
 		if e != nil {
 			return e
@@ -246,5 +281,8 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 			return e
 		}
 		return tx.Update(qref, []firestore.Update{{Path: "mutationLock", Value: firestore.Delete}})
-	})
+	}); err != nil {
+		return err
+	}
+	return s.recomputeQuestionIndexable(ctx, qref)
 }

@@ -219,6 +219,20 @@ func TestFreeformDuplicateUsesAlias(t *testing.T) {
 	}
 }
 
+func TestAnswerOperationBindsAttribution(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "attribution", "topic")
+	caller := Caller{UID: "author", PhoneVerified: true, DisplayName: "Visible Author"}
+	request := AnswerRequest{QuestionID: "attribution", Title: "Safer crossings", OperationID: "attribution-operation", Attribution: "anonymous"}
+	if _, err := s.Answer(context.Background(), caller, request); err != nil {
+		t.Fatal(err)
+	}
+	request.Attribution = "authored"
+	if _, err := s.Answer(context.Background(), caller, request); err != ErrConflict {
+		t.Fatalf("operation attribution was not bound: %v", err)
+	}
+}
+
 func TestCreateQuestionPendingSlugIdempotencyAndCreatorPreview(t *testing.T) {
 	s := emulatorService(t)
 	c := Caller{UID: "author", PhoneVerified: true}
@@ -312,6 +326,14 @@ func TestCustomQuestionPublicationAndPredefinedPopulation(t *testing.T) {
 	if e = s.SetQuestionStatus(context.Background(), custom.Question.ID, StatusPublished); e != nil {
 		t.Fatal(e)
 	}
+	customDoc, e := s.root().Collection("questions").Doc(custom.Question.ID).Get(context.Background())
+	if e != nil {
+		t.Fatal(e)
+	}
+	var customStored Question
+	if e = customDoc.DataTo(&customStored); e != nil || customStored.Indexable {
+		t.Fatalf("thin custom question became indexable: %+v err=%v", customStored, e)
+	}
 	published, e := s.Question(context.Background(), custom.Question.ID, "")
 	if e != nil || len(published.Issues) != 2 {
 		t.Fatalf("published issues=%d err=%v", len(published.Issues), e)
@@ -329,6 +351,48 @@ func TestCustomQuestionPublicationAndPredefinedPopulation(t *testing.T) {
 	q, e := s.Question(context.Background(), pre.Question.ID, "")
 	if e != nil || len(q.Issues) != 2 || q.Issues[0].TargetType != "country" {
 		t.Fatalf("country choices=%+v err=%v", q.Issues, e)
+	}
+}
+
+func TestQuestionIndexabilityTracksPublishedIssueThreshold(t *testing.T) {
+	s := emulatorService(t)
+	qref := s.root().Collection("questions").Doc("index-threshold")
+	if _, err := qref.Set(context.Background(), Question{ID: qref.ID, Status: StatusPending, Publication: StatusPending, ChoiceSource: ChoiceSource{Kind: "free"}}); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"one", "two", "three", "four", "five"} {
+		if _, err := qref.Collection("issues").Doc(id).Set(context.Background(), Issue{ID: id, Title: id, Status: StatusPublished}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := s.SetQuestionStatus(context.Background(), qref.ID, StatusPublished); err != nil {
+		t.Fatal(err)
+	}
+	read := func() Question {
+		doc, err := qref.Get(context.Background())
+		if err != nil {
+			t.Fatal(err)
+		}
+		var question Question
+		if err = doc.DataTo(&question); err != nil {
+			t.Fatal(err)
+		}
+		return question
+	}
+	if question := read(); !question.Indexable || question.Status != StatusPublished {
+		t.Fatalf("substantive published question = %+v", question)
+	}
+	if err := s.SetIssueStatus(context.Background(), qref.ID, "five", "hidden"); err != nil {
+		t.Fatal(err)
+	}
+	if question := read(); question.Indexable || question.Status != StatusPublished {
+		t.Fatalf("thin published question = %+v", question)
+	}
+	if err := s.SetIssueStatus(context.Background(), qref.ID, "five", StatusPublished); err != nil {
+		t.Fatal(err)
+	}
+	if question := read(); !question.Indexable {
+		t.Fatalf("restored substantive question = %+v", question)
 	}
 }
 

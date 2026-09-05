@@ -19,7 +19,13 @@ import (
 
 func isNotFound(err error) bool { return status.Code(err) == codes.NotFound }
 
-var supportedLanguages = map[string]bool{"en": true, "ru": true, "uk": true, "pl": true, "de": true, "fr": true, "es": true, "it": true, "pt": true, "nl": true, "ga": true}
+var supportedLanguages = func() map[string]bool {
+	result := make(map[string]bool)
+	for _, language := range translations.CanonicalSupportedLanguages() {
+		result[language] = true
+	}
+	return result
+}()
 
 func normalizeLanguage(v string) (string, error) {
 	v = strings.ToLower(strings.TrimSpace(v))
@@ -392,7 +398,7 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 			return result, fmt.Errorf("%w: %v", ErrValidation, e)
 		}
 	}
-	raw := req.AnswerKind + "\x00" + req.QuestionID + "\x00" + req.IssueID + "\x00" + norm + "\x00" + language
+	raw := req.AnswerKind + "\x00" + req.QuestionID + "\x00" + req.IssueID + "\x00" + norm + "\x00" + language + "\x00" + req.Attribution
 	sum := sha256.Sum256([]byte(raw))
 	ph := hex.EncodeToString(sum[:])
 	now := s.now().UTC()
