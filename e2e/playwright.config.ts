@@ -1,9 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
-import { workspaceRoot } from '@nx/devkit';
 
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
+// An explicit BASE_URL targets an already running/deployed application. The
+// default target owns its local server so `nx e2e e2e` is self-contained in CI.
+const externalBaseURL = process.env['BASE_URL'];
+const baseURL = externalBaseURL || 'http://localhost:4307';
 
 /**
  * Read environment variables from file.
@@ -16,18 +17,21 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './src' }),
+  webServer: externalBaseURL
+    ? undefined
+    : {
+        command:
+          './node_modules/.bin/nx serve in1app --host 127.0.0.1 --port 4307',
+        cwd: '..',
+        url: baseURL,
+        reuseExistingServer: !process.env['CI'],
+        timeout: 120_000,
+      },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-  },
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'pnpm exec nx run in1app:serve',
-    url: 'http://localhost:4200',
-    reuseExistingServer: true,
-    cwd: workspaceRoot,
   },
   projects: [
     {

@@ -1,0 +1,849 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const board = [
+  {
+    rank: 1,
+    title: "Deploys take 40 minutes — nobody ships on a Friday",
+    votes: 14,
+    top: true,
+  },
+  {
+    rank: 2,
+    title: "On-call is quietly burning out the senior engineers",
+    votes: 9,
+    top: false,
+  },
+  {
+    rank: 3,
+    title: "Every project waits a week on spec sign-off",
+    votes: 6,
+    top: false,
+  },
+];
+
+const steps = [
+  {
+    icon: "🎯",
+    title: "Raise your one issue",
+    text: "People can record multiple issues and nominate one personal #1 for the organisation. Focus comes from choosing a priority, not deleting the backlog.",
+  },
+  {
+    icon: "🗳️",
+    title: "Scarce votes decide",
+    text: "One support vote by default, configurable from one to seven across the organisation. Support can move as priorities change, including support for your own nominated issue.",
+  },
+  {
+    icon: "📈",
+    title: "The #1 rises to the top",
+    text: "The highest-voted issue is visible to the whole team — and escalates sub-team → team → org, so leadership sees the real #1, not a curated one.",
+  },
+];
+
+// Launch pricing — founder-approved 2026-07-10 (backstage:
+// spec/ideas/seeds/sneat-team-vs-sportius.md § Pricing — APPROVED).
+// IssueNumber.one is part of the sneat.team suite: one subscription covers
+// Sprints & Retros, standups, Moodometer and IssueNumber.One. No checkout
+// yet — every CTA joins the waitlist with a `plan` field. Keep the numbers
+// in sync with the sneat.team landing (sneat.team-website).
+const plans = [
+  {
+    id: "free",
+    name: "Free",
+    price: "$0",
+    priceNote: "free forever",
+    points: [
+      "1 team, up to 5 members",
+      "30-day history",
+      "Public boards — free forever",
+      "The whole sneat.team suite included",
+    ],
+    cta: "Join the waitlist",
+  },
+  {
+    id: "team",
+    name: "Team",
+    price: "$9/mo",
+    priceNote: "or $90/yr — 2 months free",
+    points: [
+      "1 team, no member cap",
+      "Full history",
+      "IssueNumber.One + Sprints & Retros, standups, Moodometer",
+    ],
+    cta: "Join the waitlist — launch pricing locked in",
+  },
+  {
+    id: "lifetime",
+    name: "Team Lifetime",
+    badge: "Launch offer — first 100 teams",
+    price: "$299",
+    priceNote: "one-time · then $499",
+    points: [
+      "Everything in Team, forever",
+      "One payment, no subscription",
+      "Only the first 100 teams pay $299",
+    ],
+    cta: "Reserve your lifetime spot",
+    featured: true,
+  },
+  {
+    id: "company",
+    name: "Company",
+    price: "$99/mo",
+    priceNote: "or $999/yr",
+    points: [
+      "Up to 15 teams",
+      "3-level hierarchy: organization → departments → teams",
+      "Everything in Team, for every team",
+    ],
+    cta: "Join the waitlist",
+  },
+  {
+    id: "corporate",
+    name: "Corporate",
+    price: "from $10K/yr",
+    priceNote: "contact us",
+    points: [
+      "Unlimited teams, unlimited nested hierarchy",
+      "SSO",
+      "Bring-your-own GitHub storage with audit",
+      "AI executive summaries",
+      "Priority support",
+    ],
+    cta: "Contact us",
+  },
+];
+
+const features = [
+  {
+    icon: "🗳️",
+    title: "Scarce votes, real signal",
+    text: "A limited organisation-wide support budget makes trade-offs visible. Votes stay attached to the issue as it becomes eligible higher in the hierarchy.",
+  },
+  {
+    icon: "🕵️",
+    title: "Anonymity built in",
+    text: "Raise or vote anonymously where team policy allows. The uncomfortable-but-true issue finally has a safe way to the surface — with caps and optional fees to stop abuse.",
+  },
+  {
+    icon: "🐙",
+    title: "Your data in your GitHub",
+    text: "Keep your org's full issue history in your own GitHub repo via inGitDB — or use the IssueNumber.one cloud. Either way, the history stays your data.",
+  },
+  {
+    icon: "🤖",
+    title: "AI executive summary",
+    text: "Optional AI reads the current issue landscape and drafts the exec summary — privacy- and anonymity-preserving, and off until you deliberately turn it on.",
+  },
+];
+---
+
+<BaseLayout title="IssueNumber.one for work — what should leadership fix first?" description="Explore limited support votes and automatic issue propagation for teams and organisations. Join business early access or explore Sneat.work.">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Business early access · Explore <a href="https://sneat.work" style="color: inherit; text-decoration: underline;">Sneat.work</a></p>
+        <h1>Your org already knows its <span class="accent">#1 issue.</span></h1>
+        <p class="lede">
+          Everyone privately knows what to fix first. Nothing surfaces it upward
+          honestly. IssueNumber.one is the continuous feedback loop that makes a
+          team name its top issue, vote it up with scarce votes, and put that one
+          number in front of leadership — instead of a hundred green dashboards.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+          <a class="btn btn-secondary" href="https://sneat.work/team/?utm_source=issuenumber.one&amp;utm_medium=for-work&amp;utm_campaign=public-issues">Explore Sneat.work</a>
+        </div>
+
+        <p class="microcopy">
+          🎯 One nominated #1 per person · 🗳️ Scarce votes · 🕵️ Anonymous option
+        </p>
+      </div>
+
+      <!-- Product mock: a team's ranked board -->
+      <aside class="board" aria-label="Example: a team's top issues">
+        <div class="board-head">
+          <span class="board-team">Example engineering team</span>
+          <span class="pill">Illustrative example</span>
+        </div>
+        <ul class="board-list">
+          {board.map((i) => (
+            <li class={i.top ? "board-item top" : "board-item"}>
+              <span class="rank">{i.rank}</span>
+              <span class="issue-title">{i.title}</span>
+              <span class="votes"><span class="chev" aria-hidden="true">▲</span>{i.votes}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="board-foot">
+          <span>Example budget remaining</span>
+          <span class="budget"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span> 2 of 3</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- The problem -->
+  <section id="problem" class="section">
+    <div class="container">
+      <div class="text-center section-head">
+        <p class="eyebrow">The problem</p>
+        <h2>Status reports bury the lede</h2>
+        <p>
+          The report that travels upward is all green. The issue everyone talks
+          about at lunch never makes the slide. So the org optimizes the metrics
+          it can see and quietly lives with the problem it can't say out loud.
+        </p>
+      </div>
+
+      <div class="grid grid-2 problem-cards">
+        <div class="problem-card muted-card">
+          <p class="card-label">The weekly status report</p>
+          <ul class="status-list">
+            <li>✅ Roadmap on track</li>
+            <li>✅ Velocity within target</li>
+            <li>✅ Incidents down 12%</li>
+            <li>✅ Hiring plan green</li>
+          </ul>
+          <p class="card-foot">Everything is fine. Nothing is fixed.</p>
+        </div>
+
+        <div class="problem-card real-card">
+          <p class="card-label">What everyone actually knows</p>
+          <p class="real-issue">
+            “Deploys take 40 minutes, so we stop shipping by Thursday — and
+            we've all just... learned to live with it.”
+          </p>
+          <p class="card-foot">The #1 issue. Never on the slide.</p>
+        </div>
+      </div>
+
+      <p class="origin text-center">
+        Born from 25 years inside organizations the size of Dell and Bank of
+        America: everyone privately knew the number-one problem — and no status
+        report ever said it out loud. IssueNumber.one exists to change that.
+      </p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="section soft">
+    <div class="container">
+      <div class="text-center section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>One issue in, one clear priority out</h2>
+      </div>
+      <div class="grid grid-3">
+        {steps.map((s, idx) => (
+          <div class="step">
+            <span class="step-num" aria-hidden="true">{idx + 1}</span>
+            <span class="step-icon" aria-hidden="true">{s.icon}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="text-center section-head">
+        <p class="eyebrow">Why IssueNumber.one</p>
+        <h2>Designed so the truth can't stay buried</h2>
+      </div>
+      <div class="grid grid-2 features">
+        {features.map((f) => (
+          <div class="feature-tile">
+            <span class="feature-icon" aria-hidden="true">{f.icon}</span>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Visibility band -->
+  <section id="visibility" class="section soft">
+    <div class="container text-center band">
+      <p class="eyebrow">One number, not a hundred dashboards</p>
+      <h2>The #1 issue, visible all the way up</h2>
+      <p class="band-text">
+        Every team has a current #1 — and it's the only issue other teams see.
+        As support grows it escalates sub-team → team → org, so leadership stops
+        guessing from dashboards and reads the one thing the organization would
+        fix first. Ask your org its #1 issue, and the answer is already there.
+      </p>
+      <a class="btn btn-primary" href="#waitlist">Get early access</a>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="text-center section-head">
+        <p class="eyebrow">Launch pricing</p>
+        <h2>One subscription, the whole sneat.team suite</h2>
+        <p>
+          IssueNumber.one is part of the
+          <a href="https://sneat.team" target="_blank" rel="noopener"
+            >sneat.team</a
+          > rituals suite — buying it includes Sprints &amp; Retros, daily
+          standups and Moodometer too. The suite is rolling out now; checkout
+          isn't open yet, so joining the waitlist locks in launch pricing for
+          early access.
+        </p>
+      </div>
+
+      <div class="plans">
+        {plans.map((p) => (
+          <article class={p.featured ? "plan featured" : "plan"}>
+            {p.badge && <p class="plan-badge">{p.badge}</p>}
+            <h3>{p.name}</h3>
+            <p class="plan-price">{p.price}</p>
+            <p class="plan-price-note">{p.priceNote}</p>
+            <ul class="plan-points">
+              {p.points.map((pt) => (
+                <li>{pt}</li>
+              ))}
+            </ul>
+            <a
+              class={p.featured ? "btn btn-primary plan-cta" : "btn btn-secondary plan-cta"}
+              href="#waitlist"
+              data-plan={p.id}
+              data-plan-name={p.name}
+            >
+              {p.cta}
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <p class="pricing-soul text-center">
+        Scarce votes and anonymity are in every plan — including Free. They're
+        the product, not an upsell.
+      </p>
+    </div>
+  </section>
+
+  <!-- Waitlist -->
+  <section id="waitlist" class="section soft">
+    <div class="container text-center waitlist">
+      <p class="eyebrow">Early access</p>
+      <h2>Ask your org what its #1 issue is</h2>
+      <p>
+        IssueNumber.one is opening to a first set of teams. Leave your email and
+        we'll invite you as we bring organizations on board.
+      </p>
+      <p class="pricing-note">
+        <a href="#pricing">See launch pricing</a> &mdash; one subscription
+        covers the whole sneat.team suite, and there's a Free plan.
+      </p>
+      <p class="pricing-note">
+        Coming later: public boards &mdash; <em>Dublin&nbsp;&middot; Issue&nbsp;#1</em>, <em>AI&nbsp;agents&nbsp;&middot; Issue&nbsp;#1</em> &mdash; the top issue of any community, out in the open.
+      </p>
+      <p class="plan-chip" id="waitlist-plan" hidden>
+        Selected plan: <strong id="waitlist-plan-name"></strong>
+      </p>
+
+      <form id="waitlist-form" class="waitlist-form" novalidate>
+        <input type="hidden" name="plan" value="" />
+        <label class="visually-hidden" for="waitlist-email">Work email</label>
+        <input
+          id="waitlist-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="you@yourcompany.com"
+        />
+        <button class="btn btn-primary" type="submit">Join the waitlist</button>
+      </form>
+      <p class="form-note" id="waitlist-note">
+        No spam — one email when your invite is ready.
+      </p>
+      <p class="form-thanks" id="waitlist-thanks" hidden>
+        🎉 You're on the list — we'll be in touch when your invite is ready.
+      </p>
+      <p class="form-error" id="waitlist-error" hidden>
+        That didn't work — please check the email address and try again.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById("waitlist-form") as HTMLFormElement;
+  const note = document.getElementById("waitlist-note")!;
+  const thanks = document.getElementById("waitlist-thanks")!;
+  const error = document.getElementById("waitlist-error")!;
+  const planInput = form.elements.namedItem("plan") as HTMLInputElement;
+  const planChip = document.getElementById("waitlist-plan")!;
+  const planName = document.getElementById("waitlist-plan-name")!;
+
+  // Pricing-card CTAs: remember the chosen plan, show it above the form.
+  document.querySelectorAll<HTMLAnchorElement>("[data-plan]").forEach((a) => {
+    a.addEventListener("click", () => {
+      planInput.value = a.dataset.plan || "";
+      planName.textContent = a.dataset.planName || "";
+      planChip.hidden = !planInput.value;
+    });
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    error.hidden = true;
+    const email = (
+      form.elements.namedItem("email") as HTMLInputElement
+    ).value.trim();
+    const button = form.querySelector("button")!;
+    button.disabled = true;
+    try {
+      const res = await fetch("/waitlist", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          email,
+          source: "landing",
+          ...(planInput.value ? { plan: planInput.value } : {}),
+        }),
+      });
+      const data = await res.json().catch(() => ({ ok: false }));
+      if (res.ok && data.ok) {
+        form.hidden = true;
+        note.hidden = true;
+        thanks.hidden = false;
+      } else {
+        error.hidden = false;
+      }
+    } catch {
+      error.hidden = false;
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  /* Hero */
+  .hero {
+    background: linear-gradient(
+      135deg,
+      var(--as-hero-1) 0%,
+      var(--as-hero-2) 100%
+    );
+    padding-block: var(--space-5);
+  }
+  .hero-grid {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+  }
+  @media (min-width: 940px) {
+    .hero-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5.6vw, 3.5rem);
+  }
+  .hero .accent {
+    color: var(--color-accent);
+  }
+  .lede {
+    font-size: 1.12rem;
+    max-width: 54ch;
+    color: var(--as-ink);
+    opacity: 0.84;
+  }
+  .cta-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+  .microcopy {
+    margin-top: var(--space-2);
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Hero board mock */
+  .board {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--as-radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-3);
+  }
+  .board-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+  }
+  .board-team {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+  .board-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .board-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-bg);
+  }
+  .board-item.top {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
+  }
+  .rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 8px;
+    background: var(--as-soft);
+    color: var(--color-text-muted);
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  .board-item.top .rank {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .issue-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+  .votes {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+  .board-item.top .votes {
+    color: var(--color-accent-strong);
+  }
+  .chev {
+    font-size: 0.7rem;
+    color: var(--color-accent);
+  }
+  .board-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  .budget {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-accent);
+  }
+  .dot.on {
+    background: var(--color-accent);
+  }
+
+  /* Problem */
+  .problem-cards {
+    max-width: 900px;
+    margin-inline: auto;
+    align-items: stretch;
+  }
+  .problem-card {
+    border-radius: var(--as-radius);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+  }
+  .card-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-2);
+  }
+  .muted-card {
+    background: var(--color-surface);
+  }
+  .status-list {
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .real-card {
+    background: var(--as-ink);
+    border-color: var(--as-ink);
+  }
+  .real-card .card-label {
+    color: var(--as-violet);
+  }
+  .real-issue {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: var(--space-2);
+  }
+  .card-foot {
+    font-size: 0.85rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  .muted-card .card-foot {
+    color: var(--color-text-muted);
+  }
+  .real-card .card-foot {
+    color: var(--as-violet);
+  }
+  .origin {
+    max-width: 62ch;
+    margin: var(--space-4) auto 0;
+    font-size: 1.02rem;
+    color: var(--color-text);
+  }
+
+  /* Steps */
+  .step {
+    position: relative;
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--as-radius);
+    padding: var(--space-3) var(--space-2);
+  }
+  .step-num {
+    position: absolute;
+    top: -0.9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-icon {
+    font-size: 2rem;
+    display: block;
+    margin-top: 0.6rem;
+  }
+  .step h3 {
+    font-size: 1.1rem;
+    margin-top: 0.4rem;
+  }
+  .step p {
+    margin-bottom: 0;
+  }
+
+  /* Features */
+  .features {
+    max-width: 900px;
+    margin-inline: auto;
+    align-items: stretch;
+  }
+  .feature-tile {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--as-radius);
+    padding: var(--space-3);
+    box-shadow: var(--shadow);
+  }
+  .feature-icon {
+    font-size: 1.8rem;
+  }
+  .feature-tile h3 {
+    font-size: 1.05rem;
+    margin: 0.4rem 0 0.3rem;
+  }
+  .feature-tile p {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  /* Visibility band */
+  .band {
+    max-width: 720px;
+  }
+  .band-text {
+    margin-inline: auto;
+    max-width: 60ch;
+  }
+  .band .btn {
+    margin-top: var(--space-1);
+  }
+
+  /* Pricing */
+  .plans {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    align-items: stretch;
+    margin-top: var(--space-3);
+  }
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--as-radius);
+    padding: var(--space-3) var(--space-2) var(--space-2);
+    box-shadow: var(--shadow);
+  }
+  .plan.featured {
+    border: 2px solid var(--as-gold);
+    background: color-mix(in srgb, var(--as-gold) 6%, var(--color-surface));
+  }
+  .plan-badge {
+    position: absolute;
+    top: -0.85rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: var(--as-gold);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--as-radius-pill);
+    margin: 0;
+  }
+  .plan h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.3rem;
+  }
+  .plan-price {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.15;
+  }
+  .plan-price-note {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0.15rem 0 var(--space-2);
+  }
+  .plan-points {
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+  }
+  .plan-points li::before {
+    content: "✓ ";
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .plan-cta {
+    margin-top: auto;
+    font-size: 0.85rem;
+    padding: 0.65rem 0.9rem;
+    text-align: center;
+  }
+  .pricing-soul {
+    max-width: 640px;
+    margin: var(--space-3) auto 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  /* Waitlist */
+  .waitlist {
+    max-width: 640px;
+  }
+  .plan-chip {
+    display: inline-block;
+    margin: var(--space-1) auto 0;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--as-radius-pill);
+    background: var(--color-surface);
+    border: 1px solid var(--color-accent);
+    color: var(--color-text);
+    font-size: 0.9rem;
+  }
+  .waitlist-form {
+    display: flex;
+    gap: var(--space-1);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+  .waitlist-form input {
+    flex: 1 1 260px;
+    max-width: 340px;
+    font: inherit;
+    padding: 0.8rem 1.1rem;
+    border-radius: var(--as-radius-pill);
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+  .waitlist-form input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+  .form-note {
+    font-size: 0.85rem;
+    margin-top: var(--space-1);
+    margin-bottom: 0;
+  }
+  .form-thanks {
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--space-2);
+  }
+  .form-error {
+    color: var(--color-danger);
+    margin-top: var(--space-1);
+  }
+  .pricing-note { color: var(--in1-ink-soft, #64748b); font-size: 0.95em; margin-top: 8px; }
+</style>

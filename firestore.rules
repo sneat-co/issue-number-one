@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public projections and every mutation are served by trusted sneat-go
+    // HTTPS handlers. No client can read private choices/creator ids or write
+    // answers, counters, aliases, moderation or publication state directly.
+    match /spaces/issuenumber-public/ext/issuenumber/{document=**} {
+      allow read, write: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
