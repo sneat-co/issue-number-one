@@ -6,8 +6,8 @@ status: Conceptual
 # Feature: Public questions and primary issues
 
 > [SpecScore.**Studio**](https://specscore.studio): | [Explore](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=explore) | [Edit](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=edit) | [Ask question](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=ask) | [Request change](https://specscore.studio/app/github.com/sneat-co/issue-number-one/spec/features/public-questions?op=request-change) |
-**Status:** Conceptual
-**Source Ideas:** —
+> **Status:** Conceptual
+> **Source Ideas:** —
 
 ## Summary
 
@@ -86,23 +86,26 @@ Explain whether the question concerns government/state actions rather than inhab
 Use stable country IDs; display-name/translation changes do not create new identities.
 The data model can add answerTargetType and targetRef to a distinct question family;
 its aggregation must not be mixed with issue-priority rankings. Scope hierarchy and
-answer target taxonomy are independent. This extension is a product direction for a
-separate Feature, not permission to turn the current MVP into an arbitrary poll builder.
+answer target taxonomy are independent. The seed demonstrates this axis with the
+neutral question “Which country's government actions cause you the most concern
+globally?” backed by canonical country entities. Broader axis analysis remains a
+separate Feature and is not permission to turn the current MVP into an arbitrary
+poll builder.
 
 ## Firestore model
 
-| Relative path beneath extension | Meaning |
-| --- | --- |
-| `categories/{id}` | Generic template, slug, scope type, SEO and intent |
-| `concepts/{id}` | Shared issue identity, English presentation and curated aliases |
-| `questions/{id}` | Concrete scope, category and generic parent references, publication |
-| `questions/{id}/issues/{issueId}` | Contextual title/description, optional conceptId, moderation, counters |
-| `questions/{questionId}/answers/{uid}` | Private current questionId/issueId, revision, createdAt and updatedAt |
-| `personalAnswers/{uid}` | One overall personal top referring to a current slot choice |
-| `verification/{uid}` | Private trusted payment eligibility; phone comes from identity authority |
-| `questions/{id}/aliases/{normalisedHash}` | Trusted normalized text to issue identity mapping |
-| `operations/{operationId}` | Private answer idempotency receipt bound to actor and payload |
-| `questionOperations/{operationId}` | Private question-creation idempotency receipt |
+| Relative path beneath extension           | Meaning                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------ |
+| `categories/{id}`                         | Generic template, slug, scope type, SEO and intent                       |
+| `concepts/{id}`                           | Shared issue identity, English presentation and curated aliases          |
+| `questions/{id}`                          | Concrete scope, category and generic parent references, publication      |
+| `questions/{id}/issues/{issueId}`         | Contextual title/description, optional conceptId, moderation, counters   |
+| `questions/{questionId}/answers/{uid}`    | Private current questionId/issueId, revision, createdAt and updatedAt    |
+| `personalAnswers/{uid}`                   | One overall personal top referring to a current slot choice              |
+| `verification/{uid}`                      | Private trusted payment eligibility; phone comes from identity authority |
+| `questions/{id}/aliases/{normalisedHash}` | Trusted normalized text to issue identity mapping                        |
+| `operations/{operationId}`                | Private answer idempotency receipt bound to actor and payload            |
+| `questionOperations/{operationId}`        | Private question-creation idempotency receipt                            |
 
 IDs are immutable; editorial slugs are routes, not database authority. A concept can
 occur in many question memberships. New free-form candidates have no automatically

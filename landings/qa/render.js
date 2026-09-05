@@ -63,7 +63,6 @@ function basePage({
   indexable = true,
   items = [],
   language = 'en',
-  availableLanguages = [],
 }) {
   const languageQuery =
     language === 'en' ? '' : `lang=${encodeURIComponent(language)}`;

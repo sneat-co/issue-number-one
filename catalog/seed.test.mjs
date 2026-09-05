@@ -69,7 +69,19 @@ test('question references resolve and every category has a concrete question', (
   for (const question of seed.questions) {
     assert.ok(categoryIds.has(question.categoryId), question.id);
     representedCategories.add(question.categoryId);
-    assert.ok(question.conceptIds.length >= 5, question.id);
+    if (question.choiceSource?.kind === 'predefined') {
+      assert.ok(
+        ['country', 'city', 'currency'].includes(
+          question.choiceSource.entityType,
+        ),
+        question.id,
+      );
+      assert.equal(question.answerTargetType, question.choiceSource.entityType);
+      assert.equal(question.allowSuggestions, false);
+      assert.equal(question.conceptIds.length, 0);
+    } else {
+      assert.ok(question.conceptIds.length >= 5, question.id);
+    }
     for (const conceptId of question.conceptIds) {
       assert.ok(conceptIds.has(conceptId), `${question.id}: ${conceptId}`);
     }
@@ -86,13 +98,29 @@ test('question references resolve and every category has a concrete question', (
   assert.deepEqual(representedCategories, categoryIds);
 });
 
+test('country-axis example uses canonical entities rather than fake issue concepts', () => {
+  const question = seed.questions.find(
+    ({ id }) => id === 'world-country-actions',
+  );
+  assert.equal(question.choiceSource.kind, 'predefined');
+  assert.equal(question.choiceSource.entityType, 'country');
+  assert.equal(question.answerTargetType, 'country');
+  assert.deepEqual(question.conceptIds, []);
+  assert.match(question.description, /government/);
+  assert.match(question.description, /not on the identity of its people/);
+});
+
 test('required country, county, and city hierarchy keeps separate answer slots', () => {
-  const questions = new Map(seed.questions.map((question) => [question.id, question]));
+  const questions = new Map(
+    seed.questions.map((question) => [question.id, question]),
+  );
   for (const countryId of ['IE', 'GB', 'US', 'DE', 'FR', 'PL']) {
     assert.ok(
       seed.questions.some(
         ({ categoryId, scope }) =>
-          categoryId === 'country' && scope.type === 'country' && scope.id === countryId,
+          categoryId === 'country' &&
+          scope.type === 'country' &&
+          scope.id === countryId,
       ),
       countryId,
     );

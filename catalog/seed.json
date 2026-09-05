@@ -493,1100 +493,770 @@
       "slug": "cost-of-living",
       "title": "Cost of living",
       "description": "The rising cost of essentials relative to household incomes.",
-      "aliases": [
-        "living costs",
-        "rising prices"
-      ]
+      "aliases": ["living costs", "rising prices"]
     },
     {
       "id": "housing-affordability",
       "slug": "housing-affordability",
       "title": "Housing affordability",
       "description": "The ability to rent or buy a suitable home at a sustainable cost.",
-      "aliases": [
-        "affordable housing",
-        "housing costs"
-      ]
+      "aliases": ["affordable housing", "housing costs"]
     },
     {
       "id": "healthcare-access",
       "slug": "healthcare-access",
       "title": "Healthcare access",
       "description": "Timely access to appropriate medical care.",
-      "aliases": [
-        "access to healthcare",
-        "medical access"
-      ]
+      "aliases": ["access to healthcare", "medical access"]
     },
     {
       "id": "jobs-opportunity",
       "slug": "jobs-opportunity",
       "title": "Jobs and economic opportunity",
       "description": "Availability of secure work and routes to improve living standards.",
-      "aliases": [
-        "job opportunities",
-        "economic opportunity"
-      ]
+      "aliases": ["job opportunities", "economic opportunity"]
     },
     {
       "id": "crime-safety",
       "slug": "crime-safety",
       "title": "Crime and safety",
       "description": "Personal and community safety and effective responses to crime.",
-      "aliases": [
-        "public safety",
-        "crime"
-      ]
+      "aliases": ["public safety", "crime"]
     },
     {
       "id": "public-transport-reliability",
       "slug": "public-transport-reliability",
       "title": "Reliable public transport",
       "description": "Frequent services that arrive and connect as scheduled.",
-      "aliases": [
-        "transport reliability",
-        "reliable buses and trains"
-      ]
+      "aliases": ["transport reliability", "reliable buses and trains"]
     },
     {
       "id": "local-housing-supply",
       "slug": "local-housing-supply",
       "title": "Local housing supply",
       "description": "Enough suitable homes in the places residents need them.",
-      "aliases": [
-        "housing supply",
-        "more local homes"
-      ]
+      "aliases": ["housing supply", "more local homes"]
     },
     {
       "id": "street-safety",
       "slug": "street-safety",
       "title": "Safe streets",
       "description": "Streets where people can walk, cycle and travel without avoidable danger.",
-      "aliases": [
-        "road safety",
-        "safer streets"
-      ]
+      "aliases": ["road safety", "safer streets"]
     },
     {
       "id": "traffic-congestion",
       "slug": "traffic-congestion",
       "title": "Traffic congestion",
       "description": "Delays and disruption caused by overloaded roads.",
-      "aliases": [
-        "traffic",
-        "road congestion"
-      ]
+      "aliases": ["traffic", "road congestion"]
     },
     {
       "id": "clean-public-spaces",
       "slug": "clean-public-spaces",
       "title": "Clean public spaces",
       "description": "Well-maintained streets, parks and shared places.",
-      "aliases": [
-        "street cleanliness",
-        "clean streets"
-      ]
+      "aliases": ["street cleanliness", "clean streets"]
     },
     {
       "id": "community-safety",
       "slug": "community-safety",
       "title": "Community safety",
       "description": "A shared sense of security in local daily life.",
-      "aliases": [
-        "neighbourhood safety",
-        "local safety"
-      ]
+      "aliases": ["neighbourhood safety", "local safety"]
     },
     {
       "id": "social-isolation",
       "slug": "social-isolation",
       "title": "Social isolation",
       "description": "Lack of meaningful connection and opportunities to belong.",
-      "aliases": [
-        "loneliness",
-        "community isolation"
-      ]
+      "aliases": ["loneliness", "community isolation"]
     },
     {
       "id": "youth-activities",
       "slug": "youth-activities",
       "title": "Activities for young people",
       "description": "Accessible, positive activities for children and teenagers.",
-      "aliases": [
-        "youth facilities",
-        "things for young people to do"
-      ]
+      "aliases": ["youth facilities", "things for young people to do"]
     },
     {
       "id": "accessible-services",
       "slug": "accessible-services",
       "title": "Accessible local services",
       "description": "Local support that people of different needs can reach and use.",
-      "aliases": [
-        "service accessibility",
-        "inclusive services"
-      ]
+      "aliases": ["service accessibility", "inclusive services"]
     },
     {
       "id": "community-spaces",
       "slug": "community-spaces",
       "title": "Community spaces",
       "description": "Welcoming shared places for events, support and connection.",
-      "aliases": [
-        "community centres",
-        "shared local spaces"
-      ]
+      "aliases": ["community centres", "shared local spaces"]
     },
     {
       "id": "workload-burnout",
       "slug": "workload-burnout",
       "title": "Workload and burnout",
       "description": "Unsustainable demands that damage health and performance.",
-      "aliases": [
-        "burnout",
-        "excessive workload"
-      ]
+      "aliases": ["burnout", "excessive workload"]
     },
     {
       "id": "pay-fairness",
       "slug": "pay-fairness",
       "title": "Fair pay",
       "description": "Compensation that is equitable and reflects contribution.",
-      "aliases": [
-        "pay fairness",
-        "fair compensation"
-      ]
+      "aliases": ["pay fairness", "fair compensation"]
     },
     {
       "id": "career-progression",
       "slug": "career-progression",
       "title": "Career progression",
       "description": "Clear and fair opportunities to learn and advance.",
-      "aliases": [
-        "career growth",
-        "promotion opportunities"
-      ]
+      "aliases": ["career growth", "promotion opportunities"]
     },
     {
       "id": "management-communication",
       "slug": "management-communication",
       "title": "Management communication",
       "description": "Clear, timely and honest communication from leaders.",
-      "aliases": [
-        "leadership communication",
-        "communication from management"
-      ]
+      "aliases": ["leadership communication", "communication from management"]
     },
     {
       "id": "flexible-working",
       "slug": "flexible-working",
       "title": "Flexible working",
       "description": "Practical choice over when and where work is done.",
-      "aliases": [
-        "work flexibility",
-        "flexible work"
-      ]
+      "aliases": ["work flexibility", "flexible work"]
     },
     {
       "id": "strategic-clarity",
       "slug": "strategic-clarity",
       "title": "Strategic clarity",
       "description": "A shared understanding of direction and priorities.",
-      "aliases": [
-        "clear strategy",
-        "organisational direction"
-      ]
+      "aliases": ["clear strategy", "organisational direction"]
     },
     {
       "id": "cross-team-coordination",
       "slug": "cross-team-coordination",
       "title": "Cross-team coordination",
       "description": "Teams planning and delivering together without avoidable friction.",
-      "aliases": [
-        "team coordination",
-        "cross-functional alignment"
-      ]
+      "aliases": ["team coordination", "cross-functional alignment"]
     },
     {
       "id": "decision-speed",
       "slug": "decision-speed",
       "title": "Decision speed",
       "description": "Making sound decisions without costly organisational delay.",
-      "aliases": [
-        "slow decisions",
-        "decision making speed"
-      ]
+      "aliases": ["slow decisions", "decision making speed"]
     },
     {
       "id": "customer-focus",
       "slug": "customer-focus",
       "title": "Customer focus",
       "description": "Keeping real customer needs central to decisions.",
-      "aliases": [
-        "customer centricity",
-        "focus on customers"
-      ]
+      "aliases": ["customer centricity", "focus on customers"]
     },
     {
       "id": "operational-efficiency",
       "slug": "operational-efficiency",
       "title": "Operational efficiency",
       "description": "Removing waste and improving dependable delivery.",
-      "aliases": [
-        "efficient operations",
-        "process efficiency"
-      ]
+      "aliases": ["efficient operations", "process efficiency"]
     },
     {
       "id": "unclear-priorities",
       "slug": "unclear-priorities",
       "title": "Unclear priorities",
       "description": "Competing work without a shared order of importance.",
-      "aliases": [
-        "priority confusion",
-        "too many priorities"
-      ]
+      "aliases": ["priority confusion", "too many priorities"]
     },
     {
       "id": "too-many-meetings",
       "slug": "too-many-meetings",
       "title": "Too many meetings",
       "description": "Meeting load that crowds out focused work.",
-      "aliases": [
-        "meeting overload",
-        "excessive meetings"
-      ]
+      "aliases": ["meeting overload", "excessive meetings"]
     },
     {
       "id": "ownership-gaps",
       "slug": "ownership-gaps",
       "title": "Ownership gaps",
       "description": "Important responsibilities without a clear accountable owner.",
-      "aliases": [
-        "unclear ownership",
-        "responsibility gaps"
-      ]
+      "aliases": ["unclear ownership", "responsibility gaps"]
     },
     {
       "id": "slow-feedback",
       "slug": "slow-feedback",
       "title": "Slow feedback",
       "description": "Delays in review, learning and decisions that block progress.",
-      "aliases": [
-        "feedback delays",
-        "slow reviews"
-      ]
+      "aliases": ["feedback delays", "slow reviews"]
     },
     {
       "id": "tooling-friction",
       "slug": "tooling-friction",
       "title": "Tooling friction",
       "description": "Tools and workflows that make routine work harder.",
-      "aliases": [
-        "poor tooling",
-        "developer friction"
-      ]
+      "aliases": ["poor tooling", "developer friction"]
     },
     {
       "id": "skills-shortage",
       "slug": "skills-shortage",
       "title": "Skills shortage",
       "description": "Insufficient access to people with needed capabilities.",
-      "aliases": [
-        "talent shortage",
-        "skills gap"
-      ]
+      "aliases": ["talent shortage", "skills gap"]
     },
     {
       "id": "regulatory-complexity",
       "slug": "regulatory-complexity",
       "title": "Regulatory complexity",
       "description": "Rules whose complexity raises cost and uncertainty.",
-      "aliases": [
-        "regulatory burden",
-        "complex regulation"
-      ]
+      "aliases": ["regulatory burden", "complex regulation"]
     },
     {
       "id": "supply-chain-resilience",
       "slug": "supply-chain-resilience",
       "title": "Supply chain resilience",
       "description": "Reliable access to inputs despite disruption.",
-      "aliases": [
-        "supply chain risk",
-        "resilient supply chains"
-      ]
+      "aliases": ["supply chain risk", "resilient supply chains"]
     },
     {
       "id": "digital-transformation",
       "slug": "digital-transformation",
       "title": "Digital transformation",
       "description": "Modernising services and operations with effective technology.",
-      "aliases": [
-        "digitisation",
-        "technology modernisation"
-      ]
+      "aliases": ["digitisation", "technology modernisation"]
     },
     {
       "id": "market-competition",
       "slug": "market-competition",
       "title": "Market competition",
       "description": "Competing fairly while markets and customer expectations change.",
-      "aliases": [
-        "competitive pressure",
-        "competition"
-      ]
+      "aliases": ["competitive pressure", "competition"]
     },
     {
       "id": "professional-development",
       "slug": "professional-development",
       "title": "Professional development",
       "description": "Access to relevant learning and skill growth.",
-      "aliases": [
-        "continuing development",
-        "skills development"
-      ]
+      "aliases": ["continuing development", "skills development"]
     },
     {
       "id": "work-life-balance",
       "slug": "work-life-balance",
       "title": "Work-life balance",
       "description": "A sustainable fit between work and the rest of life.",
-      "aliases": [
-        "life balance",
-        "work and life balance"
-      ]
+      "aliases": ["life balance", "work and life balance"]
     },
     {
       "id": "recognition-respect",
       "slug": "recognition-respect",
       "title": "Recognition and respect",
       "description": "Fair acknowledgement of professional contribution and expertise.",
-      "aliases": [
-        "professional respect",
-        "recognition"
-      ]
+      "aliases": ["professional respect", "recognition"]
     },
     {
       "id": "ethical-pressure",
       "slug": "ethical-pressure",
       "title": "Ethical pressure",
       "description": "Pressure to act against professional standards or judgement.",
-      "aliases": [
-        "ethical concerns",
-        "professional ethics pressure"
-      ]
+      "aliases": ["ethical concerns", "professional ethics pressure"]
     },
     {
       "id": "job-security",
       "slug": "job-security",
       "title": "Job security",
       "description": "Confidence that suitable employment will remain available.",
-      "aliases": [
-        "employment security",
-        "secure jobs"
-      ]
+      "aliases": ["employment security", "secure jobs"]
     },
     {
       "id": "access-to-finance",
       "slug": "access-to-finance",
       "title": "Access to finance",
       "description": "Obtaining appropriate funding to start or grow a business.",
-      "aliases": [
-        "business funding",
-        "access to capital"
-      ]
+      "aliases": ["business funding", "access to capital"]
     },
     {
       "id": "customer-acquisition",
       "slug": "customer-acquisition",
       "title": "Customer acquisition",
       "description": "Finding and winning customers at a sustainable cost.",
-      "aliases": [
-        "finding customers",
-        "customer growth"
-      ]
+      "aliases": ["finding customers", "customer growth"]
     },
     {
       "id": "cash-flow",
       "slug": "cash-flow",
       "title": "Cash flow",
       "description": "Maintaining enough working capital as payments and costs vary.",
-      "aliases": [
-        "business cash flow",
-        "working capital"
-      ]
+      "aliases": ["business cash flow", "working capital"]
     },
     {
       "id": "hiring-talent",
       "slug": "hiring-talent",
       "title": "Hiring talent",
       "description": "Recruiting people with the right skills and fit.",
-      "aliases": [
-        "recruitment",
-        "finding talent"
-      ]
+      "aliases": ["recruitment", "finding talent"]
     },
     {
       "id": "administrative-burden",
       "slug": "administrative-burden",
       "title": "Administrative burden",
       "description": "Time and cost spent on avoidable paperwork and processes.",
-      "aliases": [
-        "red tape",
-        "business administration"
-      ]
+      "aliases": ["red tape", "business administration"]
     },
     {
       "id": "teacher-shortages",
       "slug": "teacher-shortages",
       "title": "Teacher shortages",
       "description": "Insufficient qualified educators to meet learner needs.",
-      "aliases": [
-        "lack of teachers",
-        "teacher staffing"
-      ]
+      "aliases": ["lack of teachers", "teacher staffing"]
     },
     {
       "id": "education-costs",
       "slug": "education-costs",
       "title": "Cost of education",
       "description": "Fees and related costs that limit participation.",
-      "aliases": [
-        "education affordability",
-        "school costs"
-      ]
+      "aliases": ["education affordability", "school costs"]
     },
     {
       "id": "student-mental-health",
       "slug": "student-mental-health",
       "title": "Student mental health",
       "description": "Timely wellbeing and mental health support for learners.",
-      "aliases": [
-        "learner wellbeing",
-        "student wellbeing"
-      ]
+      "aliases": ["learner wellbeing", "student wellbeing"]
     },
     {
       "id": "class-sizes",
       "slug": "class-sizes",
       "title": "Class sizes",
       "description": "The effect of large classes on attention and learning.",
-      "aliases": [
-        "large classes",
-        "pupil teacher ratio"
-      ]
+      "aliases": ["large classes", "pupil teacher ratio"]
     },
     {
       "id": "digital-access",
       "slug": "digital-access",
       "title": "Digital access for learning",
       "description": "Reliable devices, connectivity and accessible learning tools.",
-      "aliases": [
-        "education digital divide",
-        "learning technology access"
-      ]
+      "aliases": ["education digital divide", "learning technology access"]
     },
     {
       "id": "waiting-times",
       "slug": "waiting-times",
       "title": "Healthcare waiting times",
       "description": "Delays before assessment, diagnosis or treatment.",
-      "aliases": [
-        "medical waiting lists",
-        "treatment delays"
-      ]
+      "aliases": ["medical waiting lists", "treatment delays"]
     },
     {
       "id": "primary-care-access",
       "slug": "primary-care-access",
       "title": "Primary care access",
       "description": "Timely access to general practice and community care.",
-      "aliases": [
-        "GP access",
-        "family doctor access"
-      ]
+      "aliases": ["GP access", "family doctor access"]
     },
     {
       "id": "healthcare-staffing",
       "slug": "healthcare-staffing",
       "title": "Healthcare staffing",
       "description": "Recruiting and retaining enough health professionals.",
-      "aliases": [
-        "medical staff shortages",
-        "health workforce"
-      ]
+      "aliases": ["medical staff shortages", "health workforce"]
     },
     {
       "id": "mental-health-services",
       "slug": "mental-health-services",
       "title": "Mental health services",
       "description": "Accessible, timely and appropriate mental health care.",
-      "aliases": [
-        "mental healthcare",
-        "psychological support"
-      ]
+      "aliases": ["mental healthcare", "psychological support"]
     },
     {
       "id": "affordable-treatment",
       "slug": "affordable-treatment",
       "title": "Affordable treatment",
       "description": "Healthcare costs that do not prevent people getting care.",
-      "aliases": [
-        "medical affordability",
-        "treatment costs"
-      ]
+      "aliases": ["medical affordability", "treatment costs"]
     },
     {
       "id": "rent-affordability",
       "slug": "rent-affordability",
       "title": "Rent affordability",
       "description": "Rents that households can sustain without hardship.",
-      "aliases": [
-        "affordable rent",
-        "rental costs"
-      ]
+      "aliases": ["affordable rent", "rental costs"]
     },
     {
       "id": "home-supply",
       "slug": "home-supply",
       "title": "Supply of homes",
       "description": "Enough suitable homes for changing household needs.",
-      "aliases": [
-        "housing supply",
-        "home availability"
-      ]
+      "aliases": ["housing supply", "home availability"]
     },
     {
       "id": "homelessness",
       "slug": "homelessness",
       "title": "Homelessness",
       "description": "Preventing and ending the absence of safe, stable housing.",
-      "aliases": [
-        "housing insecurity",
-        "people without homes"
-      ]
+      "aliases": ["housing insecurity", "people without homes"]
     },
     {
       "id": "tenant-security",
       "slug": "tenant-security",
       "title": "Tenant security",
       "description": "Stable tenancies with fair rights and predictable conditions.",
-      "aliases": [
-        "renter security",
-        "secure tenancies"
-      ]
+      "aliases": ["renter security", "secure tenancies"]
     },
     {
       "id": "home-energy-efficiency",
       "slug": "home-energy-efficiency",
       "title": "Home energy efficiency",
       "description": "Warm, efficient homes with manageable energy use.",
-      "aliases": [
-        "home insulation",
-        "energy efficient housing"
-      ]
+      "aliases": ["home insulation", "energy efficient housing"]
     },
     {
       "id": "everyday-expenses",
       "slug": "everyday-expenses",
       "title": "Everyday expenses",
       "description": "Managing food, energy, transport and other routine costs.",
-      "aliases": [
-        "daily costs",
-        "household expenses"
-      ]
+      "aliases": ["daily costs", "household expenses"]
     },
     {
       "id": "saving-for-home",
       "slug": "saving-for-home",
       "title": "Saving for a home",
       "description": "Building a deposit while meeting current living costs.",
-      "aliases": [
-        "home deposit",
-        "saving a deposit"
-      ]
+      "aliases": ["home deposit", "saving a deposit"]
     },
     {
       "id": "debt-repayment",
       "slug": "debt-repayment",
       "title": "Debt repayment",
       "description": "Reducing costly or persistent personal debt.",
-      "aliases": [
-        "paying off debt",
-        "personal debt"
-      ]
+      "aliases": ["paying off debt", "personal debt"]
     },
     {
       "id": "retirement-security",
       "slug": "retirement-security",
       "title": "Retirement security",
       "description": "Building reliable income for later life.",
-      "aliases": [
-        "pension security",
-        "retirement savings"
-      ]
+      "aliases": ["pension security", "retirement savings"]
     },
     {
       "id": "financial-literacy",
       "slug": "financial-literacy",
       "title": "Financial literacy",
       "description": "Understanding money choices, risks and available support.",
-      "aliases": [
-        "money education",
-        "financial education"
-      ]
+      "aliases": ["money education", "financial education"]
     },
     {
       "id": "data-privacy",
       "slug": "data-privacy",
       "title": "Data privacy",
       "description": "Keeping personal data protected and under meaningful control.",
-      "aliases": [
-        "online privacy",
-        "personal data protection"
-      ]
+      "aliases": ["online privacy", "personal data protection"]
     },
     {
       "id": "cybersecurity-threats",
       "slug": "cybersecurity-threats",
       "title": "Cybersecurity threats",
       "description": "Preventing and responding to attacks on digital systems.",
-      "aliases": [
-        "cyber threats",
-        "online security"
-      ]
+      "aliases": ["cyber threats", "online security"]
     },
     {
       "id": "ai-accountability",
       "slug": "ai-accountability",
       "title": "AI accountability",
       "description": "Ensuring automated systems are safe, explainable and accountable.",
-      "aliases": [
-        "responsible AI",
-        "AI safety and accountability"
-      ]
+      "aliases": ["responsible AI", "AI safety and accountability"]
     },
     {
       "id": "digital-inclusion",
       "slug": "digital-inclusion",
       "title": "Digital inclusion",
       "description": "Making technology usable and available to everyone.",
-      "aliases": [
-        "digital divide",
-        "inclusive technology"
-      ]
+      "aliases": ["digital divide", "inclusive technology"]
     },
     {
       "id": "platform-power",
       "slug": "platform-power",
       "title": "Platform power",
       "description": "Concentration of control in major digital platforms.",
-      "aliases": [
-        "big tech power",
-        "technology monopolies"
-      ]
+      "aliases": ["big tech power", "technology monopolies"]
     },
     {
       "id": "climate-action",
       "slug": "climate-action",
       "title": "Climate action",
       "description": "Reducing emissions and adapting to climate impacts.",
-      "aliases": [
-        "climate change",
-        "global warming action"
-      ]
+      "aliases": ["climate change", "global warming action"]
     },
     {
       "id": "biodiversity-loss",
       "slug": "biodiversity-loss",
       "title": "Biodiversity loss",
       "description": "Protecting species, habitats and resilient ecosystems.",
-      "aliases": [
-        "nature loss",
-        "species decline"
-      ]
+      "aliases": ["nature loss", "species decline"]
     },
     {
       "id": "air-pollution",
       "slug": "air-pollution",
       "title": "Air pollution",
       "description": "Reducing harmful pollutants in the air people breathe.",
-      "aliases": [
-        "air quality",
-        "dirty air"
-      ]
+      "aliases": ["air quality", "dirty air"]
     },
     {
       "id": "water-quality",
       "slug": "water-quality",
       "title": "Water quality",
       "description": "Protecting safe water and healthy rivers, lakes and seas.",
-      "aliases": [
-        "clean water",
-        "water pollution"
-      ]
+      "aliases": ["clean water", "water pollution"]
     },
     {
       "id": "waste-reduction",
       "slug": "waste-reduction",
       "title": "Waste reduction",
       "description": "Using fewer resources and keeping materials in circulation.",
-      "aliases": [
-        "reduce waste",
-        "recycling and reuse"
-      ]
+      "aliases": ["reduce waste", "recycling and reuse"]
     },
     {
       "id": "service-reliability",
       "slug": "service-reliability",
       "title": "Reliable services",
       "description": "Transport services that run consistently and on time.",
-      "aliases": [
-        "reliable transport",
-        "service punctuality"
-      ]
+      "aliases": ["reliable transport", "service punctuality"]
     },
     {
       "id": "transport-affordability",
       "slug": "transport-affordability",
       "title": "Affordable transport",
       "description": "Travel costs that do not exclude people from work or services.",
-      "aliases": [
-        "public transport cost",
-        "affordable fares"
-      ]
+      "aliases": ["public transport cost", "affordable fares"]
     },
     {
       "id": "rural-connectivity",
       "slug": "rural-connectivity",
       "title": "Rural connectivity",
       "description": "Practical transport options outside major urban areas.",
-      "aliases": [
-        "rural transport",
-        "connecting rural areas"
-      ]
+      "aliases": ["rural transport", "connecting rural areas"]
     },
     {
       "id": "safe-cycling",
       "slug": "safe-cycling",
       "title": "Safe cycling",
       "description": "Connected routes where people can cycle with confidence.",
-      "aliases": [
-        "cycling safety",
-        "protected cycle routes"
-      ]
+      "aliases": ["cycling safety", "protected cycle routes"]
     },
     {
       "id": "accessible-transport",
       "slug": "accessible-transport",
       "title": "Accessible transport",
       "description": "Journeys that people with different mobility needs can use.",
-      "aliases": [
-        "disabled access transport",
-        "inclusive transport"
-      ]
+      "aliases": ["disabled access transport", "inclusive transport"]
     },
     {
       "id": "service-delivery",
       "slug": "service-delivery",
       "title": "Public service delivery",
       "description": "Public services that are timely, dependable and easy to use.",
-      "aliases": [
-        "government services",
-        "public service quality"
-      ]
+      "aliases": ["government services", "public service quality"]
     },
     {
       "id": "government-transparency",
       "slug": "government-transparency",
       "title": "Government transparency",
       "description": "Clear information about decisions, spending and outcomes.",
-      "aliases": [
-        "open government",
-        "public transparency"
-      ]
+      "aliases": ["open government", "public transparency"]
     },
     {
       "id": "tax-value",
       "slug": "tax-value",
       "title": "Value for taxes",
       "description": "Visible public value from taxes and government spending.",
-      "aliases": [
-        "value for tax",
-        "public spending value"
-      ]
+      "aliases": ["value for tax", "public spending value"]
     },
     {
       "id": "local-government-capacity",
       "slug": "local-government-capacity",
       "title": "Local government capacity",
       "description": "Resources and authority for effective local action.",
-      "aliases": [
-        "council capacity",
-        "local authority resources"
-      ]
+      "aliases": ["council capacity", "local authority resources"]
     },
     {
       "id": "digital-public-services",
       "slug": "digital-public-services",
       "title": "Digital public services",
       "description": "Secure, inclusive online access to government services.",
-      "aliases": [
-        "online government services",
-        "digital government"
-      ]
+      "aliases": ["online government services", "digital government"]
     },
     {
       "id": "childcare-affordability",
       "slug": "childcare-affordability",
       "title": "Affordable childcare",
       "description": "Quality childcare that families can access and afford.",
-      "aliases": [
-        "childcare costs",
-        "affordable child care"
-      ]
+      "aliases": ["childcare costs", "affordable child care"]
     },
     {
       "id": "family-housing",
       "slug": "family-housing",
       "title": "Suitable family housing",
       "description": "Stable homes with enough space near everyday services.",
-      "aliases": [
-        "housing for families",
-        "family homes"
-      ]
+      "aliases": ["housing for families", "family homes"]
     },
     {
       "id": "parental-time-pressure",
       "slug": "parental-time-pressure",
       "title": "Time pressure on parents",
       "description": "The strain of combining care, work and household responsibilities.",
-      "aliases": [
-        "parent burnout",
-        "family time pressure"
-      ]
+      "aliases": ["parent burnout", "family time pressure"]
     },
     {
       "id": "school-support",
       "slug": "school-support",
       "title": "Support from schools",
       "description": "Effective partnership and support for each child's learning needs.",
-      "aliases": [
-        "school family support",
-        "learning support"
-      ]
+      "aliases": ["school family support", "learning support"]
     },
     {
       "id": "child-online-safety",
       "slug": "child-online-safety",
       "title": "Children's online safety",
       "description": "Helping children use digital services safely and confidently.",
-      "aliases": [
-        "online child safety",
-        "kids internet safety"
-      ]
+      "aliases": ["online child safety", "kids internet safety"]
     },
     {
       "id": "grassroots-funding",
       "slug": "grassroots-funding",
       "title": "Grassroots funding",
       "description": "Stable resources for local clubs, coaches and programmes.",
-      "aliases": [
-        "community sport funding",
-        "local club funding"
-      ]
+      "aliases": ["community sport funding", "local club funding"]
     },
     {
       "id": "participation-cost",
       "slug": "participation-cost",
       "title": "Cost of participation",
       "description": "Fees, equipment and travel costs that keep people out of sport.",
-      "aliases": [
-        "sport affordability",
-        "cost to play"
-      ]
+      "aliases": ["sport affordability", "cost to play"]
     },
     {
       "id": "safe-sport",
       "slug": "safe-sport",
       "title": "Safe sport",
       "description": "Preventing abuse, injury and harmful cultures in sport.",
-      "aliases": [
-        "safeguarding in sport",
-        "athlete safety"
-      ]
+      "aliases": ["safeguarding in sport", "athlete safety"]
     },
     {
       "id": "facility-access",
       "slug": "facility-access",
       "title": "Access to facilities",
       "description": "Enough affordable, suitable places to train and compete.",
-      "aliases": [
-        "sports facilities",
-        "places to play sport"
-      ]
+      "aliases": ["sports facilities", "places to play sport"]
     },
     {
       "id": "equal-opportunity-sport",
       "slug": "equal-opportunity-sport",
       "title": "Equal opportunity in sport",
       "description": "Fair access regardless of gender, disability, income or background.",
-      "aliases": [
-        "inclusive sport",
-        "equality in sport"
-      ]
+      "aliases": ["inclusive sport", "equality in sport"]
     },
     {
       "id": "misinformation",
       "slug": "misinformation",
       "title": "Misinformation",
       "description": "False or misleading information that damages informed decisions.",
-      "aliases": [
-        "fake news",
-        "false information"
-      ]
+      "aliases": ["fake news", "false information"]
     },
     {
       "id": "local-journalism",
       "slug": "local-journalism",
       "title": "Local journalism",
       "description": "Sustainable reporting that holds local institutions to account.",
-      "aliases": [
-        "local news",
-        "community journalism"
-      ]
+      "aliases": ["local news", "community journalism"]
     },
     {
       "id": "media-trust",
       "slug": "media-trust",
       "title": "Trust in media",
       "description": "Confidence that reporting is accurate, fair and accountable.",
-      "aliases": [
-        "news trust",
-        "trustworthy media"
-      ]
+      "aliases": ["news trust", "trustworthy media"]
     },
     {
       "id": "algorithmic-amplification",
       "slug": "algorithmic-amplification",
       "title": "Algorithmic amplification",
       "description": "Recommendation systems that can reward harmful or polarising content.",
-      "aliases": [
-        "social algorithms",
-        "algorithmic feeds"
-      ]
+      "aliases": ["social algorithms", "algorithmic feeds"]
     },
     {
       "id": "news-accessibility",
       "slug": "news-accessibility",
       "title": "Accessible news",
       "description": "Reliable information available across ability, language and income.",
-      "aliases": [
-        "news access",
-        "inclusive news"
-      ]
+      "aliases": ["news access", "inclusive news"]
     },
     {
       "id": "value-for-money",
       "slug": "value-for-money",
       "title": "Value for money",
       "description": "Quality and usefulness that justify the full price paid.",
-      "aliases": [
-        "good value",
-        "price value"
-      ]
+      "aliases": ["good value", "price value"]
     },
     {
       "id": "customer-support",
       "slug": "customer-support",
       "title": "Customer support",
       "description": "Fast, effective help when a product or service goes wrong.",
-      "aliases": [
-        "customer service",
-        "support quality"
-      ]
+      "aliases": ["customer service", "support quality"]
     },
     {
       "id": "product-durability",
       "slug": "product-durability",
       "title": "Product durability",
       "description": "Products that remain useful and reliable for a reasonable life.",
-      "aliases": [
-        "product lifespan",
-        "long-lasting products"
-      ]
+      "aliases": ["product lifespan", "long-lasting products"]
     },
     {
       "id": "transparent-pricing",
       "slug": "transparent-pricing",
       "title": "Transparent pricing",
       "description": "Clear total costs without hidden fees or confusing conditions.",
-      "aliases": [
-        "clear pricing",
-        "hidden fees"
-      ]
+      "aliases": ["clear pricing", "hidden fees"]
     },
     {
       "id": "repairability",
       "slug": "repairability",
       "title": "Repairability",
       "description": "Products designed so faults can be repaired affordably.",
-      "aliases": [
-        "right to repair",
-        "repairable products"
-      ]
+      "aliases": ["right to repair", "repairable products"]
     },
     {
       "id": "peace-conflict-prevention",
       "slug": "peace-conflict-prevention",
       "title": "Peace and conflict prevention",
       "description": "Preventing war and resolving conflict through durable cooperation.",
-      "aliases": [
-        "world peace",
-        "preventing conflict"
-      ]
+      "aliases": ["world peace", "preventing conflict"]
     },
     {
       "id": "global-poverty",
       "slug": "global-poverty",
       "title": "Global poverty",
       "description": "Ensuring people can meet basic needs and build secure livelihoods.",
-      "aliases": [
-        "ending poverty",
-        "world poverty"
-      ]
+      "aliases": ["ending poverty", "world poverty"]
     },
     {
       "id": "pandemic-preparedness",
       "slug": "pandemic-preparedness",
       "title": "Pandemic preparedness",
       "description": "Detecting and responding to major infectious disease threats.",
-      "aliases": [
-        "pandemic readiness",
-        "global health preparedness"
-      ]
+      "aliases": ["pandemic readiness", "global health preparedness"]
     },
     {
       "id": "human-rights",
       "slug": "human-rights",
       "title": "Human rights",
       "description": "Protecting fundamental rights and dignity for every person.",
-      "aliases": [
-        "civil rights",
-        "fundamental rights"
-      ]
+      "aliases": ["civil rights", "fundamental rights"]
     },
     {
       "id": "food-water-security",
       "slug": "food-water-security",
       "title": "Food and water security",
       "description": "Reliable access to nutritious food and safe water.",
-      "aliases": [
-        "food security",
-        "water security"
-      ]
+      "aliases": ["food security", "water security"]
     }
   ],
   "questions": [
@@ -1628,10 +1298,7 @@
         "type": "country",
         "name": "United Kingdom"
       },
-      "relatedQuestionIds": [
-        "country-ie",
-        "country-fr"
-      ],
+      "relatedQuestionIds": ["country-ie", "country-fr"],
       "conceptIds": [
         "cost-of-living",
         "housing-affordability",
@@ -1653,10 +1320,7 @@
         "type": "country",
         "name": "United States"
       },
-      "relatedQuestionIds": [
-        "country-gb",
-        "country-de"
-      ],
+      "relatedQuestionIds": ["country-gb", "country-de"],
       "conceptIds": [
         "cost-of-living",
         "housing-affordability",
@@ -1678,10 +1342,7 @@
         "type": "country",
         "name": "Germany"
       },
-      "relatedQuestionIds": [
-        "country-fr",
-        "country-pl"
-      ],
+      "relatedQuestionIds": ["country-fr", "country-pl"],
       "conceptIds": [
         "cost-of-living",
         "housing-affordability",
@@ -1703,10 +1364,7 @@
         "type": "country",
         "name": "France"
       },
-      "relatedQuestionIds": [
-        "country-de",
-        "country-gb"
-      ],
+      "relatedQuestionIds": ["country-de", "country-gb"],
       "conceptIds": [
         "cost-of-living",
         "housing-affordability",
@@ -1728,10 +1386,7 @@
         "type": "country",
         "name": "Poland"
       },
-      "relatedQuestionIds": [
-        "country-de",
-        "country-ie"
-      ],
+      "relatedQuestionIds": ["country-de", "country-ie"],
       "conceptIds": [
         "cost-of-living",
         "housing-affordability",
@@ -1874,11 +1529,7 @@
         "name": "Cork",
         "parentId": "IE-C"
       },
-      "relatedQuestionIds": [
-        "country-ie",
-        "city-dublin",
-        "city-limerick"
-      ],
+      "relatedQuestionIds": ["country-ie", "city-dublin", "city-limerick"],
       "conceptIds": [
         "public-transport-reliability",
         "local-housing-supply",
@@ -1901,11 +1552,7 @@
         "name": "Limerick",
         "parentId": "IE-LK"
       },
-      "relatedQuestionIds": [
-        "country-ie",
-        "city-dublin",
-        "city-galway"
-      ],
+      "relatedQuestionIds": ["country-ie", "city-dublin", "city-galway"],
       "conceptIds": [
         "public-transport-reliability",
         "clean-public-spaces",
@@ -1928,11 +1575,7 @@
         "name": "Galway",
         "parentId": "IE-G"
       },
-      "relatedQuestionIds": [
-        "country-ie",
-        "city-dublin",
-        "city-limerick"
-      ],
+      "relatedQuestionIds": ["country-ie", "city-dublin", "city-limerick"],
       "conceptIds": [
         "traffic-congestion",
         "local-housing-supply",
@@ -1954,10 +1597,7 @@
         "type": "community",
         "name": "Local communities"
       },
-      "relatedQuestionIds": [
-        "city-dublin",
-        "family-parents"
-      ],
+      "relatedQuestionIds": ["city-dublin", "family-parents"],
       "conceptIds": [
         "community-safety",
         "social-isolation",
@@ -2004,10 +1644,7 @@
         "type": "organisation",
         "name": "Growing companies"
       },
-      "relatedQuestionIds": [
-        "business-small-businesses",
-        "team-engineering"
-      ],
+      "relatedQuestionIds": ["business-small-businesses", "team-engineering"],
       "conceptIds": [
         "strategic-clarity",
         "cross-team-coordination",
@@ -2130,10 +1767,7 @@
         "type": "education-sector",
         "name": "Education systems"
       },
-      "relatedQuestionIds": [
-        "family-parents",
-        "government-public-services"
-      ],
+      "relatedQuestionIds": ["family-parents", "government-public-services"],
       "conceptIds": [
         "teacher-shortages",
         "education-costs",
@@ -2155,10 +1789,7 @@
         "type": "health-system",
         "name": "Healthcare systems"
       },
-      "relatedQuestionIds": [
-        "government-public-services",
-        "country-ie"
-      ],
+      "relatedQuestionIds": ["government-public-services", "country-ie"],
       "conceptIds": [
         "waiting-times",
         "primary-care-access",
@@ -2180,10 +1811,7 @@
         "type": "housing-market",
         "name": "Rental housing"
       },
-      "relatedQuestionIds": [
-        "personal-finances-households",
-        "country-ie"
-      ],
+      "relatedQuestionIds": ["personal-finances-households", "country-ie"],
       "conceptIds": [
         "rent-affordability",
         "home-supply",
@@ -2205,10 +1833,7 @@
         "type": "financial-situation",
         "name": "Household finances"
       },
-      "relatedQuestionIds": [
-        "housing-rental-market",
-        "family-parents"
-      ],
+      "relatedQuestionIds": ["housing-rental-market", "family-parents"],
       "conceptIds": [
         "everyday-expenses",
         "saving-for-home",
@@ -2230,10 +1855,7 @@
         "type": "technology-field",
         "name": "Digital technology"
       },
-      "relatedQuestionIds": [
-        "industry-technology",
-        "media-online-information"
-      ],
+      "relatedQuestionIds": ["industry-technology", "media-online-information"],
       "conceptIds": [
         "data-privacy",
         "cybersecurity-threats",
@@ -2255,10 +1877,7 @@
         "type": "environmental-domain",
         "name": "Natural environment"
       },
-      "relatedQuestionIds": [
-        "world-global",
-        "transport-public"
-      ],
+      "relatedQuestionIds": ["world-global", "transport-public"],
       "conceptIds": [
         "climate-action",
         "biodiversity-loss",
@@ -2280,10 +1899,7 @@
         "type": "transport-mode",
         "name": "Public transport"
       },
-      "relatedQuestionIds": [
-        "city-dublin",
-        "environment-natural-world"
-      ],
+      "relatedQuestionIds": ["city-dublin", "environment-natural-world"],
       "conceptIds": [
         "service-reliability",
         "transport-affordability",
@@ -2305,10 +1921,7 @@
         "type": "public-service",
         "name": "Public services"
       },
-      "relatedQuestionIds": [
-        "healthcare-general",
-        "education-general"
-      ],
+      "relatedQuestionIds": ["healthcare-general", "education-general"],
       "conceptIds": [
         "service-delivery",
         "government-transparency",
@@ -2355,10 +1968,7 @@
         "type": "sport-community",
         "name": "Grassroots sport"
       },
-      "relatedQuestionIds": [
-        "community-local",
-        "family-parents"
-      ],
+      "relatedQuestionIds": ["community-local", "family-parents"],
       "conceptIds": [
         "grassroots-funding",
         "participation-cost",
@@ -2380,10 +1990,7 @@
         "type": "media-domain",
         "name": "Online information"
       },
-      "relatedQuestionIds": [
-        "technology-general",
-        "community-local"
-      ],
+      "relatedQuestionIds": ["technology-general", "community-local"],
       "conceptIds": [
         "misinformation",
         "local-journalism",
@@ -2444,6 +2051,28 @@
       ],
       "publication": "published",
       "indexable": true
+    },
+    {
+      "id": "world-country-actions",
+      "slug": "country-government-actions",
+      "categoryId": "world-global-issues",
+      "title": "Which country's government actions cause you the most concern globally?",
+      "description": "Choose a country based on the global effects of its government's actions, not on the identity of its people.",
+      "scope": {
+        "id": "WORLD",
+        "type": "global-region",
+        "name": "World"
+      },
+      "relatedQuestionIds": ["world-global"],
+      "conceptIds": [],
+      "choiceSource": {
+        "kind": "predefined",
+        "entityType": "country"
+      },
+      "answerTargetType": "country",
+      "allowSuggestions": false,
+      "publication": "published",
+      "indexable": false
     }
   ]
 }

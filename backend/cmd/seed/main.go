@@ -109,11 +109,25 @@ func main() {
 		if q.ID == "" {
 			fatal("question id required")
 		}
-		choiceSource := map[string]any{"kind": "free"}
-		answerTargetType := "issue"
-		allowSuggestions := true
+		choiceSource := q.ChoiceSource
+		answerTargetType := q.AnswerTargetType
+		allowSuggestions := q.AllowSuggestions
+		if choiceSource.Kind == "" {
+			choiceSource = publicqa.ChoiceSource{Kind: "free"}
+		}
+		if choiceSource.Kind == "free" {
+			answerTargetType = "issue"
+			allowSuggestions = true
+		} else if answerTargetType == "" {
+			answerTargetType = choiceSource.EntityType
+		}
 		set(root.Collection("questions").Doc(q.ID), map[string]any{"id": q.ID, "slug": q.Slug, "title": q.Title, "description": q.Description, "categoryId": q.CategoryID, "prioritySlotId": q.ID, "scopeType": q.Scope.Type, "scopeId": q.Scope.ID, "scopeName": q.Scope.Name, "scopeParentId": q.Scope.ParentID, "scope": map[string]any{"id": q.Scope.ID, "type": q.Scope.Type, "name": q.Scope.Name, "parentId": q.Scope.ParentID}, "parentQuestionId": q.ParentQuestionID, "conceptIds": q.ConceptIDs, "relatedQuestionIds": q.RelatedQuestionIDs, "status": q.Publication, "publication": q.Publication, "indexable": q.Indexable, "choiceSource": choiceSource, "answerTargetType": answerTargetType, "allowSuggestions": allowSuggestions, "contentRevision": int64(1), "sourceLanguage": "en", "translationStatus": "pending", "availableLanguages": []string{"en"}})
-		set(root.Collection("questionSlugs").Doc(q.Slug), map[string]any{"questionId": q.ID, "seeded": true})
+		// Scoped questions are resolved from the catalog and may legitimately
+		// reuse slugs at different hierarchy levels (county/city Dublin). The
+		// global slug registry belongs only to /questions/{slug} community URLs.
+		if q.CategoryID == "" {
+			set(root.Collection("questionSlugs").Doc(q.Slug), map[string]any{"questionId": q.ID, "seeded": true})
+		}
 		for _, cid := range q.ConceptIDs {
 			v, ok := concepts[cid]
 			if !ok {
