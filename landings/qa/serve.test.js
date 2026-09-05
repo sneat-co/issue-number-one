@@ -30,10 +30,12 @@ test('serves translated community question from the public backend', async (t) =
     assert.equal(url.searchParams.get('slug'), 'which-country');
     assert.equal(url.searchParams.get('lang'), 'ru');
     return Response.json({
-      question: {
-        ...catalog.questions[0],
+      question: catalog.questions[0],
+      translation: {
         title: 'Какая страна беспокоит вас больше всего?',
         description: 'Публичный вопрос о приоритете среди стран.',
+        sourceLanguage: 'en',
+        machineTranslated: true,
       },
       issues: [],
       totalRespondents: 0,
@@ -42,9 +44,7 @@ test('serves translated community question from the public backend', async (t) =
     });
   };
   const response = await serveQA(
-    new Request(
-      'https://issuenumber.one/questions/which-country?lang=ru',
-    ),
+    new Request('https://issuenumber.one/questions/which-country?lang=ru'),
     { ISSUENUMBER_API_ORIGIN: 'https://api.example' },
   );
   assert.equal(response.status, 200);
@@ -56,17 +56,12 @@ test('serves translated community question from the public backend', async (t) =
 
 test('leaves question creation and owner preview to the authenticated app', async () => {
   assert.equal(
-    await serveQA(
-      new Request('https://issuenumber.one/questions/new'),
-      {},
-    ),
+    await serveQA(new Request('https://issuenumber.one/questions/new'), {}),
     null,
   );
   assert.equal(
     await serveQA(
-      new Request(
-        'https://issuenumber.one/questions/pending?preview=1',
-      ),
+      new Request('https://issuenumber.one/questions/pending?preview=1'),
       {},
     ),
     null,

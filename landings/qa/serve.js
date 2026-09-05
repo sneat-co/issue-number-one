@@ -28,7 +28,9 @@ export async function serveQA(request, env) {
     return null;
   if (
     !['/', '/issues', '/sitemap.xml', '/robots.txt'].includes(path) &&
-    !path.startsWith('/issues/') && !path.startsWith('/questions/') && path !== '/questions'
+    !path.startsWith('/issues/') &&
+    !path.startsWith('/questions/') &&
+    path !== '/questions'
   )
     return null;
   if (request.method !== 'GET' && request.method !== 'HEAD')

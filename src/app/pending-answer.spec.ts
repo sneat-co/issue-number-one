@@ -37,9 +37,7 @@ describe('pending answer continuation', () => {
   it('rejects expired or external return paths', () => {
     expect(
       loadPending(
-        storageFor(
-          pending({ createdAt: Date.now() - 25 * 60 * 60 * 1000 }),
-        ),
+        storageFor(pending({ createdAt: Date.now() - 25 * 60 * 60 * 1000 })),
       ),
     ).toBeNull();
     expect(
