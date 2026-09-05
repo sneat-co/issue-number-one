@@ -24,6 +24,34 @@ func TestPublicIssueJSONDoesNotLeakCreatorUID(t *testing.T) {
 		t.Fatalf("private identity leaked: %s", b)
 	}
 }
+func TestGeographicHierarchyJSONIsPreserved(t *testing.T) {
+	q := Question{ID: "city-dublin", Publication: StatusPublished, Scope: Scope{ID: "DUB", Type: "city", Name: "Dublin", ParentID: "IE-D"}}
+	c := Category{ID: "city", ParentCategoryID: "county", Publication: StatusPublished}
+	b, e := json.Marshal(struct {
+		Question Question `json:"question"`
+		Category Category `json:"category"`
+	}{q, c})
+	if e != nil {
+		t.Fatal(e)
+	}
+	s := string(b)
+	for _, want := range []string{`"scope":{"id":"DUB","type":"city","name":"Dublin","parentId":"IE-D"}`, `"parentCategoryId":"county"`, `"publication":"published"`} {
+		if !strings.Contains(s, want) {
+			t.Fatalf("missing %s in %s", want, s)
+		}
+	}
+}
+func TestChoiceSourceValidation(t *testing.T) {
+	if e := validateChoiceSource(ChoiceSource{Kind: "custom", Options: []ChoiceOption{{Title: "Housing"}, {Title: " housing "}}}); e == nil {
+		t.Fatal("expected normalized duplicate rejection")
+	}
+	if e := validateChoiceSource(ChoiceSource{Kind: "predefined", EntityType: "city"}); e != nil {
+		t.Fatal(e)
+	}
+	if e := validateChoiceSource(ChoiceSource{Kind: "predefined", EntityType: "ethnicity"}); e == nil {
+		t.Fatal("unexpected unsupported identity dimension")
+	}
+}
 func TestSlugifyStable(t *testing.T) {
 	if got := Slugify("Housing Affordability!"); got != "housing-affordability" {
 		t.Fatalf("got %q", got)

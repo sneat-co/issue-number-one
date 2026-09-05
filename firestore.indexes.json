@@ -1,6 +1,14 @@
 {
   "indexes": [
     {
+      "collectionGroup": "personalAnswers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "questionId", "order": "ASCENDING" },
+        { "fieldPath": "issueId", "order": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "issues",
       "queryScope": "COLLECTION",
       "fields": [

@@ -18,6 +18,30 @@ import (
 
 func isNotFound(err error) bool { return status.Code(err) == codes.NotFound }
 
+var supportedLanguages = map[string]bool{"en": true, "ru": true, "uk": true, "pl": true, "de": true, "fr": true, "es": true, "it": true, "pt": true, "nl": true, "ga": true}
+
+func normalizeLanguage(v string) (string, error) {
+	v = strings.ToLower(strings.TrimSpace(v))
+	if v == "" {
+		return "en", nil
+	}
+	if i := strings.IndexByte(v, '-'); i > 0 {
+		v = v[:i]
+	}
+	if !supportedLanguages[v] {
+		return "", fmt.Errorf("%w: unsupported languageCode", ErrValidation)
+	}
+	return v, nil
+}
+func langAgg(i *Issue, lang string) *LanguageAggregate {
+	if i.LanguageStats == nil {
+		i.LanguageStats = map[string]LanguageAggregate{}
+	}
+	v := i.LanguageStats[lang]
+	return &v
+}
+func saveLangAgg(i *Issue, lang string, v *LanguageAggregate) { i.LanguageStats[lang] = *v }
+
 var (
 	ErrNotFound             = errors.New("not found")
 	ErrConflict             = errors.New("operation conflicts with its original actor or payload")
@@ -160,7 +184,15 @@ func (s *Service) Catalog(ctx context.Context) (CatalogResponse, error) {
 	return o, nil
 }
 func (s *Service) Question(ctx context.Context, qid, uid string) (QuestionResponse, error) {
+	return s.QuestionLocalized(ctx, qid, uid, "en")
+}
+func (s *Service) QuestionLocalized(ctx context.Context, qid, uid, language string) (QuestionResponse, error) {
 	var o QuestionResponse
+	language, e := normalizeLanguage(language)
+	if e != nil {
+		return o, e
+	}
+	o.LanguageCode = language
 	qref := s.root().Collection("questions").Doc(qid)
 	d, e := qref.Get(ctx)
 	if e != nil {
@@ -176,8 +208,14 @@ func (s *Service) Question(ctx context.Context, qid, uid string) (QuestionRespon
 		return o, ErrNotFound
 	}
 	o.TotalRespondents = o.Question.TotalRespondents
+	o.LanguageRespondents = o.Question.RespondentsByLanguage[language]
 	o.UpdatedAt = o.Question.UpdatedAt
-	it := qref.Collection("issues").Where("status", "==", StatusPublished).Documents(ctx)
+	var it *firestore.DocumentIterator
+	if o.Question.Status == StatusPending && o.Question.CreatorUID == uid {
+		it = qref.Collection("issues").Documents(ctx)
+	} else {
+		it = qref.Collection("issues").Where("status", "==", StatusPublished).Documents(ctx)
+	}
 	defer it.Stop()
 	for {
 		d, e := it.Next()
@@ -192,6 +230,10 @@ func (s *Service) Question(ctx context.Context, qid, uid string) (QuestionRespon
 			return o, e
 		}
 		o.Issues = append(o.Issues, i)
+		la := i.LanguageStats[language]
+		o.Issues[len(o.Issues)-1].LanguageSupporters = la.Supporters
+		o.Issues[len(o.Issues)-1].LanguagePersonalTopSupporters = la.PersonalTopSupporters
+		o.Issues[len(o.Issues)-1].LanguageWeightedScore = la.WeightedScore
 	}
 	if uid != "" {
 		a, e := s.OwnAnswer(ctx, uid, qid)
@@ -208,6 +250,9 @@ func (s *Service) Question(ctx context.Context, qid, uid string) (QuestionRespon
 	return o, nil
 }
 func (s *Service) QuestionBySlug(ctx context.Context, slug, uid string) (QuestionResponse, error) {
+	return s.QuestionBySlugLocalized(ctx, slug, uid, "en")
+}
+func (s *Service) QuestionBySlugLocalized(ctx context.Context, slug, uid, language string) (QuestionResponse, error) {
 	if slug == "" {
 		return QuestionResponse{}, ErrNotFound
 	}
@@ -221,7 +266,7 @@ func (s *Service) QuestionBySlug(ctx context.Context, slug, uid string) (Questio
 	if e = d.DataTo(&v); e != nil {
 		return QuestionResponse{}, e
 	}
-	return s.Question(ctx, v.QuestionID, uid)
+	return s.QuestionLocalized(ctx, v.QuestionID, uid, language)
 }
 func hasIssue(v []Issue, id string) bool {
 	for _, i := range v {
@@ -309,15 +354,19 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 	if (req.IssueID == "") == (strings.TrimSpace(req.Title) == "") {
 		return result, fmt.Errorf("%w: supply exactly one of issueId or title", ErrValidation)
 	}
+	language, e := normalizeLanguage(req.LanguageCode)
+	if e != nil {
+		return result, e
+	}
+	req.LanguageCode = language
 	norm := ""
-	var e error
 	if req.Title != "" {
 		norm, e = NormalizeTitle(req.Title)
 		if e != nil {
 			return result, fmt.Errorf("%w: %v", ErrValidation, e)
 		}
 	}
-	raw := req.AnswerKind + "\x00" + req.QuestionID + "\x00" + req.IssueID + "\x00" + norm
+	raw := req.AnswerKind + "\x00" + req.QuestionID + "\x00" + req.IssueID + "\x00" + norm + "\x00" + language
 	sum := sha256.Sum256([]byte(raw))
 	ph := hex.EncodeToString(sum[:])
 	now := s.now().UTC()
@@ -413,6 +462,13 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 			}
 		}
 		changed := !oldExists || old.QuestionID != req.QuestionID || old.IssueID != st.issue.ID
+		targetLanguage := language
+		if !changed && oldExists {
+			targetLanguage = old.LanguageCode
+			if targetLanguage == "" {
+				targetLanguage = "en"
+			}
+		}
 		personalTop := personalExists && personal.QuestionID == req.QuestionID && personal.IssueID == st.issue.ID
 		if changed {
 			if oldExists {
@@ -423,15 +479,41 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 				}
 				oi.Supporters--
 				oi.WeightedScore--
+				oldLang := old.LanguageCode
+				if oldLang == "" {
+					oldLang = "en"
+				}
+				ola := langAgg(oi, oldLang)
+				if ola.Supporters < 1 || ola.WeightedScore < 1 {
+					return fmt.Errorf("language counter invariant")
+				}
+				ola.Supporters--
+				ola.WeightedScore--
+				saveLangAgg(oi, oldLang, ola)
 				oq.TotalRespondents--
+				if oq.RespondentsByLanguage == nil {
+					oq.RespondentsByLanguage = map[string]int64{}
+				}
+				if oq.RespondentsByLanguage[oldLang] < 1 {
+					return fmt.Errorf("question language counter invariant")
+				}
+				oq.RespondentsByLanguage[oldLang]--
 				oq.UpdatedAt = now
 			}
 			ni := issues[key(req.QuestionID, st.issue.ID)]
 			nq := questions[req.QuestionID]
 			ni.Supporters++
 			ni.WeightedScore++
+			nla := langAgg(ni, targetLanguage)
+			nla.Supporters++
+			nla.WeightedScore++
+			saveLangAgg(ni, targetLanguage, nla)
 			ni.UpdatedAt = now
 			nq.TotalRespondents++
+			if nq.RespondentsByLanguage == nil {
+				nq.RespondentsByLanguage = map[string]int64{}
+			}
+			nq.RespondentsByLanguage[targetLanguage]++
 			nq.UpdatedAt = now
 		}
 		if req.AnswerKind == AnswerKindCategory && changed && personalExists && personal.QuestionID == req.QuestionID {
@@ -441,6 +523,17 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 			}
 			pi.PersonalTopSupporters--
 			pi.WeightedScore -= s.personalWeight - 1
+			pl := personal.LanguageCode
+			if pl == "" {
+				pl = "en"
+			}
+			pla := langAgg(pi, pl)
+			if pla.PersonalTopSupporters < 1 || pla.WeightedScore < s.personalWeight-1 {
+				return fmt.Errorf("personal language counter invariant")
+			}
+			pla.PersonalTopSupporters--
+			pla.WeightedScore -= s.personalWeight - 1
+			saveLangAgg(pi, pl, pla)
 			personalExists = false
 			personalTop = false
 		}
@@ -452,15 +545,30 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 				}
 				pi.PersonalTopSupporters--
 				pi.WeightedScore -= s.personalWeight - 1
+				pl := personal.LanguageCode
+				if pl == "" {
+					pl = "en"
+				}
+				pla := langAgg(pi, pl)
+				if pla.PersonalTopSupporters < 1 || pla.WeightedScore < s.personalWeight-1 {
+					return fmt.Errorf("personal language counter invariant")
+				}
+				pla.PersonalTopSupporters--
+				pla.WeightedScore -= s.personalWeight - 1
+				saveLangAgg(pi, pl, pla)
 			}
 			ni := issues[key(req.QuestionID, st.issue.ID)]
 			ni.PersonalTopSupporters++
 			ni.WeightedScore += s.personalWeight - 1
-			personal = PersonalAnswer{CategoryID: st.question.CategoryID, PrioritySlotID: st.question.PrioritySlotID, QuestionID: req.QuestionID, IssueID: st.issue.ID, UpdatedAt: now}
+			nla := langAgg(ni, targetLanguage)
+			nla.PersonalTopSupporters++
+			nla.WeightedScore += s.personalWeight - 1
+			saveLangAgg(ni, targetLanguage, nla)
+			personal = PersonalAnswer{CategoryID: st.question.CategoryID, PrioritySlotID: st.question.PrioritySlotID, QuestionID: req.QuestionID, IssueID: st.issue.ID, LanguageCode: targetLanguage, UpdatedAt: now}
 			personalExists = true
 			personalTop = true
 		}
-		ans := Answer{CategoryID: st.question.CategoryID, PrioritySlotID: st.question.PrioritySlotID, QuestionID: req.QuestionID, IssueID: st.issue.ID, Revision: 1, CreatedAt: now, UpdatedAt: now}
+		ans := Answer{CategoryID: st.question.CategoryID, PrioritySlotID: st.question.PrioritySlotID, QuestionID: req.QuestionID, IssueID: st.issue.ID, LanguageCode: targetLanguage, Revision: 1, CreatedAt: now, UpdatedAt: now}
 		if oldExists {
 			ans.Revision = old.Revision
 			if changed {
@@ -515,8 +623,25 @@ type questionOperation struct {
 
 func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQuestionRequest) (CreateQuestionResponse, error) {
 	var out CreateQuestionResponse
-	if caller.UID == "" || req.OperationID == "" || len(req.OperationID) > 100 || strings.Contains(req.OperationID, "/") || (req.AnswerTargetType != "issue" && req.AnswerTargetType != "country") {
+	if req.ChoiceSource.Kind == "" {
+		if req.AnswerTargetType == "country" {
+			req.ChoiceSource = ChoiceSource{Kind: "predefined", EntityType: "country"}
+		} else if req.AnswerTargetType == "issue" {
+			req.ChoiceSource = ChoiceSource{Kind: "free"}
+		}
+	}
+	if caller.UID == "" || req.OperationID == "" || len(req.OperationID) > 100 || strings.Contains(req.OperationID, "/") {
 		return out, fmt.Errorf("%w: invalid question request", ErrValidation)
+	}
+	if e := validateChoiceSource(req.ChoiceSource); e != nil {
+		return out, e
+	}
+	if req.ChoiceSource.Kind == "free" {
+		req.AllowSuggestions = true
+	}
+	req.AnswerTargetType = req.ChoiceSource.EntityType
+	if req.ChoiceSource.Kind == "free" || req.ChoiceSource.Kind == "custom" {
+		req.AnswerTargetType = "issue"
 	}
 	if e := s.requireEligible(ctx, caller); e != nil {
 		return out, e
@@ -527,7 +652,7 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 		return out, fmt.Errorf("%w: question must be 10-180 characters ending in ?, with a 20-1000 character description", ErrValidation)
 	}
 	slug := Slugify(strings.TrimSuffix(title, "?"))
-	raw := title + "\x00" + description + "\x00" + req.AnswerTargetType
+	raw := title + "\x00" + description + "\x00" + req.ChoiceSource.Kind + "\x00" + req.ChoiceSource.EntityType + fmt.Sprint(req.ChoiceSource.Options, req.AllowSuggestions)
 	sum := sha256.Sum256([]byte(raw))
 	ph := hex.EncodeToString(sum[:])
 	now := s.now().UTC()
@@ -569,7 +694,7 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 			return ErrRateLimited
 		}
 		qref := s.root().Collection("questions").NewDoc()
-		q := Question{ID: qref.ID, Slug: slug, Title: title, Description: description, Status: StatusPending, Indexable: false, AnswerTargetType: req.AnswerTargetType, CreatorUID: caller.UID, UpdatedAt: now}
+		q := Question{ID: qref.ID, Slug: slug, Title: title, Description: description, Status: StatusPending, Publication: StatusPending, Indexable: false, AnswerTargetType: req.AnswerTargetType, ChoiceSource: req.ChoiceSource, AllowSuggestions: req.AllowSuggestions, ContentRevision: 1, CreatorUID: caller.UID, UpdatedAt: now}
 		out = CreateQuestionResponse{Question: q}
 		limit.Count++
 		if e := tx.Set(qref, q); e != nil {
@@ -581,9 +706,53 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 		if e := tx.Set(limitref, limit); e != nil {
 			return e
 		}
+		for _, option := range req.ChoiceSource.Options {
+			iref := qref.Collection("issues").NewDoc()
+			issue := Issue{ID: iref.ID, Slug: Slugify(option.Title), Title: strings.Join(strings.Fields(option.Title), " "), Description: strings.TrimSpace(option.Description), Status: StatusPending, TargetType: "custom", CreatorUID: caller.UID, CreatedAt: now, UpdatedAt: now}
+			if e := tx.Set(iref, issue); e != nil {
+				return e
+			}
+			norm, _ := NormalizeTitle(option.Title)
+			if e := tx.Set(qref.Collection("aliases").Doc(normalizedHash(norm)), alias{IssueID: issue.ID, Normalized: norm}); e != nil {
+				return e
+			}
+		}
 		return tx.Set(opref, questionOperation{UID: caller.UID, PayloadHash: ph, Response: out, CreatedAt: now})
 	})
 	return out, err
+}
+func validateChoiceSource(source ChoiceSource) error {
+	switch source.Kind {
+	case "predefined":
+		if source.EntityType != "country" && source.EntityType != "city" && source.EntityType != "currency" || len(source.Options) > 0 {
+			return fmt.Errorf("%w: invalid predefined choice source", ErrValidation)
+		}
+	case "custom":
+		if source.EntityType != "" || len(source.Options) < 2 || len(source.Options) > 30 {
+			return fmt.Errorf("%w: custom choices require 2-30 options", ErrValidation)
+		}
+		seen := map[string]bool{}
+		for _, o := range source.Options {
+			n, e := NormalizeTitle(o.Title)
+			if e != nil {
+				return fmt.Errorf("%w: invalid custom option", ErrValidation)
+			}
+			if seen[n] {
+				return fmt.Errorf("%w: duplicate custom option", ErrValidation)
+			}
+			seen[n] = true
+			if len([]rune(o.Description)) > 500 {
+				return fmt.Errorf("%w: custom option description too long", ErrValidation)
+			}
+		}
+	case "free":
+		if source.EntityType != "" || len(source.Options) > 0 {
+			return fmt.Errorf("%w: invalid free choice source", ErrValidation)
+		}
+	default:
+		return fmt.Errorf("%w: invalid choice source kind", ErrValidation)
+	}
+	return nil
 }
 func (s *Service) loadTarget(ctx context.Context, tx *firestore.Transaction, caller Caller, req AnswerRequest, norm string, now time.Time) (txState, error) {
 	uid := caller.UID
@@ -599,6 +768,9 @@ func (s *Service) loadTarget(ctx context.Context, tx *firestore.Transaction, cal
 	if st.question.Status != StatusPublished {
 		return st, ErrNotFound
 	}
+	if st.question.MutationLock != "" {
+		return st, ErrConflict
+	}
 	st.iref = st.qref.Collection("issues").Doc(req.IssueID)
 	if norm != "" {
 		st.aliasRef = st.qref.Collection("aliases").Doc(normalizedHash(norm))
@@ -609,6 +781,9 @@ func (s *Service) loadTarget(ctx context.Context, tx *firestore.Transaction, cal
 			}
 			st.iref = st.qref.Collection("issues").Doc(a.IssueID)
 		} else if isNotFound(e) {
+			if !st.question.AllowSuggestions && st.question.ChoiceSource.Kind != "free" {
+				return st, fmt.Errorf("%w: this question does not accept suggested choices", ErrValidation)
+			}
 			st.limitRef = s.root().Collection("actors").Doc(uid).Collection("limits").Doc("candidate-issues")
 			if d, e = tx.Get(st.limitRef); e == nil {
 				if e = d.DataTo(&st.limit); e != nil {

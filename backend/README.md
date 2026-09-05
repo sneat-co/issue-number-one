@@ -59,3 +59,21 @@ The seed command imports `catalog/seed.json` schema version 1. It refuses a
 real project unless `--confirm-production-project` exactly matches `--project`.
 Reruns update curated copy and aliases while preserving counts, answers, issue
 moderation status, authorship, and payment state.
+
+Question creation accepts a discriminated `choiceSource`: `predefined`
+(`country`, `city`, or `currency`), `custom` (2-30 normalized distinct
+options), or `free`, plus a separate `allowSuggestions` flag. Closed
+predefined/custom questions reject arbitrary free-form submissions.
+
+An answer records one supported `languageCode` when the choice changes. Merely
+viewing or retrying in another language never creates a vote or reattributes an
+existing choice. Every issue keeps total counters and bounded per-language
+counters for supporters, personal-top supporters, and weighted score. Public
+`?lang=ru` reads return both unchanged totals and Russian-attributed counts.
+
+`cmd/admin` provides production-confirmed publish/hide/reject operations,
+canonical country-choice population, and retry-safe issue merging. Country
+population reads Sneat Libs' `countries.json`; it contains no copied country
+list. A merge locks the question against answers, migrates answer and personal
+references in bounded batches, transfers total and language counters, retains
+the source as `merged`, and records a resumable merge job before unlocking.

@@ -88,12 +88,13 @@ func (h *Handler) getCatalog(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) getQuestion(w http.ResponseWriter, r *http.Request) {
 	c, _ := h.optionalCaller(r)
 	qid, slug := r.URL.Query().Get("questionId"), r.URL.Query().Get("slug")
+	language := r.URL.Query().Get("lang")
 	var v QuestionResponse
 	var e error
 	if qid != "" {
-		v, e = h.service.Question(r.Context(), qid, c.UID)
+		v, e = h.service.QuestionLocalized(r.Context(), qid, c.UID, language)
 	} else {
-		v, e = h.service.QuestionBySlug(r.Context(), slug, c.UID)
+		v, e = h.service.QuestionBySlugLocalized(r.Context(), slug, c.UID, language)
 	}
 	if e != nil {
 		writeServiceError(w, e)

@@ -27,7 +27,7 @@ func emulatorService(t *testing.T) *Service {
 func seedQuestion(t *testing.T, s *Service, qid, cat string, issues ...string) {
 	t.Helper()
 	ctx := context.Background()
-	q := Question{ID: qid, CategoryID: cat, Status: StatusPublished}
+	q := Question{ID: qid, CategoryID: cat, Status: StatusPublished, AnswerTargetType: "issue", ChoiceSource: ChoiceSource{Kind: "free"}, AllowSuggestions: true}
 	if _, e := s.root().Collection("questions").Doc(qid).Set(ctx, q); e != nil {
 		t.Fatal(e)
 	}
@@ -41,7 +41,7 @@ func seedQuestion(t *testing.T, s *Service, qid, cat string, issues ...string) {
 func seedQuestionSlot(t *testing.T, s *Service, qid, cat, slot string, issues ...string) {
 	t.Helper()
 	ctx := context.Background()
-	q := Question{ID: qid, CategoryID: cat, PrioritySlotID: slot, Status: StatusPublished}
+	q := Question{ID: qid, CategoryID: cat, PrioritySlotID: slot, Status: StatusPublished, AnswerTargetType: "issue", ChoiceSource: ChoiceSource{Kind: "free"}, AllowSuggestions: true}
 	if _, e := s.root().Collection("questions").Doc(qid).Set(ctx, q); e != nil {
 		t.Fatal(e)
 	}
@@ -218,16 +218,108 @@ func TestCreateQuestionPendingSlugIdempotencyAndCreatorPreview(t *testing.T) {
 		t.Fatalf("creator preview: %v", e)
 	}
 }
+func TestCustomQuestionPublicationAndPredefinedPopulation(t *testing.T) {
+	s := emulatorService(t)
+	c := Caller{UID: "author", PhoneVerified: true}
+	custom, e := s.CreateQuestion(context.Background(), c, CreateQuestionRequest{Title: "What should our neighbourhood fix first?", Description: "Choose the single local improvement that should receive attention first.", ChoiceSource: ChoiceSource{Kind: "custom", Options: []ChoiceOption{{Title: "Street lighting"}, {Title: "Playground repairs"}}}, OperationID: "custom-q"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	preview, e := s.Question(context.Background(), custom.Question.ID, "author")
+	if e != nil || len(preview.Issues) != 2 {
+		t.Fatalf("preview issues=%d err=%v", len(preview.Issues), e)
+	}
+	if e = s.SetQuestionStatus(context.Background(), custom.Question.ID, StatusPublished); e != nil {
+		t.Fatal(e)
+	}
+	published, e := s.Question(context.Background(), custom.Question.ID, "")
+	if e != nil || len(published.Issues) != 2 {
+		t.Fatalf("published issues=%d err=%v", len(published.Issues), e)
+	}
+	pre, e := s.CreateQuestion(context.Background(), c, CreateQuestionRequest{Title: "What country needs our attention first?", Description: "Choose one country whose current situation deserves priority attention.", ChoiceSource: ChoiceSource{Kind: "predefined", EntityType: "country"}, OperationID: "country-q"})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.PopulatePredefinedChoices(context.Background(), pre.Question.ID, "country", []PredefinedChoice{{ID: "IE", Title: "Ireland"}, {ID: "FR", Title: "France"}}); e != nil {
+		t.Fatal(e)
+	}
+	if e = s.SetQuestionStatus(context.Background(), pre.Question.ID, StatusPublished); e != nil {
+		t.Fatal(e)
+	}
+	q, e := s.Question(context.Background(), pre.Question.ID, "")
+	if e != nil || len(q.Issues) != 2 || q.Issues[0].TargetType != "country" {
+		t.Fatalf("country choices=%+v err=%v", q.Issues, e)
+	}
+}
 
 func TestCountryTargetRejectsFreeformIssue(t *testing.T) {
 	s := emulatorService(t)
 	seedQuestion(t, s, "q", "geo")
 	qref := s.root().Collection("questions").Doc("q")
-	if _, e := qref.Update(context.Background(), []firestore.Update{{Path: "answerTargetType", Value: "country"}}); e != nil {
+	if _, e := qref.Update(context.Background(), []firestore.Update{{Path: "answerTargetType", Value: "country"}, {Path: "choiceSource", Value: ChoiceSource{Kind: "predefined", EntityType: "country"}}, {Path: "allowSuggestions", Value: false}}); e != nil {
 		t.Fatal(e)
 	}
 	_, e := s.Answer(context.Background(), Caller{UID: "u", PhoneVerified: true}, AnswerRequest{QuestionID: "q", Title: "Ireland", OperationID: "country-freeform"})
 	if !errors.Is(e, ErrValidation) {
 		t.Fatalf("got %v", e)
+	}
+}
+
+func TestLanguageAttributionDoesNotCreateExtraVote(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "topic", "a", "b")
+	c := Caller{UID: "u", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", LanguageCode: "ru-RU", OperationID: "l1"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "a", LanguageCode: "en", OperationID: "l2"}); e != nil {
+		t.Fatal(e)
+	}
+	a := getIssue(t, s, "q", "a")
+	if a.Supporters != 1 || a.LanguageStats["ru"].Supporters != 1 || a.LanguageStats["en"].Supporters != 0 {
+		t.Fatalf("display language changed vote: %+v", a)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "q", IssueID: "a", LanguageCode: "en", OperationID: "l3"}); e != nil {
+		t.Fatal(e)
+	}
+	a = getIssue(t, s, "q", "a")
+	if a.LanguageStats["ru"].WeightedScore != 10 {
+		t.Fatalf("personal weight not attributed to answer language: %+v", a.LanguageStats)
+	}
+	if _, e := s.Answer(context.Background(), c, AnswerRequest{QuestionID: "q", IssueID: "b", LanguageCode: "en", OperationID: "l4"}); e != nil {
+		t.Fatal(e)
+	}
+	a = getIssue(t, s, "q", "a")
+	b := getIssue(t, s, "q", "b")
+	if a.WeightedScore != 0 || a.LanguageStats["ru"].WeightedScore != 0 || b.LanguageStats["en"].Supporters != 1 {
+		t.Fatalf("a=%+v b=%+v", a, b)
+	}
+}
+
+func TestMergeIssueMigratesReferencesCountersAndIsResumable(t *testing.T) {
+	s := emulatorService(t)
+	seedQuestion(t, s, "q", "topic", "source", "target")
+	c1 := Caller{UID: "u1", PhoneVerified: true}
+	c2 := Caller{UID: "u2", PhoneVerified: true}
+	if _, e := s.Answer(context.Background(), c1, AnswerRequest{AnswerKind: AnswerKindPersonal, QuestionID: "q", IssueID: "source", LanguageCode: "ru", OperationID: "m1"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e := s.Answer(context.Background(), c2, AnswerRequest{QuestionID: "q", IssueID: "target", LanguageCode: "en", OperationID: "m2"}); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MergeIssue(context.Background(), "q", "source", "target", "merge-1"); e != nil {
+		t.Fatal(e)
+	}
+	if e := s.MergeIssue(context.Background(), "q", "source", "target", "merge-1"); e != nil {
+		t.Fatal(e)
+	}
+	source := getIssue(t, s, "q", "source")
+	target := getIssue(t, s, "q", "target")
+	if source.Status != "merged" || source.MergedIntoIssueID != "target" || source.Supporters != 0 || target.Supporters != 2 || target.PersonalTopSupporters != 1 || target.WeightedScore != 11 || target.LanguageStats["ru"].WeightedScore != 10 {
+		t.Fatalf("source=%+v target=%+v", source, target)
+	}
+	a, e := s.OwnAnswer(context.Background(), "u1", "q")
+	if e != nil || a.Answer.IssueID != "target" || !a.PersonalTop {
+		t.Fatalf("answer=%+v err=%v", a, e)
 	}
 }

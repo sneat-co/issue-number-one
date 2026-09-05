@@ -97,7 +97,7 @@ func main() {
 		if v.ID == "" {
 			fatal("category id required")
 		}
-		set(root.Collection("categories").Doc(v.ID), map[string]any{"id": v.ID, "slug": v.Slug, "name": v.Name, "question": v.Question, "description": v.Description, "scopeType": v.ScopeType, "expectedChildScopeType": v.ExpectedChildScopeType, "intent": v.Intent, "seoTitle": v.SEOTitle, "seoDescription": v.SEODescription, "status": v.Publication, "indexable": v.Indexable, "conceptIds": v.DefaultConceptIDs, "prioritySlotId": v.ID, "parentCategoryId": v.ParentCategoryID})
+		set(root.Collection("categories").Doc(v.ID), map[string]any{"id": v.ID, "slug": v.Slug, "name": v.Name, "question": v.Question, "description": v.Description, "scopeType": v.ScopeType, "expectedChildScopeType": v.ExpectedChildScopeType, "intent": v.Intent, "seoTitle": v.SEOTitle, "seoDescription": v.SEODescription, "status": v.Publication, "publication": v.Publication, "indexable": v.Indexable, "conceptIds": v.DefaultConceptIDs, "prioritySlotId": v.ID, "parentCategoryId": v.ParentCategoryID})
 	}
 	for _, v := range c.Concepts {
 		if v.ID == "" {
@@ -109,7 +109,10 @@ func main() {
 		if q.ID == "" {
 			fatal("question id required")
 		}
-		set(root.Collection("questions").Doc(q.ID), map[string]any{"id": q.ID, "slug": q.Slug, "title": q.Title, "description": q.Description, "categoryId": q.CategoryID, "prioritySlotId": q.ID, "scopeType": q.Scope.Type, "scopeId": q.Scope.ID, "scopeName": q.Scope.Name, "scopeParentId": q.Scope.ParentID, "parentQuestionId": q.ParentQuestionID, "conceptIds": q.ConceptIDs, "relatedQuestionIds": q.RelatedQuestionIDs, "status": q.Publication, "indexable": q.Indexable})
+		choiceSource := map[string]any{"kind": "free"}
+		answerTargetType := "issue"
+		allowSuggestions := true
+		set(root.Collection("questions").Doc(q.ID), map[string]any{"id": q.ID, "slug": q.Slug, "title": q.Title, "description": q.Description, "categoryId": q.CategoryID, "prioritySlotId": q.ID, "scopeType": q.Scope.Type, "scopeId": q.Scope.ID, "scopeName": q.Scope.Name, "scopeParentId": q.Scope.ParentID, "scope": map[string]any{"id": q.Scope.ID, "type": q.Scope.Type, "name": q.Scope.Name, "parentId": q.Scope.ParentID}, "parentQuestionId": q.ParentQuestionID, "conceptIds": q.ConceptIDs, "relatedQuestionIds": q.RelatedQuestionIDs, "status": q.Publication, "publication": q.Publication, "indexable": q.Indexable, "choiceSource": choiceSource, "answerTargetType": answerTargetType, "allowSuggestions": allowSuggestions, "contentRevision": int64(1)})
 		set(root.Collection("questionSlugs").Doc(q.Slug), map[string]any{"questionId": q.ID, "seeded": true})
 		for _, cid := range q.ConceptIDs {
 			v, ok := concepts[cid]
@@ -117,7 +120,7 @@ func main() {
 				fatal("question references unknown concept " + cid)
 			}
 			iref := root.Collection("questions").Doc(q.ID).Collection("issues").Doc(cid)
-			fields := map[string]any{"id": cid, "slug": v.Slug, "title": v.Title, "description": v.Description, "conceptId": cid, "attribution": "anonymous"}
+			fields := map[string]any{"id": cid, "slug": v.Slug, "title": v.Title, "description": v.Description, "conceptId": cid, "targetType": "issue", "targetRef": cid, "attribution": "anonymous"}
 			if _, e := iref.Get(ctx); status.Code(e) == codes.NotFound {
 				fields["status"] = publicqa.StatusPublished
 			} else if e != nil {
