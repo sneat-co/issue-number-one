@@ -62,7 +62,11 @@ appear in public DTOs.
 The seed command imports `catalog/seed.json` schema version 1. It refuses a
 real project unless `--confirm-production-project` exactly matches `--project`.
 Reruns update curated copy and aliases while preserving counts, answers, issue
-moderation status, authorship, and payment state.
+moderation status, authorship, and payment state. `--translate-all` performs an
+idempotent translation backfill after the catalog commit. Production runs use
+Sneat Go's `seed-issuenumber-public-data.yml` workflow because that repository
+owns the Google workload-identity boundary used by the runtime; this repository
+does not duplicate those cloud credentials or IAM grants.
 
 Question creation accepts a discriminated `choiceSource`: `predefined`
 (`country`, `city`, or `currency`), `custom` (2-30 normalized distinct
