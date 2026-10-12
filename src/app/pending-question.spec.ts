@@ -21,7 +21,7 @@ class MemoryStorage {
 describe('pending question continuation', () => {
   const question: PendingQuestion = {
     operationId: 'operation-1',
-    createdAt: '2026-09-05T12:00:00.000Z',
+    createdAt: new Date().toISOString(),
     title: 'What should our neighbourhood fix first?',
     description:
       'Choose the issue that would make the largest difference locally.',
