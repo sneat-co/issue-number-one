@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://issuenumber.one/sitemap-index.xml
+Disallow: /answer
+Disallow: /verify
+Disallow: /login
+Sitemap: https://issuenumber.one/sitemap.xml

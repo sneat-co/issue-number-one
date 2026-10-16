@@ -1,14 +1,20 @@
 import { serveQA } from './qa/serve.js';
 // IssueNumber.one landing worker.
 //
+// wrangler.jsonc `assets.run_worker_first` sends ONLY these paths here; every
+// other path is a free static asset (see landings/public/_redirects and
+// _headers for the app-shell rewrites, their noindex/no-store headers and the
+// /index.html redirect):
+//
 //   POST /waitlist  -> validate an email, store {email, ts, source, plan} in KV,
 //                      return a small JSON body for the inline thank-you state.
 //                      `plan` is optional (set by the pricing-card CTAs).
-//   everything else -> the static Astro landing (env.ASSETS).
-//
-// Landing-only worker: static site + a tiny waitlist probe. When the
-// IssueNumber.one app ships, fold it in following the root-mount pattern used
-// by the other Sneat landings (index.app.html + reserved-path router).
+//   /, /issues, /issues/*, /questions, /questions/*, /sitemap.xml
+//                   -> server-rendered public Q&A from the backend (qa/serve.js),
+//                      except /questions/new and ?preview=1, which get the app
+//                      shell (a query condition _redirects cannot express).
+//   anything else   -> the static assets (env.ASSETS); reached only by
+//                      non-navigation asset misses.
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -59,6 +65,21 @@ async function handleWaitlist(request, env) {
   return json({ ok: true });
 }
 
+// The authenticated Angular app shell, with noindex/no-store. ASSETS
+// canonicalizes .html URLs with a 307 redirect, so fetch the clean asset URL
+// internally and the browser stays on the requested path.
+async function serveAppShell(request, env, url) {
+  if (request.method !== 'GET' && request.method !== 'HEAD')
+    return new Response('Method not allowed', { status: 405 });
+  const shell = await env.ASSETS.fetch(
+    new Request(new URL('/index.app', url), request),
+  );
+  const headers = new Headers(shell.headers);
+  headers.set('X-Robots-Tag', 'noindex, nofollow');
+  headers.set('Cache-Control', 'no-store');
+  return new Response(shell.body, { status: shell.status, headers });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -68,28 +89,14 @@ export default {
       return json({ ok: false, error: 'method_not_allowed' }, 405);
     }
 
-    if (url.pathname === '/index.html')
-      return Response.redirect(new URL('/', url), 308);
     const publicResponse = await serveQA(request, env);
     if (publicResponse) return publicResponse;
     if (
-      /^\/(answer|verify|login|signup|register)(\/|$)/.test(url.pathname) ||
       url.pathname === '/questions/new' ||
       (url.pathname.startsWith('/questions/') &&
         url.searchParams.get('preview') === '1')
-    ) {
-      if (request.method !== 'GET' && request.method !== 'HEAD')
-        return new Response('Method not allowed', { status: 405 });
-      // ASSETS canonicalizes .html URLs with a 307 redirect. Fetch its clean
-      // asset URL internally so the browser stays on /answer (or auth route).
-      const shell = await env.ASSETS.fetch(
-        new Request(new URL('/index.app', url), request),
-      );
-      const headers = new Headers(shell.headers);
-      headers.set('X-Robots-Tag', 'noindex, nofollow');
-      headers.set('Cache-Control', 'no-store');
-      return new Response(shell.body, { status: shell.status, headers });
-    }
+    )
+      return serveAppShell(request, env, url);
     return env.ASSETS.fetch(request);
   },
 };
