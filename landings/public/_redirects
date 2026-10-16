@@ -1,0 +1,17 @@
+# Static rules for asset-served requests (paths outside run_worker_first in
+# wrangler.jsonc). Rewrite targets use /index.app, not /index.app.html, which
+# would 307.
+/index.html  /  308
+
+# Authenticated Angular app shell (dist/index.app.html). /questions/new and
+# ?preview=1 are handled in worker.js because /questions/* is server-rendered.
+/answer      /index.app  200
+/answer/*    /index.app  200
+/verify      /index.app  200
+/verify/*    /index.app  200
+/login       /index.app  200
+/login/*     /index.app  200
+/signup      /index.app  200
+/signup/*    /index.app  200
+/register    /index.app  200
+/register/*  /index.app  200

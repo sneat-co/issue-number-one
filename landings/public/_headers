@@ -1,0 +1,31 @@
+# App-shell routes rewritten in _redirects: keep them out of search and caches.
+/answer
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/answer/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/verify
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/verify/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/login
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/login/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/signup
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/signup/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/register
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/register/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

@@ -9,6 +9,9 @@ import {
   questionPath,
   questionsPage,
 } from './render.js';
+// ISSUENUMBER_API_ORIGIN (wrangler.jsonc `vars`) is the Cloud Run run.app
+// origin: these public GETs need no origin secret, and calling api.sneat.cloud
+// would invoke the sneat-api-proxy Worker a second time per request.
 async function api(env, path) {
   const base = env.ISSUENUMBER_API_ORIGIN || 'https://api.sneat.cloud';
   const result = await fetch(new URL('/v0/issuenumber/' + path, base), {
@@ -27,7 +30,7 @@ export async function serveQA(request, env) {
   if (path === '/questions/new' || url.searchParams.get('preview') === '1')
     return null;
   if (
-    !['/', '/issues', '/sitemap.xml', '/robots.txt'].includes(path) &&
+    !['/', '/issues', '/sitemap.xml'].includes(path) &&
     !path.startsWith('/issues/') &&
     !path.startsWith('/questions/') &&
     path !== '/questions'
@@ -38,11 +41,6 @@ export async function serveQA(request, env) {
       status: 405,
       headers: { allow: 'GET, HEAD' },
     });
-  if (path === '/robots.txt')
-    return new Response(
-      'User-agent: *\nAllow: /\nDisallow: /answer\nDisallow: /verify\nDisallow: /login\nSitemap: https://issuenumber.one/sitemap.xml\n',
-      { headers: { 'content-type': 'text/plain' } },
-    );
   const headers = {
     'content-type': 'text/html; charset=utf-8',
     'cache-control': 'public, max-age=30',
