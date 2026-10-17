@@ -6,13 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/text/language"
+	"google.golang.org/api/option"
 )
 
 type GoogleTranslator struct{ Client *translate.Client }
 
 // NewGoogleTranslator uses Google Application Default Credentials in the host project.
-func NewGoogleTranslator(ctx context.Context) (*GoogleTranslator, error) {
-	client, err := translate.NewClient(ctx)
+func NewGoogleTranslator(ctx context.Context, opts ...option.ClientOption) (*GoogleTranslator, error) {
+	client, err := translate.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("create Google Translation client: %w", err)
 	}
@@ -28,7 +29,7 @@ func (translator *GoogleTranslator) Close() error {
 
 func (translator *GoogleTranslator) Translate(ctx context.Context, sourceLanguage, targetLanguage string, texts []string) ([]string, error) {
 	if translator == nil || translator.Client == nil {
-		return nil, errors.New("Google Translation client is required")
+		return nil, errors.New("google translation client is required")
 	}
 	source, err := language.Parse(sourceLanguage)
 	if err != nil {

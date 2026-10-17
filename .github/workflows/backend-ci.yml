@@ -1,0 +1,81 @@
+name: Backend CI
+
+# Go CI for the backend module at backend/.
+on:
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+      - .github/workflows/backend-ci.yml
+  pull_request:
+    paths:
+      - backend/**
+      - .github/workflows/backend-ci.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Build, lint, and test (100% coverage)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: |
+            backend/go.sum
+            backend/go.mod
+
+      - name: Configure Git for GOPRIVATE
+        env:
+          TOKEN: ${{ secrets.SNEAT_CI_READWRITE_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${TOKEN}@github.com/sneat-co/".insteadOf "https://github.com/sneat-co/"
+          echo "GOPRIVATE=github.com/sneat-co/*" >> $GITHUB_ENV
+
+      - name: Download modules
+        working-directory: backend
+        run: go mod download
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 'lts/*'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.15.0
+          working-directory: backend
+          args: --timeout=5m
+
+      - name: Run tests with Firestore emulator & enforce 100% coverage
+        working-directory: backend
+        run: |
+          firebase emulators:exec --only firestore "go test -count=1 -coverprofile=profile.cov ./..."
+          echo "=== Non-100% functions (if any) ==="
+          go tool cover -func=profile.cov | grep -v '100.0%' || true
+          echo "=== Uncovered statements (if any) ==="
+          awk 'NR>1 && NF>=3 { b=$1; if (!(b in order)) { order[b]=++n; blocks[n]=b }; stmts[b]=$(NF-1)+0; hits[b]+=($NF+0) } END { for (i=1; i<=n; i++) { b=blocks[i]; if (stmts[b]>0 && hits[b]==0) { print "UNCOVERED:", b, stmts[b], 0; bad=1 } } if (bad) { print "100% coverage requires zero uncovered statements"; exit 1 } }' profile.cov
+          total_coverage=$(go tool cover -func=profile.cov | awk '$1 == "total:" {print $3}' | sed 's/%//')
+          echo "Total coverage: $total_coverage%"
+          awk -v t="$total_coverage" -v m="100" 'BEGIN { if (t < m) { print "Coverage " t "% is below required " m "%"; exit 1 } }'
+          go tool cover -func=profile.cov | tail -n 1

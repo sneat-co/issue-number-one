@@ -18,7 +18,7 @@ type FirestoreRepository struct {
 
 func NewFirestoreRepository(client *firestore.Client, spaceID string) (*FirestoreRepository, error) {
 	if client == nil {
-		return nil, errors.New("Firestore client is required")
+		return nil, errors.New("firestore client is required")
 	}
 	spaceID = strings.TrimSpace(spaceID)
 	if spaceID == "" {

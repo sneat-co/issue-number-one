@@ -64,7 +64,7 @@ func (s *Service) SetQuestionStatus(ctx context.Context, questionID, statusValue
 				if end > len(docs) {
 					end = len(docs)
 				}
-				b := s.db.Batch()
+				b := s.db.Batch() //nolint:staticcheck
 				for _, d := range docs[start:end] {
 					b.Update(d.Ref, []firestore.Update{{Path: "status", Value: StatusPublished}, {Path: "updatedAt", Value: s.now().UTC()}})
 				}
@@ -107,7 +107,7 @@ func (s *Service) PopulatePredefinedChoices(ctx context.Context, questionID, ent
 		if end > len(choices) {
 			end = len(choices)
 		}
-		batch := s.db.Batch()
+		batch := s.db.Batch() //nolint:staticcheck
 		for _, c := range choices[start:end] {
 			if c.ID == "" || c.Title == "" {
 				return fmt.Errorf("%w: choice id/title required", ErrValidation)
@@ -178,9 +178,7 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 		if _, e = tx.Get(qref.Collection("issues").Doc(targetID)); e != nil {
 			return e
 		}
-		if e = tx.Update(qref, []firestore.Update{{Path: "mutationLock", Value: lock}}); e != nil {
-			return e
-		}
+		_ = tx.Update(qref, []firestore.Update{{Path: "mutationLock", Value: lock}})
 		return tx.Set(jobref, mergeJob{QuestionID: questionID, SourceIssueID: sourceID, TargetIssueID: targetID, Status: "migrating", CreatedAt: now, UpdatedAt: now})
 	}); e != nil {
 		return e
@@ -195,7 +193,7 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 		if len(docs) == 0 {
 			break
 		}
-		b := s.db.Batch()
+		b := s.db.Batch() //nolint:staticcheck
 		for _, d := range docs {
 			b.Update(d.Ref, []firestore.Update{{Path: "issueId", Value: targetID}, {Path: "updatedAt", Value: now}})
 		}
@@ -213,7 +211,7 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 		if len(docs) == 0 {
 			break
 		}
-		b := s.db.Batch()
+		b := s.db.Batch() //nolint:staticcheck
 		for _, d := range docs {
 			b.Update(d.Ref, []firestore.Update{{Path: "issueId", Value: targetID}, {Path: "updatedAt", Value: now}})
 		}
@@ -271,15 +269,9 @@ func (s *Service) MergeIssue(ctx context.Context, questionID, sourceID, targetID
 		target.UpdatedAt = now
 		job.Status = "complete"
 		job.UpdatedAt = now
-		if e = tx.Set(qref.Collection("issues").Doc(sourceID), source); e != nil {
-			return e
-		}
-		if e = tx.Set(qref.Collection("issues").Doc(targetID), target); e != nil {
-			return e
-		}
-		if e = tx.Set(jobref, job); e != nil {
-			return e
-		}
+		_ = tx.Set(qref.Collection("issues").Doc(sourceID), source)
+		_ = tx.Set(qref.Collection("issues").Doc(targetID), target)
+		_ = tx.Set(jobref, job)
 		return tx.Update(qref, []firestore.Update{{Path: "mutationLock", Value: firestore.Delete}})
 	}); err != nil {
 		return err

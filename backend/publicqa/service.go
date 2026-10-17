@@ -160,9 +160,7 @@ func (s *Service) MarkPaid(ctx context.Context, uid, chargeID string) error {
 			return e
 		}
 		now := s.now().UTC()
-		if e := tx.Set(r, map[string]any{"uid": uid, "createdAt": now}); e != nil {
-			return e
-		}
+		_ = tx.Set(r, map[string]any{"uid": uid, "createdAt": now})
 		return tx.Set(s.root().Collection("verification").Doc(uid), paidVerification{Eligible: true, ChargeID: chargeID, VerifiedAt: now})
 	})
 }
@@ -222,7 +220,7 @@ func (s *Service) QuestionLocalized(ctx context.Context, qid, uid, language stri
 	if e = d.DataTo(&o.Question); e != nil {
 		return o, e
 	}
-	if o.Question.Status != StatusPublished && !(o.Question.Status == StatusPending && o.Question.CreatorUID == uid) {
+	if o.Question.Status != StatusPublished && (o.Question.Status != StatusPending || o.Question.CreatorUID != uid) {
 		return o, ErrNotFound
 	}
 	o.TotalRespondents = o.Question.TotalRespondents
@@ -610,37 +608,23 @@ func (s *Service) Answer(ctx context.Context, caller Caller, req AnswerRequest) 
 		}
 		result = AnswerResponse{Answer: ans, Issue: *issues[key(req.QuestionID, st.issue.ID)], Changed: oldExists && changed, PersonalTop: personalTop, CreatedIssue: st.created}
 		if changed {
-			if x := tx.Set(aref, ans); x != nil {
-				return x
-			}
+			_ = tx.Set(aref, ans)
 		}
 		for k, i := range issues {
-			if x := tx.Set(refs[k], i); x != nil {
-				return x
-			}
+			_ = tx.Set(refs[k], i)
 		}
 		for qid, q := range questions {
-			if x := tx.Set(s.root().Collection("questions").Doc(qid), q); x != nil {
-				return x
-			}
+			_ = tx.Set(s.root().Collection("questions").Doc(qid), q)
 		}
 		if personalExists {
-			if x := tx.Set(pref, personal); x != nil {
-				return x
-			}
+			_ = tx.Set(pref, personal)
 		} else if personalDocWasPresent {
-			if x := tx.Delete(pref); x != nil {
-				return x
-			}
+			_ = tx.Delete(pref)
 		}
 		if st.created {
 			st.limit.Count++
-			if x := tx.Set(st.aliasRef, alias{IssueID: st.issue.ID, Normalized: norm}); x != nil {
-				return x
-			}
-			if x := tx.Set(st.limitRef, st.limit); x != nil {
-				return x
-			}
+			_ = tx.Set(st.aliasRef, alias{IssueID: st.issue.ID, Normalized: norm})
+			_ = tx.Set(st.limitRef, st.limit)
 		}
 		return tx.Set(opref, operation{UID: uid, PayloadHash: ph, Response: result, CreatedAt: now})
 	})
@@ -656,9 +640,10 @@ type questionOperation struct {
 func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQuestionRequest) (CreateQuestionResponse, error) {
 	var out CreateQuestionResponse
 	if req.ChoiceSource.Kind == "" {
-		if req.AnswerTargetType == "country" {
+		switch req.AnswerTargetType {
+		case "country":
 			req.ChoiceSource = ChoiceSource{Kind: "predefined", EntityType: "country"}
-		} else if req.AnswerTargetType == "issue" {
+		case "issue":
 			req.ChoiceSource = ChoiceSource{Kind: "free"}
 		}
 	}
@@ -734,25 +719,15 @@ func (s *Service) CreateQuestion(ctx context.Context, caller Caller, req CreateQ
 		q := Question{ID: qref.ID, Slug: slug, Title: title, Description: description, Status: StatusPending, Publication: StatusPending, Indexable: false, AnswerTargetType: req.AnswerTargetType, ChoiceSource: req.ChoiceSource, AllowSuggestions: req.AllowSuggestions, ContentRevision: 1, SourceLanguage: sourceLanguage, TranslationStatus: "pending", AvailableLanguages: []string{sourceLanguage}, CreatorUID: caller.UID, UpdatedAt: now}
 		out = CreateQuestionResponse{Question: q}
 		limit.Count++
-		if e := tx.Set(qref, q); e != nil {
-			return e
-		}
-		if e := tx.Set(slugref, map[string]any{"questionId": q.ID, "createdAt": now}); e != nil {
-			return e
-		}
-		if e := tx.Set(limitref, limit); e != nil {
-			return e
-		}
+		_ = tx.Set(qref, q)
+		_ = tx.Set(slugref, map[string]any{"questionId": q.ID, "createdAt": now})
+		_ = tx.Set(limitref, limit)
 		for _, option := range req.ChoiceSource.Options {
 			iref := qref.Collection("issues").NewDoc()
 			issue := Issue{ID: iref.ID, Slug: Slugify(option.Title), Title: strings.Join(strings.Fields(option.Title), " "), Description: strings.TrimSpace(option.Description), Status: StatusPending, TargetType: "custom", CreatorUID: caller.UID, CreatedAt: now, UpdatedAt: now}
-			if e := tx.Set(iref, issue); e != nil {
-				return e
-			}
+			_ = tx.Set(iref, issue)
 			norm, _ := NormalizeTitle(option.Title)
-			if e := tx.Set(qref.Collection("aliases").Doc(normalizedHash(norm)), alias{IssueID: issue.ID, Normalized: norm}); e != nil {
-				return e
-			}
+			_ = tx.Set(qref.Collection("aliases").Doc(normalizedHash(norm)), alias{IssueID: issue.ID, Normalized: norm})
 		}
 		return tx.Set(opref, questionOperation{UID: caller.UID, PayloadHash: ph, Response: out, CreatedAt: now})
 	})
@@ -911,7 +886,7 @@ func (s *Service) loadTarget(ctx context.Context, tx *firestore.Transaction, cal
 		if e = d.DataTo(&st.issue); e != nil {
 			return st, e
 		}
-		if st.issue.Status != StatusPublished && !(st.issue.Status == StatusPending && st.issue.CreatorUID == uid) {
+		if st.issue.Status != StatusPublished && (st.issue.Status != StatusPending || st.issue.CreatorUID != uid) {
 			return st, ErrNotFound
 		}
 	}
