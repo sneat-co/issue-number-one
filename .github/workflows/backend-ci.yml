@@ -35,6 +35,17 @@ jobs:
             backend/go.sum
             backend/go.mod
 
+      - name: Configure Git for GOPRIVATE
+        env:
+          TOKEN: ${{ secrets.SNEAT_CI_READWRITE_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${TOKEN}@github.com/sneat-co/".insteadOf "https://github.com/sneat-co/"
+          echo "GOPRIVATE=github.com/sneat-co/*" >> $GITHUB_ENV
+
+      - name: Download modules
+        working-directory: backend
+        run: go mod download
+
       - name: Set up Java
         uses: actions/setup-java@v6
         with:
