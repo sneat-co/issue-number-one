@@ -71,8 +71,11 @@ jobs:
         working-directory: backend
         run: |
           firebase emulators:exec --only firestore "go test -count=1 -coverprofile=profile.cov ./..."
+          echo "=== Non-100% functions (if any) ==="
+          go tool cover -func=profile.cov | grep -v '100.0%' || true
+          echo "=== Uncovered statements (if any) ==="
+          awk 'NR>1 && NF>=3 { b=$1; if (!(b in order)) { order[b]=++n; blocks[n]=b }; stmts[b]=$(NF-1)+0; hits[b]+=($NF+0) } END { for (i=1; i<=n; i++) { b=blocks[i]; if (stmts[b]>0 && hits[b]==0) { print "UNCOVERED:", b, stmts[b], 0; bad=1 } } if (bad) { print "100% coverage requires zero uncovered statements"; exit 1 } }' profile.cov
           total_coverage=$(go tool cover -func=profile.cov | awk '$1 == "total:" {print $3}' | sed 's/%//')
           echo "Total coverage: $total_coverage%"
           awk -v t="$total_coverage" -v m="100" 'BEGIN { if (t < m) { print "Coverage " t "% is below required " m "%"; exit 1 } }'
-          awk 'NR>1 && NF>=3 { b=$1; if (!(b in order)) { order[b]=++n; blocks[n]=b }; stmts[b]=$(NF-1)+0; hits[b]+=($NF+0) } END { for (i=1; i<=n; i++) { b=blocks[i]; if (stmts[b]>0 && hits[b]==0) { print b, stmts[b], 0; bad=1 } } if (bad) { print "100% coverage requires zero uncovered statements"; exit 1 } }' profile.cov
           go tool cover -func=profile.cov | tail -n 1
