@@ -173,7 +173,7 @@ func TestFirestoreRepository_PutTranslationIfFresh_Branches(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	now := time.Now().UTC()
+	now := time.Now().UTC().Truncate(time.Millisecond)
 	qSource := QuestionSource{
 		ID:              "q1",
 		Title:           "Question Title",
@@ -293,7 +293,7 @@ func TestFirestoreRepository_PutTranslationIfFresh_Branches(t *testing.T) {
 	if res.Title != tr.Title {
 		t.Fatalf("expected title updated to %q, got %q", tr.Title, res.Title)
 	}
-	if res.CreatedAt.IsZero() || !res.CreatedAt.Equal(uncorrectedTr.CreatedAt) {
+	if res.CreatedAt.IsZero() || !res.CreatedAt.Truncate(time.Millisecond).Equal(uncorrectedTr.CreatedAt.Truncate(time.Millisecond)) {
 		t.Fatalf("expected CreatedAt preserved from existing translation, got %v", res.CreatedAt)
 	}
 
