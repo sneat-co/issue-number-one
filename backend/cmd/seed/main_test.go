@@ -156,6 +156,9 @@ func TestSeed_TranslateAll(t *testing.T) {
 	newGoogleTranslator = oldGT
 
 	// 3. Error from newTranslationService
+	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (seedTranslator, error) {
+		return &mockTranslator{}, nil
+	}
 	newTranslationService = func(repo translations.Repository, translator translations.Translator, config translations.Config) (*translations.Service, error) {
 		return nil, errors.New("service init error")
 	}
@@ -398,4 +401,8 @@ func TestSeed_IrefGetError(t *testing.T) {
 	if err := run([]string{"--project", "in1-test", "--space", space, "--file", catPath}); err == nil {
 		t.Fatal("expected error on iref.Get cancellation")
 	}
+}
+
+func TestSeed_NewGoogleTranslator(t *testing.T) {
+	_, _ = newGoogleTranslator(context.Background())
 }

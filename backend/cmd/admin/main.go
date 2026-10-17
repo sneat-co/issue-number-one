@@ -13,6 +13,7 @@ import (
 
 	"github.com/sneat-co/issue-number-one/backend/publicqa"
 	"github.com/sneat-co/issue-number-one/backend/translations"
+	"google.golang.org/api/option"
 )
 
 type countryFile struct {
@@ -22,11 +23,18 @@ type countryFile struct {
 	} `json:"countriesByID"`
 }
 
+type adminTranslator interface {
+	translations.Translator
+	Close() error
+}
+
 var (
-	exit                  = os.Exit
-	fatal                 = func(v string) { fmt.Fprintln(os.Stderr, v); exit(1) }
-	newFirestoreClient    = firestore.NewClient
-	newGoogleTranslator   = translations.NewGoogleTranslator
+	exit                = os.Exit
+	fatal               = func(v string) { fmt.Fprintln(os.Stderr, v); exit(1) }
+	newFirestoreClient  = firestore.NewClient
+	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (adminTranslator, error) {
+		return translations.NewGoogleTranslator(ctx, opts...)
+	}
 	newTranslationService = translations.NewService
 )
 

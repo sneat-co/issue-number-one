@@ -14,6 +14,16 @@ import (
 	"google.golang.org/api/option"
 )
 
+type mockTranslator struct{}
+
+func (m *mockTranslator) Translate(ctx context.Context, sourceLanguage, targetLanguage string, texts []string) ([]string, error) {
+	return texts, nil
+}
+
+func (m *mockTranslator) Close() error {
+	return nil
+}
+
 func emulatorClient(t *testing.T) *firestore.Client {
 	t.Helper()
 	if os.Getenv("FIRESTORE_EMULATOR_HOST") == "" {
@@ -184,7 +194,7 @@ func TestAdmin_TranslateQuestion(t *testing.T) {
 
 	// 2. translator creation error -> line 105
 	oldGT := newGoogleTranslator
-	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (*translations.GoogleTranslator, error) {
+	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (adminTranslator, error) {
 		return nil, errors.New("translator init error")
 	}
 	if err := run([]string{"--project", "in1-test", "--space", space, "--question", "q-admin-trans", "--action", "translate-question"}); err == nil {
@@ -194,6 +204,9 @@ func TestAdmin_TranslateQuestion(t *testing.T) {
 
 	// 3. newTranslationService error -> line 110
 	oldTS := newTranslationService
+	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (adminTranslator, error) {
+		return &mockTranslator{}, nil
+	}
 	newTranslationService = func(repo translations.Repository, translator translations.Translator, config translations.Config) (*translations.Service, error) {
 		return nil, errors.New("translation service init error")
 	}
@@ -203,12 +216,13 @@ func TestAdmin_TranslateQuestion(t *testing.T) {
 	newTranslationService = oldTS
 
 	// 4. translate-question lines 118-119
-	oldGT4 := newGoogleTranslator
-	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (*translations.GoogleTranslator, error) {
-		return &translations.GoogleTranslator{}, nil
+	newGoogleTranslator = func(ctx context.Context, opts ...option.ClientOption) (adminTranslator, error) {
+		return &mockTranslator{}, nil
 	}
-	defer func() { newGoogleTranslator = oldGT4 }()
-	_ = run([]string{"--project", "in1-test", "--space", space, "--question", "q-admin-trans", "--action", "translate-question"})
+	defer func() { newGoogleTranslator = oldGT }()
+	if err := run([]string{"--project", "in1-test", "--space", space, "--question", "q-admin-trans", "--action", "translate-question"}); err != nil {
+		t.Fatalf("translate-question failed: %v", err)
+	}
 }
 
 func TestAdmin_ClientAndActionErrors(t *testing.T) {
@@ -262,4 +276,8 @@ func TestAdmin_Main(t *testing.T) {
 	if fatalMsg == "" {
 		t.Fatal("expected fatal to be called on error")
 	}
+}
+
+func TestAdmin_NewGoogleTranslator(t *testing.T) {
+	_, _ = newGoogleTranslator(context.Background())
 }
