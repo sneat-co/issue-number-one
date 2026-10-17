@@ -33,7 +33,7 @@ func (h *Handler) postQuestion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, 8192)
-	defer r.Body.Close()
+	defer func() { _ = r.Body.Close() }()
 	var req CreateQuestionRequest
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
@@ -120,7 +120,7 @@ func (h *Handler) postAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, 4096)
-	defer r.Body.Close()
+	defer func() { _ = r.Body.Close() }()
 	var req AnswerRequest
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()

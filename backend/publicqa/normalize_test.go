@@ -56,4 +56,34 @@ func TestSlugifyStable(t *testing.T) {
 	if got := Slugify("Housing Affordability!"); got != "housing-affordability" {
 		t.Fatalf("got %q", got)
 	}
+	if got := Slugify("!@#$%^&*()"); got != "issue" {
+		t.Fatalf("expected 'issue' for non-alphanumeric, got %q", got)
+	}
+	longTitle := strings.Repeat("long-title-with-many-words-", 10)
+	if got := Slugify(longTitle); len(got) > 72 || !strings.HasPrefix(got, "long-title") {
+		t.Fatalf("expected truncated slug <= 72 chars, got %q (len %d)", got, len(got))
+	}
+}
+
+func TestNormalizeTitle_Branches(t *testing.T) {
+	// Too short (< 3)
+	if _, err := NormalizeTitle("ab"); err == nil {
+		t.Fatal("expected error for title < 3 chars")
+	}
+	// Too long (> 120)
+	if _, err := NormalizeTitle(strings.Repeat("a", 121)); err == nil {
+		t.Fatal("expected error for title > 120 chars")
+	}
+	// Control character
+	if _, err := NormalizeTitle("valid \x00 title"); err == nil {
+		t.Fatal("expected error for control character")
+	}
+}
+
+func TestNormalizedKey(t *testing.T) {
+	k1 := NormalizedKey("hello world")
+	k2 := NormalizedKey("hello world")
+	if k1 == "" || k1 != k2 {
+		t.Fatalf("expected stable non-empty key, got %q vs %q", k1, k2)
+	}
 }

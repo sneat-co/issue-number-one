@@ -4,13 +4,15 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
-	"github.com/sneat-co/issue-number-one/backend/publicqa"
-	"github.com/sneat-co/issue-number-one/backend/translations"
 	"os"
 	"sort"
 	"time"
+
+	"github.com/sneat-co/issue-number-one/backend/publicqa"
+	"github.com/sneat-co/issue-number-one/backend/translations"
 )
 
 type countryFile struct {
@@ -20,31 +22,48 @@ type countryFile struct {
 	} `json:"countriesByID"`
 }
 
+var (
+	exit                  = os.Exit
+	fatal                 = func(v string) { fmt.Fprintln(os.Stderr, v); exit(1) }
+	newFirestoreClient    = firestore.NewClient
+	newGoogleTranslator   = translations.NewGoogleTranslator
+	newTranslationService = translations.NewService
+)
+
 func main() {
+	if err := run(os.Args[1:]); err != nil {
+		fatal(err.Error())
+	}
+}
+
+func run(args []string) error {
 	var action, project, confirm, space, qid, iid, target, op, file string
-	flag.StringVar(&action, "action", "", "publish-question|hide-question|publish-issue|hide-issue|reject-issue|populate-countries|merge-issue|translate-question")
-	flag.StringVar(&project, "project", os.Getenv("GCLOUD_PROJECT"), "Google Cloud project")
-	flag.StringVar(&confirm, "confirm-production-project", "", "must exactly equal project outside emulator")
-	flag.StringVar(&space, "space", publicqa.DefaultPublicSpaceID, "public Space")
-	flag.StringVar(&qid, "question", "", "question id")
-	flag.StringVar(&iid, "issue", "", "issue id")
-	flag.StringVar(&target, "target-issue", "", "merge target issue id")
-	flag.StringVar(&op, "operation", "", "stable merge operation id")
-	flag.StringVar(&file, "countries-file", "", "Sneat Libs countries.json")
-	flag.Parse()
+	fs := flag.NewFlagSet("admin", flag.ContinueOnError)
+	fs.StringVar(&action, "action", "", "publish-question|hide-question|publish-issue|hide-issue|reject-issue|populate-countries|merge-issue|translate-question")
+	fs.StringVar(&project, "project", os.Getenv("GCLOUD_PROJECT"), "Google Cloud project")
+	fs.StringVar(&confirm, "confirm-production-project", "", "must exactly equal project outside emulator")
+	fs.StringVar(&space, "space", publicqa.DefaultPublicSpaceID, "public Space")
+	fs.StringVar(&qid, "question", "", "question id")
+	fs.StringVar(&iid, "issue", "", "issue id")
+	fs.StringVar(&target, "target-issue", "", "merge target issue id")
+	fs.StringVar(&op, "operation", "", "stable merge operation id")
+	fs.StringVar(&file, "countries-file", "", "Sneat Libs countries.json")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
 	if project == "" || qid == "" {
-		fatal("--project and --question required")
+		return errors.New("--project and --question required")
 	}
 	if os.Getenv("FIRESTORE_EMULATOR_HOST") == "" && confirm != project {
-		fatal("production administration requires exact --confirm-production-project")
+		return errors.New("production administration requires exact --confirm-production-project")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
-	db, e := firestore.NewClient(ctx, project)
+	db, e := newFirestoreClient(ctx, project)
 	if e != nil {
-		fatal(e.Error())
+		return e
 	}
-	defer db.Close()
+	defer func() { _ = db.Close() }()
 	s := publicqa.NewService(db, space)
 	switch action {
 	case "publish-question":
@@ -61,15 +80,15 @@ func main() {
 		e = s.MergeIssue(ctx, qid, iid, target, op)
 	case "populate-countries":
 		if file == "" {
-			fatal("--countries-file must point to Sneat Libs countries.json")
+			return errors.New("--countries-file must point to Sneat Libs countries.json")
 		}
 		b, x := os.ReadFile(file)
 		if x != nil {
-			fatal(x.Error())
+			return x
 		}
 		var src countryFile
 		if x = json.Unmarshal(b, &src); x != nil {
-			fatal(x.Error())
+			return x
 		}
 		ids := make([]string, 0, len(src.Countries))
 		for id := range src.Countries {
@@ -85,25 +104,25 @@ func main() {
 	case "translate-question":
 		repository, x := translations.NewFirestoreRepository(db, space)
 		if x != nil {
-			fatal(x.Error())
+			return x
 		}
-		translator, x := translations.NewGoogleTranslator(ctx)
+		translator, x := newGoogleTranslator(ctx)
 		if x != nil {
-			fatal(x.Error())
+			return x
 		}
-		defer translator.Close()
-		translationService, x := translations.NewService(repository, translator, translations.Config{SupportedLanguages: translations.CanonicalSupportedLanguages()})
+		defer func() { _ = translator.Close() }()
+		translationService, x := newTranslationService(repository, translator, translations.Config{SupportedLanguages: translations.CanonicalSupportedLanguages()})
 		if x != nil {
-			fatal(x.Error())
+			return x
 		}
 		s = publicqa.NewService(db, space, publicqa.WithTranslations(translationService, repository))
 		_, e = s.TranslateAllQuestionLanguages(ctx, qid, translations.Actor{Trusted: true})
 	default:
-		fatal("invalid --action")
+		return errors.New("invalid --action")
 	}
 	if e != nil {
-		fatal(e.Error())
+		return e
 	}
 	fmt.Println("admin operation completed")
+	return nil
 }
-func fatal(v string) { fmt.Fprintln(os.Stderr, v); os.Exit(1) }
