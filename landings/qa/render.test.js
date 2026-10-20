@@ -259,3 +259,15 @@ test('escaping prevents user text breaking attributes or structured script', () 
   });
   assert.ok(!html.includes('<script>alert(1)</script>'));
 });
+
+test('emits dedicated Google Analytics 4 tag G-8KQNZE50GY', () => {
+  const html = page({
+    title: 'Home',
+    description: 'Home page',
+    path: '/',
+    body: '<h1>Home</h1>',
+  });
+  assert.ok(html.includes('googletagmanager.com/gtag/js?id=G-8KQNZE50GY'));
+  assert.ok(html.includes('gtag("config","G-8KQNZE50GY"'));
+  assert.ok(!html.includes('G-TYBDTV738R'));
+});

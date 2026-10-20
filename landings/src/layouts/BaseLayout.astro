@@ -55,8 +55,14 @@ const siteName = "IssueNumber.one";
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
-    <!-- TODO: add GoogleAnalytics once a GA4 property for issuenumber.one exists
-         (see sneat-ops/data/ga-properties.json). -->
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8KQNZE50GY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-8KQNZE50GY");
+    </script>
   </head>
   <body>
     <a class="visually-hidden" href="#main">Skip to content</a>
