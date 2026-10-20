@@ -33,7 +33,7 @@
     // api.sneat.cloud to). The public /v0/issuenumber/{catalog,question} GETs
     // need no origin secret, and skipping api.sneat.cloud avoids a second
     // Worker invocation per API call.
-    "ISSUENUMBER_API_ORIGIN": "https://sneat-app-354fvnqbaa-ey.a.run.app"
+    "ISSUENUMBER_API_ORIGIN": "https://sneat-app-354fvnqbaa-ew.a.run.app"
   },
   // Waitlist signups: {email, ts, source} keyed by waitlist:<email>.
   // Created 2026-07-09 as `issue_number_one_waitlist`.
