@@ -36,6 +36,7 @@
     "@sneat/dto": "0.27.41",
     "@sneat/logging": "0.27.41",
     "@sneat/random": "^0.0.4",
+    "@sneat/space-models": "0.27.41",
     "@sneat/space-services": "0.27.41",
     "@sneat/ui": "0.27.41",
     "firebase": "^12.16.0",

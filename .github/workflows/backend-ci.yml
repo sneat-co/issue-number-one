@@ -65,7 +65,7 @@ jobs:
         with:
           version: v2.15.0
           working-directory: backend
-          args: --timeout=5m
+          args: --timeout=5m --modules-download-mode=mod
 
       - name: Run tests with Firestore emulator & enforce 100% coverage
         working-directory: backend
