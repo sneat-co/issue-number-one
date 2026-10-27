@@ -8,7 +8,7 @@ require (
 	github.com/sneat-co/paymentus/backend v0.56.6
 	golang.org/x/text v0.38.0
 	google.golang.org/api v0.287.1
-	google.golang.org/grpc v1.83.1
+	google.golang.org/grpc v1.83.2
 )
 
 require (
