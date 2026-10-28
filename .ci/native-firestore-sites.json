@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "repositories": {
+    "sneat-co/issue-number-one": {
+      "sites": [
+        {
+          "file": "backend/cmd/admin/main.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "521dcc52d434c5b5a9037f3af7dedf05d60ea3d79e6daf12a424d976cfdcaa91",
+          "class": "deliberate-native-owner",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Native SDK owner paths spaces/{space}/ext/issuenumber; admin delegates service; seed fixes same root; outside DALgo guard.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/cmd/admin/main_test.go#L72"
+        },
+        {
+          "file": "backend/cmd/admin/main_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "004a53b42876a24bcffe508a3b7cf513ed26d0f3fd35624c6e200a687a400e20",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/cmd/admin/main_test.go#L72"
+        },
+        {
+          "file": "backend/cmd/seed/main.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "2e019f7e66965cae996862e1bfd6095ea7f3198bfe6d3daa8b5fec15a53af192",
+          "class": "deliberate-native-owner",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Native SDK owner paths spaces/{space}/ext/issuenumber; admin delegates service; seed fixes same root; outside DALgo guard.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/cmd/seed/main_test.go#L57"
+        },
+        {
+          "file": "backend/cmd/seed/main_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "4d505c87d80731d0c7f851876c8d045f4600141b76bab86b338591577547d73a",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/cmd/seed/main_test.go#L57"
+        },
+        {
+          "file": "backend/publicqa/admin.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "f59ca327cc8ac5c2345f9756f160888c6d6ed7ad6b4b531cad1392d1cbb3c54c",
+          "class": "deliberate-native-owner",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Native SDK owner paths spaces/{space}/ext/issuenumber; admin delegates service; seed fixes same root; outside DALgo guard.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/publicqa/admin_extra_test.go#L13"
+        },
+        {
+          "file": "backend/publicqa/invariants_extra_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "75f2a77f9f85792cd3638407cc66a2c6315ea7abe0fa40cf45c3b4eac42399dd",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/publicqa/invariants_extra_test.go#L11"
+        },
+        {
+          "file": "backend/publicqa/service.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "7f280857102151c8cf4ff6e30454b04ba1daf23132506eae33ad6cb93624f41e",
+          "class": "deliberate-native-owner",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Native SDK owner paths spaces/{space}/ext/issuenumber; admin delegates service; seed fixes same root; outside DALgo guard.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/publicqa/admin_extra_test.go#L13"
+        },
+        {
+          "file": "backend/publicqa/service_emulator_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "888d6511f72f607009afeb7df28401e8168820be182b43954c0f304f67fb0b0e",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/publicqa/service_emulator_test.go#L90"
+        },
+        {
+          "file": "backend/publicqa/service_uncovered_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "a7fd077ef73f2ecebf4839f6e76f7cad2dafb177605f1fe3db5914cde81a957e",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/publicqa/service_uncovered_test.go#L13"
+        },
+        {
+          "file": "backend/translations/firestore.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "b8b5e11570b0fd4e16edbcf8a8da37017b014aec35935f23f219414bbaae848b",
+          "class": "deliberate-native-owner",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Native SDK owner paths spaces/{space}/ext/issuenumber; admin delegates service; seed fixes same root; outside DALgo guard.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/translations/firestore_emulator_test.go#L29"
+        },
+        {
+          "file": "backend/translations/firestore_emulator_test.go",
+          "import": "cloud.google.com/go/firestore",
+          "sha256": "cecb8a34c8243e0359119d369b25f031c5aa4a5bcf8e722b35c5096c968d70d8",
+          "class": "test-only",
+          "owner": "sneat-co/issue-number-one/backend",
+          "rationale": "Test-only SDK types, fixtures or emulator operations. This classification does not claim emulator execution; file changes require manifest consistency and separate review.",
+          "review": "sha256:b8b9c1fe0c4c4acc98d21637cdf4bb54181ea3b6b02f609db3d80a7558dc92d3",
+          "test": "https://github.com/sneat-co/issue-number-one/blob/7228d404910b4457ed1688a543834454b9a7e6f8/backend/translations/firestore_emulator_test.go#L29"
+        }
+      ]
+    }
+  }
+}
