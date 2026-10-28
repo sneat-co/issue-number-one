@@ -1,12 +1,44 @@
 name: Backend CI
 
 # Go CI for the backend module at backend/.
-# The native import-site gate scans every tracked Go file, including root/tools
-# and nested modules. Keep push and PR triggers unfiltered.
+# Scoped backend CI also covers root/tools/build-tagged Go and nested modules.
+# New non-Go symlinks or gitlinks outside these paths require explicit
+# workflow_dispatch and exact-head review; this baseline contains neither.
 on:
+  workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - '.ci/**'
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+      - '*.go'
+      - '**/*.go'
+      - 'go.mod'
+      - '**/go.mod'
+      - 'go.sum'
+      - '**/go.sum'
+      - 'go.work'
+      - '**/go.work'
+      - 'go.work.sum'
+      - '**/go.work.sum'
+      - '.gitmodules'
   pull_request:
+    paths:
+      - '.ci/**'
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+      - '*.go'
+      - '**/*.go'
+      - 'go.mod'
+      - '**/go.mod'
+      - 'go.sum'
+      - '**/go.sum'
+      - 'go.work'
+      - '**/go.work'
+      - 'go.work.sum'
+      - '**/go.work.sum'
+      - '.gitmodules'
 
 permissions:
   contents: read
