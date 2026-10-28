@@ -1,18 +1,12 @@
 name: Backend CI
 
 # Go CI for the backend module at backend/.
+# The native import-site gate scans every tracked Go file, including root/tools
+# and nested modules. Keep push and PR triggers unfiltered.
 on:
   push:
     branches: [main]
-    paths:
-      - .ci/**
-      - backend/**
-      - .github/workflows/backend-ci.yml
   pull_request:
-    paths:
-      - .ci/**
-      - backend/**
-      - .github/workflows/backend-ci.yml
 
 permissions:
   contents: read
