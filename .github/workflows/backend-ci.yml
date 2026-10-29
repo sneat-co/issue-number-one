@@ -1,16 +1,44 @@
 name: Backend CI
 
 # Go CI for the backend module at backend/.
+# Scoped backend CI also covers root/tools/build-tagged Go and nested modules.
+# New non-Go symlinks or gitlinks outside these paths require explicit
+# workflow_dispatch and exact-head review; this baseline contains neither.
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - backend/**
-      - .github/workflows/backend-ci.yml
+      - '.ci/**'
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+      - '*.go'
+      - '**/*.go'
+      - 'go.mod'
+      - '**/go.mod'
+      - 'go.sum'
+      - '**/go.sum'
+      - 'go.work'
+      - '**/go.work'
+      - 'go.work.sum'
+      - '**/go.work.sum'
+      - '.gitmodules'
   pull_request:
     paths:
-      - backend/**
-      - .github/workflows/backend-ci.yml
+      - '.ci/**'
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+      - '*.go'
+      - '**/*.go'
+      - 'go.mod'
+      - '**/go.mod'
+      - 'go.sum'
+      - '**/go.sum'
+      - 'go.work'
+      - '**/go.work'
+      - 'go.work.sum'
+      - '**/go.work.sum'
+      - '.gitmodules'
 
 permissions:
   contents: read
@@ -34,6 +62,11 @@ jobs:
           cache-dependency-path: |
             backend/go.sum
             backend/go.mod
+
+      - name: Check reviewed native Firestore import sites
+        run: |
+          set -euo pipefail
+          GOWORK=off go run github.com/sneat-co/cicd/cmd/check-go-native-firestore-sites@40765b99ee6f9b1d2fefe8cee3e1a7a09934d67e --root "$(git rev-parse --show-toplevel)" --repository "$GITHUB_REPOSITORY" --manifest .ci/native-firestore-sites.json
 
       - name: Configure Git for GOPRIVATE
         env:
