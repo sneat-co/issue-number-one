@@ -37,6 +37,11 @@ test('routes app-shell paths statically and only dynamic paths to the Worker', a
     const landing = '<!doctype html><html><body>landing</body></html>';
     await writeFile(join(dir, 'assets/index.app.html'), shell);
     await writeFile(join(dir, 'assets/index.html'), landing);
+    await mkdir(join(dir, 'assets/about/tech-stack'), { recursive: true });
+    await writeFile(
+      join(dir, 'assets/about/tech-stack/index.html'),
+      '<!doctype html><title>IssueNumber.one tech stack</title><h1>Tools for finding the one issue that matters</h1>',
+    );
     for (const file of ['_redirects', '_headers', 'robots.txt'])
       await copyFile(join(landings, 'public', file), join(dir, 'assets', file));
     const assets = await realAssetsConfig();
@@ -101,6 +106,10 @@ test('routes app-shell paths statically and only dynamic paths to the Worker', a
       await robots.text(),
       /Sitemap: https:\/\/issuenumber\.one\/sitemap\.xml/,
     );
+
+    const techStack = await worker.fetch('/about/tech-stack/');
+    assert.equal(techStack.status, 200);
+    assert.match(await techStack.text(), /<title>IssueNumber\.one tech stack<\/title>/);
 
     // Server-rendered paths reach the Worker (503 because the API is down).
     for (const path of [

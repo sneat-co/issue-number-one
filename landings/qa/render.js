@@ -332,7 +332,7 @@ export function questionPage(catalog, category, snapshot, selectedSlug) {
   });
 }
 export function sitemap(catalog) {
-  const paths = ['/', '/issues', '/for-work/'];
+  const paths = ['/', '/issues', '/for-work/', '/about/tech-stack/'];
   paths.push(
     ...catalog.questions
       .filter((q) => !q.categoryId && isIndexable(q))

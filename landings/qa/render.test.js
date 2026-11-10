@@ -171,6 +171,7 @@ test('country county and city paths nest independently of category membership', 
       '/issues/country/ireland/county/limerick/city/limerick',
     ),
   );
+  assert.ok(sitemap(c).includes('/about/tech-stack/'));
 });
 test('generated user question canonicals preserve founder-required trailing question mark', () => {
   const html = page({
