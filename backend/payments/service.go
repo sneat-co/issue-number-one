@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/sneat-co/paymentus/backend/payrail"
+	"github.com/strongo/logus"
 )
 
 const (
@@ -138,21 +139,95 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 	}
 }
 
+// Log messages and reasons for settlement events that are acknowledged without
+// granting eligibility. They are stable so operators can search and alert on them.
+const (
+	msgPaidNotApplied          = "issuenumber payments: paid settlement NOT applied, operator review required"
+	msgRefundAcknowledged      = "issuenumber payments: refund acknowledged, eligibility unchanged (refund policy undecided)"
+	msgFailedAcknowledged      = "issuenumber payments: failed charge acknowledged, nothing to do"
+	msgUnknownKindAcknowledged = "issuenumber payments: unknown settlement kind acknowledged, nothing applied"
+
+	reasonChargeMissing    = "charge reference missing"
+	reasonConsumerMismatch = "consumer mismatch"
+	reasonAmountMismatch   = "amount mismatch"
+	reasonCurrencyMismatch = "currency mismatch"
+	reasonModeNotLive      = "payment mode is not live"
+	reasonPayerMissing     = "user or payer metadata missing"
+	reasonPayerMismatch    = "user and payer metadata differ"
+)
+
 // SettlementHandler is registered with the host's one signed settlement
 // router. It still verifies the consumer, price and trusted identity metadata
 // so a valid provider event cannot be repurposed from another product or user.
+//
+// The host answers the provider with a retry for any returned error. An event
+// that can never become valid by being resent is therefore acknowledged (nil)
+// and logged through logus, which the host ships to Cloud Logging with
+// severity: a refund or failure, an unknown kind, and a paid event that fails a
+// check (ERROR). Nothing is granted for any of them. Every eligibility-store
+// error is returned and so retried. That covers transient storage failures and
+// also the store's two permanent refusals (a charge ID it cannot key, a receipt
+// already bound to another user); neither is reachable with provider charge IDs
+// and server-written metadata, and retrying them keeps the provider's
+// failed-delivery signal.
 func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 	return func(ctx context.Context, event payrail.SettlementEvent) error {
-		uid := event.Metadata[metadataUserID]
-		payer := event.Metadata[metadataPayerRef]
-		if event.ChargeRef == "" || event.Consumer != Consumer || event.Kind != payrail.SettlementPaid ||
-			event.Amount != AmountMinorUnits || !strings.EqualFold(event.Currency, Currency) ||
-			event.Metadata[metadataPaymentMode] != requiredPaymentMode ||
-			uid == "" || payer == "" || uid != payer {
-			return fmt.Errorf("%w: consumer=%q kind=%q amount=%d currency=%q", ErrInvalidSettlement, event.Consumer, event.Kind, event.Amount, event.Currency)
+		switch event.Kind {
+		case payrail.SettlementPaid:
+		case payrail.SettlementRefunded:
+			// Whether a refund revokes paid eligibility is an open product decision;
+			// until it is made, eligibility is left exactly as it was.
+			logus.Warningf(ctx, "%s: %s", msgRefundAcknowledged, settlementFacts(event))
+			return nil
+		case payrail.SettlementFailed:
+			logus.Infof(ctx, "%s: %s", msgFailedAcknowledged, settlementFacts(event))
+			return nil
+		default:
+			logus.Warningf(ctx, "%s: %s", msgUnknownKindAcknowledged, settlementFacts(event))
+			return nil
 		}
-		return s.marker.MarkPaid(ctx, uid, event.ChargeRef)
+		if reason := invalidPaidReason(event); reason != "" {
+			logus.Errorf(ctx, "%s: reason=%q %s err=%q", msgPaidNotApplied, reason, settlementFacts(event),
+				fmt.Errorf("%w: %s", ErrInvalidSettlement, reason).Error())
+			return nil
+		}
+		return s.marker.MarkPaid(ctx, event.Metadata[metadataUserID], event.ChargeRef)
 	}
+}
+
+// invalidPaidReason returns why a paid event must not grant eligibility, or ""
+// when it may.
+func invalidPaidReason(event payrail.SettlementEvent) string {
+	uid := event.Metadata[metadataUserID]
+	payer := event.Metadata[metadataPayerRef]
+	switch {
+	case event.ChargeRef == "":
+		// Defence in depth: payrail's router rejects an empty charge reference
+		// before calling any handler, so only a direct call reaches this.
+		return reasonChargeMissing
+	case event.Consumer != Consumer:
+		return reasonConsumerMismatch
+	case event.Amount != AmountMinorUnits:
+		return reasonAmountMismatch
+	case !strings.EqualFold(event.Currency, Currency):
+		return reasonCurrencyMismatch
+	case event.Metadata[metadataPaymentMode] != requiredPaymentMode:
+		return reasonModeNotLive
+	case uid == "" || payer == "":
+		return reasonPayerMissing
+	case uid != payer:
+		return reasonPayerMismatch
+	}
+	return ""
+}
+
+// settlementFacts are the provider facts an operator needs to find the charge,
+// quoted so event values cannot forge log text. User identifiers are
+// deliberately left out of logs.
+func settlementFacts(event payrail.SettlementEvent) string {
+	return fmt.Sprintf("consumer=%q kind=%q chargeRef=%q refundRef=%q amount=%d currency=%q paymentMode=%q",
+		event.Consumer, string(event.Kind), event.ChargeRef, event.RefundRef,
+		event.Amount, event.Currency, event.Metadata[metadataPaymentMode])
 }
 
 func writeCheckoutResponse(w http.ResponseWriter, status int, response CreateCheckoutResponse) {

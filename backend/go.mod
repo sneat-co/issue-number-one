@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.29.0
 	cloud.google.com/go/translate v1.18.0
 	github.com/sneat-co/paymentus/backend v0.70.1
+	github.com/strongo/logus v0.4.8
 	golang.org/x/text v0.43.0
 	google.golang.org/api v0.308.0
 	google.golang.org/grpc v1.84.0

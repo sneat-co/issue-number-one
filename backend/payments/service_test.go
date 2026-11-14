@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -11,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/sneat-co/paymentus/backend/payrail"
+	"github.com/strongo/logus"
 )
 
 type fixedIdentity struct{ uid string }
@@ -135,38 +137,234 @@ func TestCreateCheckoutRejectsAnonymousAndUnsafeAttribution(t *testing.T) {
 	}
 }
 
+// testPayerUID is distinctive so a log line that leaks it is detectable.
+const testPayerUID = "payer-uid-7Hq2"
+
 func paidEvent() payrail.SettlementEvent {
-	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: "u1", metadataPayerRef: "u1", metadataPaymentMode: requiredPaymentMode}}
+	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: testPayerUID, metadataPayerRef: testPayerUID, metadataPaymentMode: requiredPaymentMode}}
 }
 
-func TestSettlementRejectsForgedConsumerAmountAndUser(t *testing.T) {
-	marker := &idempotentMarker{}
-	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-	for name, mutate := range map[string]func(*payrail.SettlementEvent){
-		"consumer":    func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" },
-		"amount":      func(e *payrail.SettlementEvent) { e.Amount = 99 },
-		"currency":    func(e *payrail.SettlementEvent) { e.Currency = "USD" },
-		"outcome":     func(e *payrail.SettlementEvent) { e.Kind = payrail.SettlementRefunded },
-		"user":        func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" },
-		"charge":      func(e *payrail.SettlementEvent) { e.ChargeRef = "" },
-		"test replay": func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" },
+// logusEntry is one entry dispatched through logus, formatted exactly as the
+// host's Cloud Logging handler formats it (sneat-go-host logginghost: severity
+// mapped one-to-one, payload = fmt.Sprintf(MessageFormat, MessageArgs...)).
+type logusEntry struct {
+	severity logus.Severity
+	message  string
+}
+
+type logusCapture struct {
+	mu      sync.Mutex
+	entries []logusEntry
+}
+
+func (c *logusCapture) Log(_ context.Context, entry logus.LogEntry) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.entries = append(c.entries, logusEntry{severity: entry.Severity, message: fmt.Sprintf(entry.MessageFormat, entry.MessageArgs...)})
+	return nil
+}
+
+var (
+	capturedLogus     = &logusCapture{}
+	capturedLogusOnce sync.Once
+)
+
+// captureLogus registers a handler on the process-wide logus dispatcher, the
+// same one the host attaches its Cloud Logging handler to, and returns a reader
+// for the entries written since the call.
+func captureLogus(t *testing.T) func() []logusEntry {
+	t.Helper()
+	capturedLogusOnce.Do(func() { logus.AddLogEntryHandler(capturedLogus) })
+	capturedLogus.mu.Lock()
+	capturedLogus.entries = nil
+	capturedLogus.mu.Unlock()
+	return func() []logusEntry {
+		capturedLogus.mu.Lock()
+		defer capturedLogus.mu.Unlock()
+		return append([]logusEntry(nil), capturedLogus.entries...)
+	}
+}
+
+func onlyEntry(t *testing.T, entries []logusEntry) logusEntry {
+	t.Helper()
+	if len(entries) != 1 {
+		t.Fatalf("want exactly one log entry, got %d: %v", len(entries), entries)
+	}
+	return entries[0]
+}
+
+// assertNoUserIdentifiers fails if an entry carries the event's user or payer
+// identifier, or names the metadata keys that hold them.
+func assertNoUserIdentifiers(t *testing.T, entries []logusEntry, e payrail.SettlementEvent) {
+	t.Helper()
+	for _, entry := range entries {
+		for _, key := range []string{metadataUserID, metadataPayerRef} {
+			if strings.Contains(entry.message, key) {
+				t.Fatalf("log names user metadata key %q: %s", key, entry.message)
+			}
+			if v := e.Metadata[key]; v != "" && strings.Contains(entry.message, v) {
+				t.Fatalf("log carries user identifier %q: %s", v, entry.message)
+			}
+		}
+	}
+}
+
+// A paid event that fails a check can never become valid by being resent, so it
+// is acknowledged (nil: no provider retry storm on the shared webhook), grants
+// nothing, and is logged through logus at ERROR severity with the charge
+// reference and reason, where the host ships it to Cloud Logging.
+func TestSettlementInvalidPaidIsAcknowledgedAndLoggedAtErrorViaLogus(t *testing.T) {
+	for name, test := range map[string]struct {
+		mutate func(*payrail.SettlementEvent)
+		reason string
+	}{
+		"consumer":            {func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" }, reasonConsumerMismatch},
+		"amount":              {func(e *payrail.SettlementEvent) { e.Amount = 99 }, reasonAmountMismatch},
+		"currency":            {func(e *payrail.SettlementEvent) { e.Currency = "USD" }, reasonCurrencyMismatch},
+		"user":                {func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user-9Zx" }, reasonPayerMismatch},
+		"empty uid":           {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataUserID) }, reasonPayerMissing},
+		"empty payer":         {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataPayerRef) }, reasonPayerMissing},
+		"test replay":         {func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" }, reasonModeNotLive},
+		"amount and currency": {func(e *payrail.SettlementEvent) { e.Amount = 5000; e.Currency = "GBP" }, reasonAmountMismatch},
+		// Defence in depth: the real router rejects an empty charge reference
+		// before calling the handler, so this is reachable only by a direct call.
+		"charge": {func(e *payrail.SettlementEvent) { e.ChargeRef = "" }, reasonChargeMissing},
 	} {
 		t.Run(name, func(t *testing.T) {
+			marker := &idempotentMarker{}
+			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+			logs := captureLogus(t)
 			e := paidEvent()
-			mutate(&e)
-			if err := s.SettlementHandler()(context.Background(), e); !errors.Is(err, ErrInvalidSettlement) {
-				t.Fatalf("err=%v", err)
+			test.mutate(&e)
+			if err := s.SettlementHandler()(context.Background(), e); err != nil {
+				t.Fatalf("invalid paid event must be acknowledged, got err=%v", err)
 			}
+			if marker.calls != 0 || len(marker.grants) != 0 {
+				t.Fatalf("invalid paid event unlocked eligibility: calls=%d grants=%v", marker.calls, marker.grants)
+			}
+			entries := logs()
+			entry := onlyEntry(t, entries)
+			if entry.severity != logus.SeverityError {
+				t.Fatalf("severity=%d, want ERROR: %s", entry.severity, entry.message)
+			}
+			for _, want := range []string{
+				msgPaidNotApplied,
+				fmt.Sprintf("reason=%q", test.reason),
+				fmt.Sprintf("chargeRef=%q", e.ChargeRef),
+				fmt.Sprintf("kind=%q", payrail.SettlementPaid),
+				fmt.Sprintf("amount=%d", e.Amount),
+				fmt.Sprintf("currency=%q", e.Currency),
+				ErrInvalidSettlement.Error(),
+			} {
+				if !strings.Contains(entry.message, want) {
+					t.Fatalf("log lacks %q: %s", want, entry.message)
+				}
+			}
+			assertNoUserIdentifiers(t, entries, e)
 		})
 	}
-	if len(marker.grants) != 0 {
-		t.Fatalf("forged settlement granted: %v", marker.grants)
+}
+
+// A refund is a terminal provider fact the consumer cannot change by retrying.
+// The product has not decided whether a refund revokes paid eligibility, so the
+// handler acknowledges it, leaves eligibility exactly as it was, and records it.
+func TestSettlementRefundIsAcknowledgedRecordedAndChangesNothing(t *testing.T) {
+	marker := &idempotentMarker{}
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	handler := s.SettlementHandler()
+	if err := handler(context.Background(), paidEvent()); err != nil {
+		t.Fatal(err)
+	}
+	logs := captureLogus(t)
+	refund := paidEvent()
+	refund.Kind = payrail.SettlementRefunded
+	refund.RefundRef = "re_1"
+	for i := 0; i < 2; i++ { // the provider re-lists every refund on re-delivery
+		if err := handler(context.Background(), refund); err != nil {
+			t.Fatalf("refund must be acknowledged, got err=%v", err)
+		}
+	}
+	if marker.calls != 1 || len(marker.grants) != 1 || marker.grants["ch_1"] != testPayerUID {
+		t.Fatalf("refund changed eligibility: calls=%d grants=%v", marker.calls, marker.grants)
+	}
+	entries := logs()
+	if len(entries) != 2 {
+		t.Fatalf("entries=%v", entries)
+	}
+	for _, entry := range entries {
+		if entry.severity != logus.SeverityWarning || !strings.Contains(entry.message, msgRefundAcknowledged) ||
+			!strings.Contains(entry.message, `kind="refunded"`) || !strings.Contains(entry.message, `chargeRef="ch_1"`) || !strings.Contains(entry.message, `refundRef="re_1"`) {
+			t.Fatalf("entry=%v", entry)
+		}
+	}
+	assertNoUserIdentifiers(t, entries, refund)
+}
+
+func TestSettlementRefundWithoutPriorPaymentGrantsNothing(t *testing.T) {
+	marker := &idempotentMarker{}
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	logs := captureLogus(t)
+	refund := paidEvent()
+	refund.Kind = payrail.SettlementRefunded
+	if err := s.SettlementHandler()(context.Background(), refund); err != nil {
+		t.Fatalf("err=%v", err)
+	}
+	if marker.calls != 0 {
+		t.Fatalf("refund touched eligibility: calls=%d", marker.calls)
+	}
+	onlyEntry(t, logs())
+}
+
+func TestSettlementFailedAndUnknownKindsAreAcknowledged(t *testing.T) {
+	for name, test := range map[string]struct {
+		kind     payrail.SettlementKind
+		severity logus.Severity
+		msg      string
+	}{
+		"failed":  {payrail.SettlementFailed, logus.SeverityInfo, msgFailedAcknowledged},
+		"unknown": {payrail.SettlementKind("disputed"), logus.SeverityWarning, msgUnknownKindAcknowledged},
+		"empty":   {payrail.SettlementKind(""), logus.SeverityWarning, msgUnknownKindAcknowledged},
+	} {
+		t.Run(name, func(t *testing.T) {
+			marker := &idempotentMarker{}
+			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+			logs := captureLogus(t)
+			e := paidEvent()
+			e.Kind = test.kind
+			if err := s.SettlementHandler()(context.Background(), e); err != nil {
+				t.Fatalf("%s must be acknowledged, got err=%v", name, err)
+			}
+			if marker.calls != 0 {
+				t.Fatalf("%s touched eligibility", name)
+			}
+			entries := logs()
+			entry := onlyEntry(t, entries)
+			if entry.severity != test.severity || !strings.Contains(entry.message, test.msg) || !strings.Contains(entry.message, fmt.Sprintf("kind=%q", test.kind)) {
+				t.Fatalf("entry=%v", entry)
+			}
+			assertNoUserIdentifiers(t, entries, e)
+		})
+	}
+}
+
+// Store errors keep the error, so the host answers 5xx and the provider
+// resends; the next delivery is deduplicated by charge ID.
+func TestSettlementTransientStoreErrorIsRetried(t *testing.T) {
+	expected := errors.New("firestore unavailable")
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, &failingMarker{markPaidErr: expected})
+	logs := captureLogus(t)
+	if err := s.SettlementHandler()(context.Background(), paidEvent()); !errors.Is(err, expected) {
+		t.Fatalf("transient store error must be returned for retry, got %v", err)
+	}
+	if entries := logs(); len(entries) != 0 {
+		t.Fatalf("a retried event must not be recorded as acknowledged: %v", entries)
 	}
 }
 
 func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	logs := captureLogus(t)
 	e := paidEvent()
 	if err := s.SettlementHandler()(context.Background(), e); err != nil {
 		t.Fatal(err)
@@ -174,8 +372,11 @@ func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	if err := s.SettlementHandler()(context.Background(), e); err != nil {
 		t.Fatal(err)
 	}
-	if len(marker.grants) != 1 || marker.grants["ch_1"] != "u1" {
+	if len(marker.grants) != 1 || marker.grants["ch_1"] != testPayerUID {
 		t.Fatalf("grants=%v", marker.grants)
+	}
+	if entries := logs(); len(entries) != 0 {
+		t.Fatalf("a valid paid event is not an operator event: %v", entries)
 	}
 }
 

@@ -28,3 +28,27 @@ provider idempotency key. A cancelled or expired attempt can start again with a
 new ID; replaying one attempt returns the same provider Checkout Session. Only
 bounded `categoryId`, `questionId`, and `actionId` identifiers enter metadata;
 free-form issue text must never be sent.
+
+## Settlement events
+
+The host answers the provider with a retry for any error the settlement handler
+returns, and the payments webhook is shared with other products. So the handler
+returns an error only for an eligibility-store failure. That covers transient
+storage errors, and also two permanent store refusals (a charge ID the store
+cannot key, a receipt bound to another user) that provider charge IDs and
+server-written metadata cannot produce. Every other event is acknowledged,
+grants nothing, and is logged through `logus`, which the host ships to Cloud
+Logging with severity:
+
+- a valid `paid` event grants eligibility once per provider charge ID;
+- a `paid` event that fails a check (consumer, EUR 1.00 amount, currency, live
+  mode, user and payer metadata) logs `paid settlement NOT applied, operator
+  review required` at ERROR with the reason and charge reference. Fix the
+  cause, then resend the event from the provider dashboard (the handler is
+  idempotent by charge ID) or refund the payer. A log-based alert on this
+  message is an operations setting for the owner;
+- a `refunded` event logs at WARNING and leaves eligibility unchanged. Whether a
+  refund should revoke paid eligibility is an open product decision;
+- a `failed` event logs at INFO; an unknown kind logs at WARNING.
+
+Logs carry the provider charge and refund references, never user identifiers.
