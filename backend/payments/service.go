@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
@@ -56,6 +57,8 @@ type Service struct {
 	identity Identity
 	provider payrail.PaymentProvider
 	marker   EligibilityStore
+	// log records acknowledged settlement events; nil means the process default.
+	log *slog.Logger
 }
 
 func NewService(identity Identity, provider payrail.PaymentProvider, marker EligibilityStore) (*Service, error) {
@@ -138,21 +141,97 @@ func (s *Service) CreateCheckoutHandler() http.HandlerFunc {
 	}
 }
 
+// Log messages and reasons for settlement events that are acknowledged without
+// granting eligibility. They are stable so operators can search and alert on them.
+const (
+	msgPaidNotApplied          = "issuenumber payments: paid settlement NOT applied, operator review required"
+	msgRefundAcknowledged      = "issuenumber payments: refund acknowledged, eligibility unchanged (refund policy undecided)"
+	msgFailedAcknowledged      = "issuenumber payments: failed charge acknowledged, nothing to do"
+	msgUnknownKindAcknowledged = "issuenumber payments: unknown settlement kind acknowledged, nothing applied"
+
+	reasonChargeMissing    = "charge reference missing"
+	reasonConsumerMismatch = "consumer mismatch"
+	reasonAmountMismatch   = "amount mismatch"
+	reasonCurrencyMismatch = "currency mismatch"
+	reasonModeNotLive      = "payment mode is not live"
+	reasonPayerMissing     = "user or payer metadata missing"
+	reasonPayerMismatch    = "user and payer metadata differ"
+)
+
 // SettlementHandler is registered with the host's one signed settlement
 // router. It still verifies the consumer, price and trusted identity metadata
 // so a valid provider event cannot be repurposed from another product or user.
+//
+// The host answers the provider with a retry for any returned error, so an
+// error is returned ONLY for a transient failure that a resend can fix (the
+// eligibility store). An event that can never become valid by being resent is
+// acknowledged (nil) and logged instead: a refund or failure, an unknown kind,
+// and a paid event that fails a check. Nothing is granted for any of them.
 func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 	return func(ctx context.Context, event payrail.SettlementEvent) error {
-		uid := event.Metadata[metadataUserID]
-		payer := event.Metadata[metadataPayerRef]
-		if event.ChargeRef == "" || event.Consumer != Consumer || event.Kind != payrail.SettlementPaid ||
-			event.Amount != AmountMinorUnits || !strings.EqualFold(event.Currency, Currency) ||
-			event.Metadata[metadataPaymentMode] != requiredPaymentMode ||
-			uid == "" || payer == "" || uid != payer {
-			return fmt.Errorf("%w: consumer=%q kind=%q amount=%d currency=%q", ErrInvalidSettlement, event.Consumer, event.Kind, event.Amount, event.Currency)
+		switch event.Kind {
+		case payrail.SettlementPaid:
+		case payrail.SettlementRefunded:
+			// Whether a refund revokes paid eligibility is an open product decision;
+			// until it is made, eligibility is left exactly as it was.
+			s.logger().WarnContext(ctx, msgRefundAcknowledged, settlementAttrs(event)...)
+			return nil
+		case payrail.SettlementFailed:
+			s.logger().InfoContext(ctx, msgFailedAcknowledged, settlementAttrs(event)...)
+			return nil
+		default:
+			s.logger().WarnContext(ctx, msgUnknownKindAcknowledged, settlementAttrs(event)...)
+			return nil
 		}
-		return s.marker.MarkPaid(ctx, uid, event.ChargeRef)
+		if reason := invalidPaidReason(event); reason != "" {
+			attrs := append(settlementAttrs(event), "reason", reason, "err", fmt.Errorf("%w: %s", ErrInvalidSettlement, reason).Error())
+			s.logger().ErrorContext(ctx, msgPaidNotApplied, attrs...)
+			return nil
+		}
+		return s.marker.MarkPaid(ctx, event.Metadata[metadataUserID], event.ChargeRef)
 	}
+}
+
+// invalidPaidReason returns why a paid event must not grant eligibility, or ""
+// when it may.
+func invalidPaidReason(event payrail.SettlementEvent) string {
+	uid := event.Metadata[metadataUserID]
+	payer := event.Metadata[metadataPayerRef]
+	switch {
+	case event.ChargeRef == "":
+		return reasonChargeMissing
+	case event.Consumer != Consumer:
+		return reasonConsumerMismatch
+	case event.Amount != AmountMinorUnits:
+		return reasonAmountMismatch
+	case !strings.EqualFold(event.Currency, Currency):
+		return reasonCurrencyMismatch
+	case event.Metadata[metadataPaymentMode] != requiredPaymentMode:
+		return reasonModeNotLive
+	case uid == "" || payer == "":
+		return reasonPayerMissing
+	case uid != payer:
+		return reasonPayerMismatch
+	}
+	return ""
+}
+
+// settlementAttrs are the provider facts an operator needs to find the charge.
+// User identifiers are deliberately left out of logs.
+func settlementAttrs(event payrail.SettlementEvent) []any {
+	return []any{
+		"consumer", event.Consumer, "kind", string(event.Kind),
+		"chargeRef", event.ChargeRef, "refundRef", event.RefundRef,
+		"amount", event.Amount, "currency", event.Currency,
+		"paymentMode", event.Metadata[metadataPaymentMode],
+	}
+}
+
+func (s *Service) logger() *slog.Logger {
+	if s.log != nil {
+		return s.log
+	}
+	return slog.Default()
 }
 
 func writeCheckoutResponse(w http.ResponseWriter, status int, response CreateCheckoutResponse) {

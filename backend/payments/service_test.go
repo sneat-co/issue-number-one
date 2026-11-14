@@ -1,9 +1,11 @@
 package payments
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -139,34 +141,186 @@ func paidEvent() payrail.SettlementEvent {
 	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: "u1", metadataPayerRef: "u1", metadataPaymentMode: requiredPaymentMode}}
 }
 
-func TestSettlementRejectsForgedConsumerAmountAndUser(t *testing.T) {
-	marker := &idempotentMarker{}
-	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-	for name, mutate := range map[string]func(*payrail.SettlementEvent){
-		"consumer":    func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" },
-		"amount":      func(e *payrail.SettlementEvent) { e.Amount = 99 },
-		"currency":    func(e *payrail.SettlementEvent) { e.Currency = "USD" },
-		"outcome":     func(e *payrail.SettlementEvent) { e.Kind = payrail.SettlementRefunded },
-		"user":        func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" },
-		"charge":      func(e *payrail.SettlementEvent) { e.ChargeRef = "" },
-		"test replay": func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" },
+// logRecord is one captured structured log line.
+type logRecord map[string]any
+
+// captureLogs points the service at an in-memory JSON logger and returns a
+// reader for the records written so far.
+func captureLogs(t *testing.T, s *Service) func() []logRecord {
+	t.Helper()
+	var buf bytes.Buffer
+	s.log = slog.New(slog.NewJSONHandler(&buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	return func() []logRecord {
+		t.Helper()
+		var records []logRecord
+		for _, line := range strings.Split(strings.TrimSpace(buf.String()), "\n") {
+			if line == "" {
+				continue
+			}
+			var r logRecord
+			if err := json.Unmarshal([]byte(line), &r); err != nil {
+				t.Fatalf("log line %q: %v", line, err)
+			}
+			records = append(records, r)
+		}
+		return records
+	}
+}
+
+func onlyRecord(t *testing.T, records []logRecord) logRecord {
+	t.Helper()
+	if len(records) != 1 {
+		t.Fatalf("want exactly one log record, got %d: %v", len(records), records)
+	}
+	return records[0]
+}
+
+// A paid event that fails a check can never become valid by being resent, so it
+// is acknowledged (nil: no provider retry storm on the shared webhook), grants
+// nothing, and is logged at ERROR with the reason for an operator.
+func TestSettlementInvalidPaidIsAcknowledgedRecordedAndNotGranted(t *testing.T) {
+	for name, test := range map[string]struct {
+		mutate func(*payrail.SettlementEvent)
+		reason string
+	}{
+		"consumer":            {func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" }, reasonConsumerMismatch},
+		"amount":              {func(e *payrail.SettlementEvent) { e.Amount = 99 }, reasonAmountMismatch},
+		"currency":            {func(e *payrail.SettlementEvent) { e.Currency = "USD" }, reasonCurrencyMismatch},
+		"user":                {func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" }, reasonPayerMismatch},
+		"empty uid":           {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataUserID) }, reasonPayerMissing},
+		"empty payer":         {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataPayerRef) }, reasonPayerMissing},
+		"charge":              {func(e *payrail.SettlementEvent) { e.ChargeRef = "" }, reasonChargeMissing},
+		"test replay":         {func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" }, reasonModeNotLive},
+		"amount and currency": {func(e *payrail.SettlementEvent) { e.Amount = 5000; e.Currency = "GBP" }, reasonAmountMismatch},
 	} {
 		t.Run(name, func(t *testing.T) {
+			marker := &idempotentMarker{}
+			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+			logs := captureLogs(t, s)
 			e := paidEvent()
-			mutate(&e)
-			if err := s.SettlementHandler()(context.Background(), e); !errors.Is(err, ErrInvalidSettlement) {
-				t.Fatalf("err=%v", err)
+			test.mutate(&e)
+			if err := s.SettlementHandler()(context.Background(), e); err != nil {
+				t.Fatalf("invalid paid event must be acknowledged, got err=%v", err)
+			}
+			if marker.calls != 0 || len(marker.grants) != 0 {
+				t.Fatalf("invalid paid event unlocked eligibility: calls=%d grants=%v", marker.calls, marker.grants)
+			}
+			r := onlyRecord(t, logs())
+			if r["level"] != "ERROR" || r["msg"] != msgPaidNotApplied || r["reason"] != test.reason {
+				t.Fatalf("record=%v", r)
+			}
+			if r["kind"] != string(payrail.SettlementPaid) || r["chargeRef"] != e.ChargeRef || r["amount"] != float64(e.Amount) || r["currency"] != e.Currency {
+				t.Fatalf("record lacks event facts: %v", r)
+			}
+			if !strings.Contains(r["err"].(string), ErrInvalidSettlement.Error()) {
+				t.Fatalf("record err=%v", r["err"])
 			}
 		})
 	}
-	if len(marker.grants) != 0 {
-		t.Fatalf("forged settlement granted: %v", marker.grants)
+}
+
+// A refund is a terminal provider fact the consumer cannot change by retrying.
+// The product has not decided whether a refund revokes paid eligibility, so the
+// handler acknowledges it, leaves eligibility exactly as it was, and records it.
+func TestSettlementRefundIsAcknowledgedRecordedAndChangesNothing(t *testing.T) {
+	marker := &idempotentMarker{}
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	logs := captureLogs(t, s)
+	handler := s.SettlementHandler()
+	if err := handler(context.Background(), paidEvent()); err != nil {
+		t.Fatal(err)
+	}
+	refund := paidEvent()
+	refund.Kind = payrail.SettlementRefunded
+	refund.RefundRef = "re_1"
+	for i := 0; i < 2; i++ { // the provider re-lists every refund on re-delivery
+		if err := handler(context.Background(), refund); err != nil {
+			t.Fatalf("refund must be acknowledged, got err=%v", err)
+		}
+	}
+	if marker.calls != 1 || len(marker.grants) != 1 || marker.grants["ch_1"] != "u1" {
+		t.Fatalf("refund changed eligibility: calls=%d grants=%v", marker.calls, marker.grants)
+	}
+	records := logs()
+	if len(records) != 2 {
+		t.Fatalf("records=%v", records)
+	}
+	for _, r := range records {
+		if r["level"] != "WARN" || r["msg"] != msgRefundAcknowledged || r["kind"] != string(payrail.SettlementRefunded) || r["chargeRef"] != "ch_1" || r["refundRef"] != "re_1" {
+			t.Fatalf("record=%v", r)
+		}
+	}
+}
+
+func TestSettlementRefundWithoutPriorPaymentGrantsNothing(t *testing.T) {
+	marker := &idempotentMarker{}
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	logs := captureLogs(t, s)
+	refund := paidEvent()
+	refund.Kind = payrail.SettlementRefunded
+	if err := s.SettlementHandler()(context.Background(), refund); err != nil {
+		t.Fatalf("err=%v", err)
+	}
+	if marker.calls != 0 {
+		t.Fatalf("refund touched eligibility: calls=%d", marker.calls)
+	}
+	onlyRecord(t, logs())
+}
+
+func TestSettlementFailedAndUnknownKindsAreAcknowledged(t *testing.T) {
+	for name, test := range map[string]struct {
+		kind  payrail.SettlementKind
+		level string
+		msg   string
+	}{
+		"failed":  {payrail.SettlementFailed, "INFO", msgFailedAcknowledged},
+		"unknown": {payrail.SettlementKind("disputed"), "WARN", msgUnknownKindAcknowledged},
+		"empty":   {payrail.SettlementKind(""), "WARN", msgUnknownKindAcknowledged},
+	} {
+		t.Run(name, func(t *testing.T) {
+			marker := &idempotentMarker{}
+			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+			logs := captureLogs(t, s)
+			e := paidEvent()
+			e.Kind = test.kind
+			if err := s.SettlementHandler()(context.Background(), e); err != nil {
+				t.Fatalf("%s must be acknowledged, got err=%v", name, err)
+			}
+			if marker.calls != 0 {
+				t.Fatalf("%s touched eligibility", name)
+			}
+			r := onlyRecord(t, logs())
+			if r["level"] != test.level || r["msg"] != test.msg || r["kind"] != string(test.kind) {
+				t.Fatalf("record=%v", r)
+			}
+		})
+	}
+}
+
+// Only a transient failure keeps the error, so the host answers 5xx and the
+// provider resends; the next delivery is deduplicated by charge ID.
+func TestSettlementTransientStoreErrorIsRetried(t *testing.T) {
+	expected := errors.New("firestore unavailable")
+	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, &failingMarker{markPaidErr: expected})
+	logs := captureLogs(t, s)
+	if err := s.SettlementHandler()(context.Background(), paidEvent()); !errors.Is(err, expected) {
+		t.Fatalf("transient store error must be returned for retry, got %v", err)
+	}
+	if records := logs(); len(records) != 0 {
+		t.Fatalf("a retried event must not be recorded as acknowledged: %v", records)
+	}
+}
+
+func TestServiceLoggerDefaultsToProcessLogger(t *testing.T) {
+	if got := (&Service{}).logger(); got != slog.Default() {
+		t.Fatalf("logger=%v", got)
 	}
 }
 
 func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
+	logs := captureLogs(t, s)
 	e := paidEvent()
 	if err := s.SettlementHandler()(context.Background(), e); err != nil {
 		t.Fatal(err)
@@ -176,6 +330,9 @@ func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	}
 	if len(marker.grants) != 1 || marker.grants["ch_1"] != "u1" {
 		t.Fatalf("grants=%v", marker.grants)
+	}
+	if records := logs(); len(records) != 0 {
+		t.Fatalf("a valid paid event is not an operator event: %v", records)
 	}
 }
 

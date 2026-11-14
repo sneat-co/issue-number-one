@@ -144,22 +144,7 @@ func TestBearerToken_NoPrefix(t *testing.T) {
 	}
 }
 
-func TestSettlementHandler_UserMismatchAndMarkError(t *testing.T) {
-	for name, mutate := range map[string]func(*payrail.SettlementEvent){
-		"empty uid":          func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataUserID) },
-		"empty payer":        func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataPayerRef) },
-		"uid payer mismatch": func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "diff-payer" },
-	} {
-		t.Run(name, func(t *testing.T) {
-			s := newTestService(t, fixedIdentity{uid: "u1"}, &payrail.MockProvider{}, &idempotentMarker{})
-			e := paidEvent()
-			mutate(&e)
-			if err := s.SettlementHandler()(context.Background(), e); !errors.Is(err, ErrInvalidSettlement) {
-				t.Fatalf("expected ErrInvalidSettlement, got %v", err)
-			}
-		})
-	}
-
+func TestSettlementHandler_MarkError(t *testing.T) {
 	t.Run("mark paid error returned", func(t *testing.T) {
 		expectedErr := errors.New("db fail")
 		fMarker := &failingMarker{markPaidErr: expectedErr}
