@@ -7,12 +7,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/sneat-co/paymentus/backend/payrail"
+	"github.com/strongo/logus"
 )
 
 const (
@@ -57,8 +57,6 @@ type Service struct {
 	identity Identity
 	provider payrail.PaymentProvider
 	marker   EligibilityStore
-	// log records acknowledged settlement events; nil means the process default.
-	log *slog.Logger
 }
 
 func NewService(identity Identity, provider payrail.PaymentProvider, marker EligibilityStore) (*Service, error) {
@@ -162,11 +160,16 @@ const (
 // router. It still verifies the consumer, price and trusted identity metadata
 // so a valid provider event cannot be repurposed from another product or user.
 //
-// The host answers the provider with a retry for any returned error, so an
-// error is returned ONLY for a transient failure that a resend can fix (the
-// eligibility store). An event that can never become valid by being resent is
-// acknowledged (nil) and logged instead: a refund or failure, an unknown kind,
-// and a paid event that fails a check. Nothing is granted for any of them.
+// The host answers the provider with a retry for any returned error. An event
+// that can never become valid by being resent is therefore acknowledged (nil)
+// and logged through logus, which the host ships to Cloud Logging with
+// severity: a refund or failure, an unknown kind, and a paid event that fails a
+// check (ERROR). Nothing is granted for any of them. Every eligibility-store
+// error is returned and so retried. That covers transient storage failures and
+// also the store's two permanent refusals (a charge ID it cannot key, a receipt
+// already bound to another user); neither is reachable with provider charge IDs
+// and server-written metadata, and retrying them keeps the provider's
+// failed-delivery signal.
 func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 	return func(ctx context.Context, event payrail.SettlementEvent) error {
 		switch event.Kind {
@@ -174,18 +177,18 @@ func (s *Service) SettlementHandler() payrail.ConfirmHandler {
 		case payrail.SettlementRefunded:
 			// Whether a refund revokes paid eligibility is an open product decision;
 			// until it is made, eligibility is left exactly as it was.
-			s.logger().WarnContext(ctx, msgRefundAcknowledged, settlementAttrs(event)...)
+			logus.Warningf(ctx, "%s: %s", msgRefundAcknowledged, settlementFacts(event))
 			return nil
 		case payrail.SettlementFailed:
-			s.logger().InfoContext(ctx, msgFailedAcknowledged, settlementAttrs(event)...)
+			logus.Infof(ctx, "%s: %s", msgFailedAcknowledged, settlementFacts(event))
 			return nil
 		default:
-			s.logger().WarnContext(ctx, msgUnknownKindAcknowledged, settlementAttrs(event)...)
+			logus.Warningf(ctx, "%s: %s", msgUnknownKindAcknowledged, settlementFacts(event))
 			return nil
 		}
 		if reason := invalidPaidReason(event); reason != "" {
-			attrs := append(settlementAttrs(event), "reason", reason, "err", fmt.Errorf("%w: %s", ErrInvalidSettlement, reason).Error())
-			s.logger().ErrorContext(ctx, msgPaidNotApplied, attrs...)
+			logus.Errorf(ctx, "%s: reason=%q %s err=%q", msgPaidNotApplied, reason, settlementFacts(event),
+				fmt.Errorf("%w: %s", ErrInvalidSettlement, reason).Error())
 			return nil
 		}
 		return s.marker.MarkPaid(ctx, event.Metadata[metadataUserID], event.ChargeRef)
@@ -199,6 +202,8 @@ func invalidPaidReason(event payrail.SettlementEvent) string {
 	payer := event.Metadata[metadataPayerRef]
 	switch {
 	case event.ChargeRef == "":
+		// Defence in depth: payrail's router rejects an empty charge reference
+		// before calling any handler, so only a direct call reaches this.
 		return reasonChargeMissing
 	case event.Consumer != Consumer:
 		return reasonConsumerMismatch
@@ -216,22 +221,13 @@ func invalidPaidReason(event payrail.SettlementEvent) string {
 	return ""
 }
 
-// settlementAttrs are the provider facts an operator needs to find the charge.
-// User identifiers are deliberately left out of logs.
-func settlementAttrs(event payrail.SettlementEvent) []any {
-	return []any{
-		"consumer", event.Consumer, "kind", string(event.Kind),
-		"chargeRef", event.ChargeRef, "refundRef", event.RefundRef,
-		"amount", event.Amount, "currency", event.Currency,
-		"paymentMode", event.Metadata[metadataPaymentMode],
-	}
-}
-
-func (s *Service) logger() *slog.Logger {
-	if s.log != nil {
-		return s.log
-	}
-	return slog.Default()
+// settlementFacts are the provider facts an operator needs to find the charge,
+// quoted so event values cannot forge log text. User identifiers are
+// deliberately left out of logs.
+func settlementFacts(event payrail.SettlementEvent) string {
+	return fmt.Sprintf("consumer=%q kind=%q chargeRef=%q refundRef=%q amount=%d currency=%q paymentMode=%q",
+		event.Consumer, string(event.Kind), event.ChargeRef, event.RefundRef,
+		event.Amount, event.Currency, event.Metadata[metadataPaymentMode])
 }
 
 func writeCheckoutResponse(w http.ResponseWriter, status int, response CreateCheckoutResponse) {

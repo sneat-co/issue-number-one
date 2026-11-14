@@ -1,11 +1,10 @@
 package payments
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
-	"log/slog"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -13,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/sneat-co/paymentus/backend/payrail"
+	"github.com/strongo/logus"
 )
 
 type fixedIdentity struct{ uid string }
@@ -137,48 +137,83 @@ func TestCreateCheckoutRejectsAnonymousAndUnsafeAttribution(t *testing.T) {
 	}
 }
 
+// testPayerUID is distinctive so a log line that leaks it is detectable.
+const testPayerUID = "payer-uid-7Hq2"
+
 func paidEvent() payrail.SettlementEvent {
-	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: "u1", metadataPayerRef: "u1", metadataPaymentMode: requiredPaymentMode}}
+	return payrail.SettlementEvent{ChargeRef: "ch_1", RefundRef: "pi_1", Consumer: Consumer, Kind: payrail.SettlementPaid, Amount: 100, Currency: "eur", Metadata: map[string]string{metadataUserID: testPayerUID, metadataPayerRef: testPayerUID, metadataPaymentMode: requiredPaymentMode}}
 }
 
-// logRecord is one captured structured log line.
-type logRecord map[string]any
+// logusEntry is one entry dispatched through logus, formatted exactly as the
+// host's Cloud Logging handler formats it (sneat-go-host logginghost: severity
+// mapped one-to-one, payload = fmt.Sprintf(MessageFormat, MessageArgs...)).
+type logusEntry struct {
+	severity logus.Severity
+	message  string
+}
 
-// captureLogs points the service at an in-memory JSON logger and returns a
-// reader for the records written so far.
-func captureLogs(t *testing.T, s *Service) func() []logRecord {
+type logusCapture struct {
+	mu      sync.Mutex
+	entries []logusEntry
+}
+
+func (c *logusCapture) Log(_ context.Context, entry logus.LogEntry) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.entries = append(c.entries, logusEntry{severity: entry.Severity, message: fmt.Sprintf(entry.MessageFormat, entry.MessageArgs...)})
+	return nil
+}
+
+var (
+	capturedLogus     = &logusCapture{}
+	capturedLogusOnce sync.Once
+)
+
+// captureLogus registers a handler on the process-wide logus dispatcher, the
+// same one the host attaches its Cloud Logging handler to, and returns a reader
+// for the entries written since the call.
+func captureLogus(t *testing.T) func() []logusEntry {
 	t.Helper()
-	var buf bytes.Buffer
-	s.log = slog.New(slog.NewJSONHandler(&buf, &slog.HandlerOptions{Level: slog.LevelDebug}))
-	return func() []logRecord {
-		t.Helper()
-		var records []logRecord
-		for _, line := range strings.Split(strings.TrimSpace(buf.String()), "\n") {
-			if line == "" {
-				continue
+	capturedLogusOnce.Do(func() { logus.AddLogEntryHandler(capturedLogus) })
+	capturedLogus.mu.Lock()
+	capturedLogus.entries = nil
+	capturedLogus.mu.Unlock()
+	return func() []logusEntry {
+		capturedLogus.mu.Lock()
+		defer capturedLogus.mu.Unlock()
+		return append([]logusEntry(nil), capturedLogus.entries...)
+	}
+}
+
+func onlyEntry(t *testing.T, entries []logusEntry) logusEntry {
+	t.Helper()
+	if len(entries) != 1 {
+		t.Fatalf("want exactly one log entry, got %d: %v", len(entries), entries)
+	}
+	return entries[0]
+}
+
+// assertNoUserIdentifiers fails if an entry carries the event's user or payer
+// identifier, or names the metadata keys that hold them.
+func assertNoUserIdentifiers(t *testing.T, entries []logusEntry, e payrail.SettlementEvent) {
+	t.Helper()
+	for _, entry := range entries {
+		for _, key := range []string{metadataUserID, metadataPayerRef} {
+			if strings.Contains(entry.message, key) {
+				t.Fatalf("log names user metadata key %q: %s", key, entry.message)
 			}
-			var r logRecord
-			if err := json.Unmarshal([]byte(line), &r); err != nil {
-				t.Fatalf("log line %q: %v", line, err)
+			if v := e.Metadata[key]; v != "" && strings.Contains(entry.message, v) {
+				t.Fatalf("log carries user identifier %q: %s", v, entry.message)
 			}
-			records = append(records, r)
 		}
-		return records
 	}
-}
-
-func onlyRecord(t *testing.T, records []logRecord) logRecord {
-	t.Helper()
-	if len(records) != 1 {
-		t.Fatalf("want exactly one log record, got %d: %v", len(records), records)
-	}
-	return records[0]
 }
 
 // A paid event that fails a check can never become valid by being resent, so it
 // is acknowledged (nil: no provider retry storm on the shared webhook), grants
-// nothing, and is logged at ERROR with the reason for an operator.
-func TestSettlementInvalidPaidIsAcknowledgedRecordedAndNotGranted(t *testing.T) {
+// nothing, and is logged through logus at ERROR severity with the charge
+// reference and reason, where the host ships it to Cloud Logging.
+func TestSettlementInvalidPaidIsAcknowledgedAndLoggedAtErrorViaLogus(t *testing.T) {
 	for name, test := range map[string]struct {
 		mutate func(*payrail.SettlementEvent)
 		reason string
@@ -186,17 +221,19 @@ func TestSettlementInvalidPaidIsAcknowledgedRecordedAndNotGranted(t *testing.T) 
 		"consumer":            {func(e *payrail.SettlementEvent) { e.Consumer = "wallet-topup" }, reasonConsumerMismatch},
 		"amount":              {func(e *payrail.SettlementEvent) { e.Amount = 99 }, reasonAmountMismatch},
 		"currency":            {func(e *payrail.SettlementEvent) { e.Currency = "USD" }, reasonCurrencyMismatch},
-		"user":                {func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user" }, reasonPayerMismatch},
+		"user":                {func(e *payrail.SettlementEvent) { e.Metadata[metadataPayerRef] = "another-user-9Zx" }, reasonPayerMismatch},
 		"empty uid":           {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataUserID) }, reasonPayerMissing},
 		"empty payer":         {func(e *payrail.SettlementEvent) { delete(e.Metadata, metadataPayerRef) }, reasonPayerMissing},
-		"charge":              {func(e *payrail.SettlementEvent) { e.ChargeRef = "" }, reasonChargeMissing},
 		"test replay":         {func(e *payrail.SettlementEvent) { e.Metadata[metadataPaymentMode] = "test" }, reasonModeNotLive},
 		"amount and currency": {func(e *payrail.SettlementEvent) { e.Amount = 5000; e.Currency = "GBP" }, reasonAmountMismatch},
+		// Defence in depth: the real router rejects an empty charge reference
+		// before calling the handler, so this is reachable only by a direct call.
+		"charge": {func(e *payrail.SettlementEvent) { e.ChargeRef = "" }, reasonChargeMissing},
 	} {
 		t.Run(name, func(t *testing.T) {
 			marker := &idempotentMarker{}
 			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-			logs := captureLogs(t, s)
+			logs := captureLogus(t)
 			e := paidEvent()
 			test.mutate(&e)
 			if err := s.SettlementHandler()(context.Background(), e); err != nil {
@@ -205,16 +242,25 @@ func TestSettlementInvalidPaidIsAcknowledgedRecordedAndNotGranted(t *testing.T) 
 			if marker.calls != 0 || len(marker.grants) != 0 {
 				t.Fatalf("invalid paid event unlocked eligibility: calls=%d grants=%v", marker.calls, marker.grants)
 			}
-			r := onlyRecord(t, logs())
-			if r["level"] != "ERROR" || r["msg"] != msgPaidNotApplied || r["reason"] != test.reason {
-				t.Fatalf("record=%v", r)
+			entries := logs()
+			entry := onlyEntry(t, entries)
+			if entry.severity != logus.SeverityError {
+				t.Fatalf("severity=%d, want ERROR: %s", entry.severity, entry.message)
 			}
-			if r["kind"] != string(payrail.SettlementPaid) || r["chargeRef"] != e.ChargeRef || r["amount"] != float64(e.Amount) || r["currency"] != e.Currency {
-				t.Fatalf("record lacks event facts: %v", r)
+			for _, want := range []string{
+				msgPaidNotApplied,
+				fmt.Sprintf("reason=%q", test.reason),
+				fmt.Sprintf("chargeRef=%q", e.ChargeRef),
+				fmt.Sprintf("kind=%q", payrail.SettlementPaid),
+				fmt.Sprintf("amount=%d", e.Amount),
+				fmt.Sprintf("currency=%q", e.Currency),
+				ErrInvalidSettlement.Error(),
+			} {
+				if !strings.Contains(entry.message, want) {
+					t.Fatalf("log lacks %q: %s", want, entry.message)
+				}
 			}
-			if !strings.Contains(r["err"].(string), ErrInvalidSettlement.Error()) {
-				t.Fatalf("record err=%v", r["err"])
-			}
+			assertNoUserIdentifiers(t, entries, e)
 		})
 	}
 }
@@ -225,11 +271,11 @@ func TestSettlementInvalidPaidIsAcknowledgedRecordedAndNotGranted(t *testing.T) 
 func TestSettlementRefundIsAcknowledgedRecordedAndChangesNothing(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-	logs := captureLogs(t, s)
 	handler := s.SettlementHandler()
 	if err := handler(context.Background(), paidEvent()); err != nil {
 		t.Fatal(err)
 	}
+	logs := captureLogus(t)
 	refund := paidEvent()
 	refund.Kind = payrail.SettlementRefunded
 	refund.RefundRef = "re_1"
@@ -238,24 +284,26 @@ func TestSettlementRefundIsAcknowledgedRecordedAndChangesNothing(t *testing.T) {
 			t.Fatalf("refund must be acknowledged, got err=%v", err)
 		}
 	}
-	if marker.calls != 1 || len(marker.grants) != 1 || marker.grants["ch_1"] != "u1" {
+	if marker.calls != 1 || len(marker.grants) != 1 || marker.grants["ch_1"] != testPayerUID {
 		t.Fatalf("refund changed eligibility: calls=%d grants=%v", marker.calls, marker.grants)
 	}
-	records := logs()
-	if len(records) != 2 {
-		t.Fatalf("records=%v", records)
+	entries := logs()
+	if len(entries) != 2 {
+		t.Fatalf("entries=%v", entries)
 	}
-	for _, r := range records {
-		if r["level"] != "WARN" || r["msg"] != msgRefundAcknowledged || r["kind"] != string(payrail.SettlementRefunded) || r["chargeRef"] != "ch_1" || r["refundRef"] != "re_1" {
-			t.Fatalf("record=%v", r)
+	for _, entry := range entries {
+		if entry.severity != logus.SeverityWarning || !strings.Contains(entry.message, msgRefundAcknowledged) ||
+			!strings.Contains(entry.message, `kind="refunded"`) || !strings.Contains(entry.message, `chargeRef="ch_1"`) || !strings.Contains(entry.message, `refundRef="re_1"`) {
+			t.Fatalf("entry=%v", entry)
 		}
 	}
+	assertNoUserIdentifiers(t, entries, refund)
 }
 
 func TestSettlementRefundWithoutPriorPaymentGrantsNothing(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-	logs := captureLogs(t, s)
+	logs := captureLogus(t)
 	refund := paidEvent()
 	refund.Kind = payrail.SettlementRefunded
 	if err := s.SettlementHandler()(context.Background(), refund); err != nil {
@@ -264,23 +312,23 @@ func TestSettlementRefundWithoutPriorPaymentGrantsNothing(t *testing.T) {
 	if marker.calls != 0 {
 		t.Fatalf("refund touched eligibility: calls=%d", marker.calls)
 	}
-	onlyRecord(t, logs())
+	onlyEntry(t, logs())
 }
 
 func TestSettlementFailedAndUnknownKindsAreAcknowledged(t *testing.T) {
 	for name, test := range map[string]struct {
-		kind  payrail.SettlementKind
-		level string
-		msg   string
+		kind     payrail.SettlementKind
+		severity logus.Severity
+		msg      string
 	}{
-		"failed":  {payrail.SettlementFailed, "INFO", msgFailedAcknowledged},
-		"unknown": {payrail.SettlementKind("disputed"), "WARN", msgUnknownKindAcknowledged},
-		"empty":   {payrail.SettlementKind(""), "WARN", msgUnknownKindAcknowledged},
+		"failed":  {payrail.SettlementFailed, logus.SeverityInfo, msgFailedAcknowledged},
+		"unknown": {payrail.SettlementKind("disputed"), logus.SeverityWarning, msgUnknownKindAcknowledged},
+		"empty":   {payrail.SettlementKind(""), logus.SeverityWarning, msgUnknownKindAcknowledged},
 	} {
 		t.Run(name, func(t *testing.T) {
 			marker := &idempotentMarker{}
 			s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-			logs := captureLogs(t, s)
+			logs := captureLogus(t)
 			e := paidEvent()
 			e.Kind = test.kind
 			if err := s.SettlementHandler()(context.Background(), e); err != nil {
@@ -289,38 +337,34 @@ func TestSettlementFailedAndUnknownKindsAreAcknowledged(t *testing.T) {
 			if marker.calls != 0 {
 				t.Fatalf("%s touched eligibility", name)
 			}
-			r := onlyRecord(t, logs())
-			if r["level"] != test.level || r["msg"] != test.msg || r["kind"] != string(test.kind) {
-				t.Fatalf("record=%v", r)
+			entries := logs()
+			entry := onlyEntry(t, entries)
+			if entry.severity != test.severity || !strings.Contains(entry.message, test.msg) || !strings.Contains(entry.message, fmt.Sprintf("kind=%q", test.kind)) {
+				t.Fatalf("entry=%v", entry)
 			}
+			assertNoUserIdentifiers(t, entries, e)
 		})
 	}
 }
 
-// Only a transient failure keeps the error, so the host answers 5xx and the
-// provider resends; the next delivery is deduplicated by charge ID.
+// Store errors keep the error, so the host answers 5xx and the provider
+// resends; the next delivery is deduplicated by charge ID.
 func TestSettlementTransientStoreErrorIsRetried(t *testing.T) {
 	expected := errors.New("firestore unavailable")
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, &failingMarker{markPaidErr: expected})
-	logs := captureLogs(t, s)
+	logs := captureLogus(t)
 	if err := s.SettlementHandler()(context.Background(), paidEvent()); !errors.Is(err, expected) {
 		t.Fatalf("transient store error must be returned for retry, got %v", err)
 	}
-	if records := logs(); len(records) != 0 {
-		t.Fatalf("a retried event must not be recorded as acknowledged: %v", records)
-	}
-}
-
-func TestServiceLoggerDefaultsToProcessLogger(t *testing.T) {
-	if got := (&Service{}).logger(); got != slog.Default() {
-		t.Fatalf("logger=%v", got)
+	if entries := logs(); len(entries) != 0 {
+		t.Fatalf("a retried event must not be recorded as acknowledged: %v", entries)
 	}
 }
 
 func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	marker := &idempotentMarker{}
 	s := newTestService(t, fixedIdentity{uid: "u"}, &payrail.MockProvider{}, marker)
-	logs := captureLogs(t, s)
+	logs := captureLogus(t)
 	e := paidEvent()
 	if err := s.SettlementHandler()(context.Background(), e); err != nil {
 		t.Fatal(err)
@@ -328,11 +372,11 @@ func TestSettlementDuplicateIsIdempotentByProviderCharge(t *testing.T) {
 	if err := s.SettlementHandler()(context.Background(), e); err != nil {
 		t.Fatal(err)
 	}
-	if len(marker.grants) != 1 || marker.grants["ch_1"] != "u1" {
+	if len(marker.grants) != 1 || marker.grants["ch_1"] != testPayerUID {
 		t.Fatalf("grants=%v", marker.grants)
 	}
-	if records := logs(); len(records) != 0 {
-		t.Fatalf("a valid paid event is not an operator event: %v", records)
+	if entries := logs(); len(entries) != 0 {
+		t.Fatalf("a valid paid event is not an operator event: %v", entries)
 	}
 }
 
